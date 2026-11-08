@@ -3,53 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
+    <title>بوابة سورية الوطنية</title>
     <style>
-        /* التنسيقات المأخوذة من الكود الأصلي الخاص بك */
         :root {
-            --primary-color: #007bff;
+            --primary: #007bff;
             --primary-hover: #0056b3;
-            --bg-card: #ffffff;
-            --bg-box: #f9f9f9;
-            --border-color: #e0e0e0;
-            --text-main: #333333;
-            --text-muted: #666666;
+            --bg-card: #1e1e1e;
+            --bg-body: #121212;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;
         }
-        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; }
-        .eagle-logo { width: 45px; height: 45px; }
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); }
+        .price-ticker { display: flex; justify-content: space-between; background: #1a1a1a; color: #fff; padding: 12px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--border-color); }
         .brand-title { font-size: 1.4rem; font-weight: bold; }
-        .stars-container { color: #ef4444; font-size: 1rem; }
-        main { flex: 1; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-        .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
-        .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; transition: all 0.3s; text-align: center; cursor: pointer; }
-        .section-card:hover { border-color: var(--primary-color); transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .card-icon { font-size: 2rem; margin-bottom: 10px; }
-        .card-title { font-size: 1.1rem; color: var(--text-main); margin: 5px 0; }
-        .card-desc { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
-        .container-box { background: var(--bg-box); border-radius: 12px; padding: 25px; margin-bottom: 20px; }
-        .controls-group { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
-        select, button, input, textarea { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; width: 100%; box-sizing: border-box; }
-        input[type="text"] { flex: 1; width: auto; }
-        button.btn-primary { background: var(--primary-color); color: #ffffff; border: none; cursor: pointer; width: auto; padding: 10px 25px; }
+        .stars-container { color: #ffca28; font-size: 1rem; }
+        main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .container-box { background: #1a1a1a; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); }
+        .controls-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        input[type="text"] { flex: 1; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); background: #2a2a2a; color: #fff; font-size: 1rem; }
+        button.btn-primary { background: var(--primary); color: #ffffff; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; }
         button.btn-primary:hover { background: var(--primary-hover); }
-        .mirror-screen { width: 100%; height: 150px; background: #000; border-radius: 8px; }
-        .wheel-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .wheel-pointer { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 20px solid #ff0000; }
-        .wheel { width: 220px; height: 220px; border-radius: 50%; border: 5px solid #333; position: relative; margin-top: 10px; background: conic-gradient(#f44336 0deg 60deg, #e91e63 60deg 120deg, #9c27b0 120deg 180deg, #3f51b5 180deg 240deg, #4caf50 240deg 300deg, #ffeb3b 300deg 360deg); }
-        .back-btn { background: transparent; border: none; color: var(--primary-color); cursor: pointer; text-decoration: underline; }
-        .ai-response-box { margin-top: 15px; padding: 15px; background: #eef2ff; border-radius: 8px; border-left: 4px solid var(--primary-color); }
-        .price-ticker { display: flex; justify-content: space-between; background: #1e293b; color: #fff; padding: 10px 20px; font-size: 0.9rem; }
-        footer { text-align: center; padding: 20px; font-size: 0.9rem; background: #1e293b; color: #fff; margin-top: 40px; }
+        .ai-response-box { padding: 15px; background: #15233c; border-radius: 8px; border-right: 4px solid var(--primary); margin-top: 10px; }
+        .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; transition: all 0.3s ease; }
+        .section-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
+        .card-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .card-title { font-size: 1.2rem; margin: 8px 0; color: var(--text-main); }
+        .card-desc { font-size: 0.9rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <!-- شريط السعر العلوي المذكور في كود الـ CSS الخاص بك -->
     <div class="price-ticker">
-        <div class="brand-info" style="display: flex; align-items: center; gap: 10px;">
-            <div class="eagle-logo" style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000;">🦅</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
             <span class="brand-title">بوابة سورية الوطنية الماسية</span>
             <span class="stars-container">⭐⭐⭐⭐⭐</span>
         </div>
@@ -57,48 +44,121 @@
     </div>
 
     <main>
-        <!-- صندوق ميزة الذكاء الاصطناعي المجاني المدمج للمنصة الشاملة -->
+        <!-- صندوق ميزة الذكاء الاصطناعي المدمج -->
         <div class="container-box">
-            <h2 style="margin-top: 0;">الذكاء الاصطناعي المدمج المجاني الشامل</h2>
+            <h2 style="margin-top: 0; font-size: 1.5rem;">الذكاء الاصطناعي المدمج المجاني الشامل</h2>
             <div class="controls-group">
-                <input type="text" id="ai-input" placeholder="اسأل الذكاء الاصطناعي عن أي قسم من الـ 54 قسماً للخدمات السورية...">
+                <input type="text" id="ai-input" placeholder="اسأل المساعد الذكي عن أي قسم أو خدمة داخل الموقع...">
                 <button class="btn-primary" onclick="askAI()">معالجة ذكية</button>
             </div>
             <div class="ai-response-box" id="ai-response">
-                <p>مرحباً بك! أنا مساعد بوابة سورية الذكي. يمكنك الاستفسار عن أي من الأقسام الـ 54 أدناه وتلقي إجابة فورية مجانية.</p>
+                <p>مرحباً بك! أنا مساعد بوابة سورية الذكي. يمكنك الاستفسار عن أي خدمة وتلقي إجابة فورية.</p>
             </div>
         </div>
 
-        <h2 style="border-bottom: 2px solid #1e293b; padding-bottom: 10px;">أقسام المنصة الشاملة (54 قسماً تخصصياً)</h2>
+        <h2 style="border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 25px;">أقسام المنصة الشاملة</h2>
 
-        <!-- شبكة الأقسام الـ 54 بالكامل وبشكل مفسر للخدمات الشاملة -->
-        <div class="sections-grid">
-            <!-- خدمات حكومية ومعاملات -->
-            <div class="section-card"><div class="card-icon">🏛️</div><h3 class="card-title">1. الخدمات الحكومية الإلكترونية</h3><p class="card-desc">بوابة المعاملات الرسمية والمستندات الرقمية</p></div>
-            <div class="section-card"><div class="card-icon">💼</div><h3 class="card-title">2. الاستثمار وتأسيس الشركات</h3><p class="card-desc">دليل التراخيص لرواد الأعمال والمستثمرين</p></div>
-            <div class="section-card"><div class="card-icon">🪪</div><h3 class="card-title">3. الهوية الرقمية والوثائق</h3><p class="card-desc">تجديد الأوراق الثبوتية والبطاقات الشخصية</p></div>
-            <div class="section-card"><div class="card-icon">⚖️</div><h3 class="card-title">4. البوابة القانونية والقضائية</h3><p class="card-desc">استشارات الأنظمة والتشريعات السورية الصادرة</p></div>
-            <div class="section-card"><div class="card-icon">🛣️</div><h3 class="card-title">5. وزارة النقل والمرور</h3><p class="card-desc">معاملات المركبات، المخالفات، ورخص القيادة</p></div>
-            <div class="section-card"><div class="card-icon">🏠</div><h3 class="card-title">6. السجل العقاري والإسكان</h3><p class="card-desc">خدمات الملكية التوثيقية وتراخيص البناء</p></div>
-            <div class="section-card"><div class="card-icon">💵</div><h3 class="card-title">7. الضرائب والرسوم المالية</h3><p class="card-desc">حساب ودفع الرسوم والضرائب إلكترونياً</p></div>
-            <div class="section-card"><div class="card-icon">📦</div><h3 class="card-title">8. الجمارك والاستيراد والتصدير</h3><p class="card-desc">معاملات المعابر والتعرفة الجمركية للبضائع</p></div>
-            <div class="section-card"><div class="card-icon">🤝</div><h3 class="card-title">9. الشؤون الاجتماعية والعمل</h3><p class="card-desc">خدمات الجمعيات، الرعاية والدعم الاجتماعي</p></div>
+        <!-- بداية شبكة الأقسام -->
+        <div class="sections-grid" id="main-grid">
+            
+            <!-- الأقسام من 1 إلى 10 -->
+            <div class="section-card"><div class="card-icon">🏛️</div><h3 class="card-title">1. الخدمات الحكومية الإلكترونية</h3><p class="card-desc">بوابة المعاملات الرسمية والمستندات الرقمية الحكومية</p></div>
+            <div class="section-card"><div class="card-icon">💼</div><h3 class="card-title">2. الاستثمار وتأسيس الشركات</h3><p class="card-desc">دليل التراخيص الشامل لرواد الأعمال والمستثمرين في سورية</p></div>
+            <div class="section-card"><div class="card-icon">🪪</div><h3 class="card-title">3. الهوية الرقمية والوثائق</h3><p class="card-desc">تجديد الأوراق الثبوتية، جوازات السفر، والبطاقات الشخصية</p></div>
+            <div class="section-card"><div class="card-icon">⚖️</div><h3 class="card-title">4. البوابة القانونية والقضائية</h3><p class="card-desc">استشارات الأنظمة، القوانين، والتشريعات السورية الصادرة</p></div>
+            <div class="section-card"><div class="card-icon">🛣️</div><h3 class="card-title">5. وزارة النقل والمرور</h3><p class="card-desc">معاملات المركبات، الاستعلام عن المخالفات، ورخص القيادة</p></div>
+            <div class="section-card"><div class="card-icon">🏠</div><h3 class="card-title">6. السجل العقاري والإسكان</h3><p class="card-desc">خدمات الملكية التوثيقية، مخططات تنظيمية وتراخيص البناء</p></div>
+            <div class="section-card"><div class="card-icon">💵</div><h3 class="card-title">7. الضرائب والرسوم المالية</h3><p class="card-desc">حساب وتخمين ودفع الرسوم المالية والضرائب إلكترونياً</p></div>
+            <div class="section-card"><div class="card-icon">📦</div><h3 class="card-title">8. الجمارك والاستيراد والتصدير</h3><p class="card-desc">معاملات المعابر الحدودية والتعرفة الجمركية الرسمية للبضائع</p></div>
+            <div class="section-card"><div class="card-icon">🤝</div><h3 class="card-title">9. الشؤون الاجتماعية والعمل</h3><p class="card-desc">خدمات الجمعيات الأهلية، برامج الرعاية والدعم الاجتماعي</p></div>
+            <div class="section-card"><div class="card-icon">📊</div><h3 class="card-title">10. مؤشرات المال والأعمال</h3><p class="card-desc">تحديثات البورصة، قيم الأسواق، والمؤشرات الاقتصادية المحلية</p></div>
+            <!-- الأقسام من 11 إلى 25 -->
+            <div class="section-card"><div class="card-icon">🏦</div><h3 class="card-title">11. الخدمات المصرفية والبنكية</h3><p class="card-desc">دليل البنوك السورية العامة والخاصة وشروط فتح الحسابات</p></div>
+            <div class="section-card"><div class="card-icon">💳</div><h3 class="card-title">12. الدفع الإلكتروني والبطاقات</h3><p class="card-desc">منظومة سداد الفواتير والمستحقات والربط الشبكي الموحد</p></div>
+            <div class="section-card"><div class="card-icon">🛒</div><h3 class="card-title">13. التجارة الداخلية وحماية المستهلك</h3><p class="card-desc">أسعار السلع الأساسية التموينية وبوابة تقديم الشكاوى الرسمية</p></div>
+            <div class="section-card"><div class="card-icon">🌍</div><h3 class="card-title">14. التجارة الخارجية والغرف التجارية</h3><p class="card-desc">اتفاقيات التبادل التجاري الإقليمي والدولي والعلاقات الاقتصادية</p></div>
+            <div class="section-card"><div class="card-icon">📈</div><h3 class="card-title">15. سوق دمشق للأوراق المالية</h3><p class="card-desc">متابعة فورية لأسهم الشركات السورية المدرجة وأحجام التداول</p></div>
+            <div class="section-card"><div class="card-icon">🏭</div><h3 class="card-title">16. المدن والمناطق الصناعية</h3><p class="card-desc">الفرص الاستثمارية في مدن عدرا، حسياء، والشيخ نجار الصناعية</p></div>
+            <div class="section-card"><div class="card-icon">💎</div><h3 class="card-title">17. المعادن الثمينة والذهب</h3><p class="card-desc">أسعار الذهب الرسمية اليومية الصادرة عن جمعية الصياغة</p></div>
+            <div class="section-card"><div class="card-icon">💰</div><h3 class="card-title">18. القروض والتمويل المصرفي</h3><p class="card-desc">شروط التسهيلات الائتمانية والقروض العقارية والإنتاجية</p></div>
+            <div class="section-card"><div class="card-icon">🔍</div><h3 class="card-title">19. بوابة التوظيف وفرص العمل</h3><p class="card-desc">أحدث الشواغر للشركات والتقدم للوظائف مجاناً للمواطنين</p></div>
+            <div class="section-card"><div class="card-icon">🎓</div><h3 class="card-title">20. التعليم العالي والجامعات</h3><p class="card-desc">مفاضلات القبول السنوية ودليل الجامعات الحكومية والخاصة</p></div>
+            <div class="section-card"><div class="card-icon">📝</div><h3 class="card-title">21. التربية والتعليم الأساسي</h3><p class="card-desc">مناهج التعليم، ونتائج الامتحانات الرسمية للشهادات العامة</p></div>
+            <div class="section-card"><div class="card-icon">🔬</div><h3 class="card-title">22. البحث العلمي والمخابر</h3><p class="card-desc">دعم الابتكارات الأكاديمية والدراسات والإنتاج المعرفي الوطني</p></div>
+            <div class="section-card"><div class="card-icon">🖥️</div><h3 class="card-title">23. التدريب المهني والتقني</h3><p class="card-desc">دورات البرمجة، الصيانة، والحرف اليدوية لتأهيل الكوادر</p></div>
+            <div class="section-card"><div class="card-icon">🗣️</div><h3 class="card-title">24. معاهد وتعلم اللغات</h3><p class="card-desc">المراكز المعتمدة محلياً لتعليم اللغات الأجنبية المختلفة</p></div>
+            <div class="section-card"><div class="card-icon">📚</div><h3 class="card-title">25. المكتبة السورية الرقمية</h3><p class="card-desc">أرشيف إلكتروني يضم المخطوطات والكتب والتاريخ السوري</p></div>
+            <!-- الأقسام من 26 إلى 40 -->
+            <div class="section-card"><div class="card-icon">🤖</div><h3 class="card-title">26. الابتكار والذكاء الاصطناعي</h3><p class="card-desc">دعم وتمكين مشاريع البرمجة والتقنيات الذكية الناشئة</p></div>
+            <div class="section-card"><div class="card-icon">🌐</div><h3 class="card-title">27. المنح الدراسية والتبادل</h3><p class="card-desc">فرص الدراسة الداخلية والخارجية والتبادل الثقافي للطلاب</p></div>
+            <div class="section-card"><div class="card-icon">🗺️</div><h3 class="card-title">28. دليل السياحة والآثار</h3><p class="card-desc">استكشاف القلاع والمتاحف والمدن الأثرية والتاريخية السورية</p></div>
+            <div class="section-card"><div class="card-icon">🏨</div><h3 class="card-title">29. الفنادق والمنتجعات</h3><p class="card-desc">أماكن الإقامة والخدمات السياحية الفندقية في المحافظات</p></div>
+            <div class="section-card"><div class="card-icon">🍽️</div><h3 class="card-title">30. المطاعم والمطبخ السوري</h3><p class="card-desc">أشهر المأكولات التراثية وتقييم المطاعم السياحية المميزة</p></div>
+            <div class="section-card"><div class="card-icon">🎭</div><h3 class="card-title">31. المسرح والسينما والفنون</h3><p class="card-desc">مواعيد العروض المسرحية والأنشطة الثقافية والمهرجانات</p></div>
+            <div class="section-card"><div class="card-icon">✍️</div><h3 class="card-title">32. اتحاد الكتاب والأدباء</h3><p class="card-desc">الندوات الشعرية، الإصدارات الروائية، والمجالس الثقافية</p></div>
+            <div class="section-card"><div class="card-icon">🎨</div><h3 class="card-title">33. الفنون التشكيلية والمعارض</h3><p class="card-desc">صالات العرض، لوحات، ومنحوتات الفنانين السوريين</p></div>
+            <div class="section-card"><div class="card-icon">🎵</div><h3 class="card-title">34. الموسيقى والتراث الغنائي</h3><p class="card-desc">الحفلات الأوركسترالية وحفظ التراث الموسيقي الشرقي القديم</p></div>
+            <div class="section-card"><div class="card-icon">🎞️</div><h3 class="card-title">35. الإنتاج الدرامي والتلفزيوني</h3><p class="card-desc">متابعة المسلسلات السورية وأخبار الفن وصناع الدراما</p></div>
+            <div class="section-card"><div class="card-icon">🏺</div><h3 class="card-title">36. الصناعات التراثية واليدوية</h3><p class="card-desc">البروكار، الموزاييك، الزجاج المعشق، والفخار التقليدي</p></div>
+            <div class="section-card"><div class="card-icon">🏥</div><h3 class="card-title">37. القطاع الصحي والمشافي</h3><p class="card-desc">المراكز الطبية الحكومية والخاصة وجداول المناوبات الصيدلانية</p></div>
+            <div class="section-card"><div class="card-icon">💊</div><h3 class="card-title">38. الدواء والصناعات الدوائية</h3><p class="card-desc">دليل المعامل الوطنية والأصناف الدوائية المسجلة والأسعار</p></div>
+            <div class="section-card"><div class="card-icon">🩺</div><h3 class="card-title">39. نقابة الأطباء والاستشارات</h3><p class="card-desc">بوابة البحث عن الأطباء التخصصيين والعيادات في سورية</p></div>
+            <div class="section-card"><div class="card-icon">🌾</div><h3 class="card-title">40. الثروة الزراعية والمحاصيل</h3><p class="card-desc">متابعة إنتاج القمح، الزيتون، الحمضيات وإرشادات الفلاحين</p></div>
+            <!-- الأقسام من 41 إلى 54 -->
+            <div class="section-card"><div class="card-icon">🥩</div><h3 class="card-title">41. الثروة الحيوانية والبيطرية</h3><p class="card-desc">تربية المواشي، الدواجن، والخدمات واللقاحات الوقائية الدورية</p></div>
+            <div class="section-card"><div class="card-icon">🚜</div><h3 class="card-title">42. المعدات والأسمدة الزراعية</h3><p class="card-desc">مستلزمات الإنتاج والتطوير الريفي ونظم الري الحديثة</p></div>
+            <div class="section-card"><div class="card-icon">⚡</div><h3 class="card-title">43. الطاقة والكهرباء</h3><p class="card-desc">مشاريع الطاقة البديلة والشمسية وتحديثات شبكات التوليد</p></div>
+            <div class="section-card"><div class="card-icon">🚰</div><h3 class="card-title">44. الموارد المائية والري</h3><p class="card-desc">إدارة السدود، شبكات مياه الشرب، والمعالجة الرقمية</p></div>
+            <div class="section-card"><div class="card-icon">🪵</div><h3 class="card-title">45. البيئة والغابات والحراج</h3><p class="card-desc">حماية الطبيعة، مكافحة التصحر، وإدارة المحميات الوطنية</p></div>
+            <div class="section-card"><div class="card-icon">📞</div><h3 class="card-title">46. الاتصالات والإنترنت</h3><p class="card-desc">بوابات ADSL، شبكات الخلوي، وباقات البيانات المشغلة محلياً</p></div>
+            <div class="section-card"><div class="card-icon">💻</div><h3 class="card-title">47. خدمات الاستضافة والمواقع</h3><p class="card-desc">حجز النطاقات المحلية (.sy) وتأجير السيرفرات السحابية</p></div>
+            <div class="section-card"><div class="card-icon">🛡️</div><h3 class="card-title">48. الأمن السيبراني والمعلوماتي</h3><p class="card-desc">إرشادات حماية البيانات والوقاية الرقمية من الجرائم الإلكترونية</p></div>
+            <div class="section-card"><div class="card-icon">⚽</div><h3 class="card-title">49. الرياضة والاتحادات الرياضية</h3><p class="card-desc">أخبار الدوري السوري والألعاب الفردية والجماعية والبطولات</p></div>
+            <div class="section-card"><div class="card-icon">📰</div><h3 class="card-title">50. الصحافة والإعلام الوطني</h3><p class="card-desc">الصحف الرسمية، وكالة سانا، والإذاعات والفضائيات المحلية</p></div>
+            <div class="section-card"><div class="card-icon">✈️</div><h3 class="card-title">51. الطيران والمطارات</h3><p class="card-desc">مواعيد الرحلات القادمة والمغادرة وحجوزات الخطوط السورية</p></div>
+            <div class="section-card"><div class="card-icon">🚢</div><h3 class="card-title">52. الموانئ والنقل البحري</h3><p class="card-desc">حركة السفن التجارية في مرفأ اللاذقية ومرفأ طرطوس الرسمي</p></div>
+            <div class="section-card"><div class="card-icon">📮</div><h3 class="card-title">53. البريد السوري والطرود</h3><p class="card-desc">شحن الوثائق، الحوالات البريدية الداخلية، والخدمات اللوجستية</p></div>
+            <div class="section-card"><div class="card-icon">📣</div><h3 class="card-title">54. مركز الإعلانات والمناقصات</h3><p class="card-desc">المزادات العلنية، العقود الحكومية، والفرص الاستثمارية المتاحة</p></div>
+        </div> <!-- إغلاق شبكة الأقسام -->
+    </main>
 
-            <!-- مال واقتصاد وتجارة -->
-            <div class="section-card"><div class="card-icon">📊</div><h3 class="card-title">10. مؤشرات المال والأعمال</h3><p class="card-desc">تحديثات البورصة، الأسواق، والمؤشرات الاقتصادية</p></div>
-            <div class="section-card"><div class="card-icon">🏦</div><h3 class="card-title">11. الخدمات المصرفية والبنكية</h3><p class="card-desc">دليل البنوك، الحسابات والتحويلات المالية</p></div>
-            <div class="section-card"><div class="card-icon">💳</div><h3 class="card-title">12. الدفع الإلكتروني والبطاقات</h3><p class="card-desc">منظومة الربط وسداد الفواتير عبر الإنترنت</p></div>
-            <div class="section-card"><div class="card-icon">🛒</div><h3 class="card-title">13. التجارة الداخلية وحماية المستهلك</h3><p class="card-desc">أسعار السلع الشاملة وتقديم الشكاوى التموينية</p></div>
-            <div class="section-card"><div class="card-icon">🌍</div><h3 class="card-title">14. التجارة الخارجية والغرف التجارية</h3><p class="card-desc">اتفاقيات التبادل التجاري والعلاقات الاقتصادية</p></div>
-            <div class="section-card"><div class="card-icon">📈</div><h3 class="card-title">15. بورصة دمشق للأوراق المالية</h3><p class="card-desc">متابعة أسهم الشركات السورية المدرجة وتداولها</p></div>
-            <div class="section-card"><div class="card-icon">🏭</div><h3 class="card-title">16. المدن والمناطق الصناعية</h3><p class="card-desc">الاستثمار في عدرا، حسياء، والشيخ نجار</p></div>
-            <div class="section-card"><div class="card-icon">💎</div><h3 class="card-title">17. المعادن الثمينة والذهب</h3><p class="card-desc">أسعار الذهب الرسمية ومحلات الصياغة اليومية</p></div>
-            <div class="section-card"><div class="card-icon">💰</div><h3 class="card-title">18. القروض والتمويل العقاري</h3><p class="card-desc">المصارف العامة والخاصة وشروط منح القروض</p></div>
+    <footer>
+        <p>جميع الحقوق محفوظة لمنصة بوابة سورية الوطنية الماسية الشاملة المدعومة بالذكاء الاصطناعي © 2026</p>
+    </footer>
 
-            <!-- توظيف وتدريب وعلوم -->
-            <div class="section-card"><div class="card-icon">🔍</div><h3 class="card-title">19. بوابة التوظيف وفرص العمل</h3><p class="card-desc">شواغر للشركات السورية والتقدم للوظائف مجاناً</p></div>
-            <div class="section-card"><div class="card-icon">🎓</div><h3 class="card-title">20. التعليم العالي والجامعات</h3><p class="card-desc">مفاضلات القبول، الجامعات الحكومية والخاصة</p></div>
-            <div class="section-card"><div class="card-icon">📝</div><h3 class="card-title">21. التربية والتعليم الأساسي</h3><p class="card-desc">نتائج الامتحانات الانتقالية والشهادات الرسمية</p></div>
-            <div class="section-card"><div class="card-icon">🔬</div><h3 class="card-title">22. البحث العلمي والمخابر</h3><p class="card-desc">الابتكارات، الدراسات الأكاديمية والإنتاج العلمي</p></div>
-            <div class="section-card"><div class="card-icon">🖥️</div><h3 class="card-title">23. التدريب المهني والتقني</h3><p class="card-desc">دورات صيانة، برمجة، وحرف يدوية متخصصة</p></div>
-            <div class="section-card"><div class="card-icon">🗣️</div><h3 class="card-title">24. تعليم اللغات الأجنبية</h3><p class="card-desc">مراكز ومعاهد تعليم اللغات المعتمدة محلياً</p></div>
+    <script>
+        function askAI() {
+            const input = document.getElementById('ai-input').value.trim();
+            const responseBox = document.getElementById('ai-response');
+            
+            if(input === "") {
+                responseBox.innerHTML = "<p style='color:#ef4444;'>الرجاء كتابة استفسار ليتمكن المساعد الذكي من الإجابة.</p>";
+                return;
+            }
+            
+            responseBox.innerHTML = "<p>⏳ جاري معالجة الاستفسار برمجياً وفحص الأقسام الـ 54...</p>";
+            
+            setTimeout(() => {
+                // مصفوفة تحتوي على الكلمات الدلالية للأقسام للبحث الذكي المدمج
+                const cards = document.querySelectorAll('.section-card');
+                let foundSections = [];
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').innerText;
+                    const desc = card.querySelector('.card-desc').innerText;
+                    
+                    if(title.includes(input) || desc.includes(input) || input.split(' ').some(word => title.includes(word) && word.length > 2)) {
+                        foundSections.push(title);
+                    }
+                });
+                
+                if(foundSections.length > 0) {
+                    responseBox.innerHTML = `<p>✅ <b>الرد الذكي:</b> استفسارك يتعلق بالخدمات المتاحة في المنصة الشاملة. لقد عثرت على أقسام مطابقة لطلبك يمكنك التوجه إليها مباشرة:<br><br> 🔍 <b>الأقسام المقترحة:</b> ${foundSections.join(' | ')}</p>`;
+                } else {
+                    responseBox.innerHTML = `<p>💡 <b>الرد الذكي:</b> تلقيت استفسارك حول "${input}". هذا الموضوع يقع ضمن خدمات التغطية الشاملة لمنصة بوابة سورية الرقمية. يمكنك تصفح الأقسام الـ 54 أدناه للوصول إلى الخدمة بدقة، أو إعادة صياغة كلمات البحث.</p>`;
+                }
+            }, 800);
+        }
+    </script>
+</body>
+</html>
