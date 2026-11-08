@@ -127,7 +127,7 @@
     </footer>
 
     <script>
-            <script>
+        <script>
         function askAI() {
             var input = document.getElementById('ai-input').value.trim();
             var responseBox = document.getElementById('ai-response');
@@ -140,12 +140,15 @@
             responseBox.innerHTML = "<p>⏳ جاري فحص الأقسام الـ 54 برمجياً...</p>";
             
             setTimeout(function() {
-                var cards = document.getElementsByClassName('section-card');
+                var cards = document.querySelectorAll('.section-card');
                 var foundSections = [];
                 
                 for (var i = 0; i < cards.length; i++) {
-                    var title = cards[i].getElementsByClassName('card-title')[0].innerText;
-                    var desc = cards[i].getElementsByClassName('card-desc')[0].innerText;
+                    var titleEl = cards[i].querySelector('.card-title');
+                    var descEl = cards[i].querySelector('.card-desc');
+                    
+                    var title = titleEl ? titleEl.innerText : "";
+                    var desc = descEl ? descEl.innerText : "";
                     
                     if (title.indexOf(input) !== -1 || desc.indexOf(input) !== -1) {
                         foundSections.push(title);
@@ -160,3 +163,6 @@
             }, 400);
         }
     </script>
+</body>
+</html>
+    
