@@ -3,35 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة سورية | bawabatsuria.com</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>منصة بوابة سورية الوطنية</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d97706">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="بوابة سورية">
     <style>
-        body { user-select: none; -webkit-user-select: none; font-family: system-ui, sans-serif; background-color: #f8fafc; }
+        :root {
+            --bg-primary: #0b1329;
+            --bg-card: #111827;
+            --gold-accent: #d97706;
+            --gold-light: #fbbf24;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background-color: var(--bg-card); border-bottom: 2px solid var(--gold-accent); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .eagle-logo { width: 45px; height: 45px; fill: var(--gold-light); }
+        .brand-title { font-size: 1.4rem; font-weight: bold; color: var(--gold-light); }
+        .stars-container { color: #ef4444; font-size: 0.9rem; letter-spacing: 2px; }
+        main { flex: 1; padding: 20px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+        .sections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
+        .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 10px; }
+        .section-card:hover { border-color: var(--gold-accent); transform: translateY(-3px); box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2); }
+        .card-icon { font-size: 2rem; }
+        .card-title { font-size: 1.1rem; color: var(--gold-light); font-weight: bold; }
+        .card-desc { font-size: 0.85rem; color: var(--text-muted); }
+        .container-box { background: var(--bg-card); border: 2px solid var(--gold-accent); border-radius: 16px; padding: 25px; max-width: 700px; margin: 0 auto; }
+        .controls-group { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+        select, button, input, textarea { padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #1f2937; color: #fff; font-size: 1rem; width: 100%; }
+        button.btn-primary { background: var(--gold-accent); color: #fff; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; }
+        button.btn-primary:hover { background: #b45309; }
+        .mirror-screen { width: 100%; height: 250px; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--gold-light); margin-top: 15px; text-align: center; }
+        .wheel-box { display: flex; flex-direction: column; align-items: center; position: relative; margin: 20px 0; }
+        .wheel-pointer { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #ef4444; position: absolute; top: -10px; z-index: 10; }
+        .wheel { width: 220px; height: 220px; border-radius: 50%; border: 5px solid var(--gold-accent); background: conic-gradient(#ef4444 0deg 45deg, #f59e0b 45deg 90deg, #10b981 90deg 135deg, #3b82f6 135deg 180deg, #6366f1 180deg 225deg, #8b5cf6 225deg 270deg, #ec4899 270deg 315deg, #14b8a6 315deg 360deg); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        .back-btn { background: transparent; border: 1px solid var(--gold-accent); color: var(--gold-light); padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-bottom: 15px; width: auto; display: inline-block; }
+        .ai-response-box { margin-top: 15px; padding: 15px; background: #111827; border-left: 4px solid var(--gold-accent); border-radius: 6px; font-size: 0.95rem; color: #cbd5e1; line-height: 1.6; white-space: pre-line; }
+        .price-ticker { display: flex; justify-content: space-between; background: #1f2937; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-right: 4px solid var(--gold-light); }
+        footer { text-align: center; padding: 15px; background: var(--bg-card); border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.85rem; margin-top: auto; }
     </style>
 </head>
-<body class="text-gray-800 pb-16">
-
-    <!-- شريط الأسبوع الذهبي المجاني -->
-    <div class="bg-amber-500 text-black text-center py-2 px-4 text-sm font-bold shadow-md sticky top-0 z-50">
-        🎁 أهلاً بيك يا خواجة! فعّل حسابك الآن واكسب <span class="underline">أسبوع ذهبي مجاني (7 أيام VIP)</span> بكل الأقسام!
-    </div>
-
-    <!-- الهيدر الرئيسي -->
-    <header class="bg-blue-900 text-white p-4 flex justify-between items-center shadow-lg sticky top-[37px] z-40">
-        <h1 class="text-xl md:text-2xl font-black tracking-wide">🇸🇾 بوابة سورية</h1>
-        <div>
-            <button onclick="alert('أهلاً بك يا خواجة في صفحتك الشخصية!')" class="bg-amber-400 text-blue-950 px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-bold text-sm md:text-base hover:bg-amber-300 transition">صفحتي يا خواجة 👑</button>
+<body>
+    <header>
+        <div class="logo-container">
+            <svg class="eagle-logo" viewBox="0 0 24 24"><path d="M12,2L15,8L21,9L16.5,14L18,20L12,16.5L6,20L7.5,14L3,9L9,8L12,2Z" /></svg>
+            <div>
+                <div class="brand-title">بوابة سورية</div>
+                <div class="stars-container">★ ★ ★</div>
+            </div>
         </div>
+        <button class="back-btn" onclick="showHome()">الرئيسية</button>
     </header>
+    <main>
+        <div id="homeView" class="view-section active">
+            <h2 style="color: var(--gold-light); margin-bottom: 10px;">الموسوعة الوطنية والأقسام التفاعلية الذكية</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">اختر الخدمة أو القسم الذكي لبدء العمل الفوري:</p>
+            <div class="sections-grid" id="sectionsGrid"></div>
+        </div>
+        <div id="chefView" class="view-section">
+            <button class="back-btn" onclick="showHome()">← العودة للأقسام</button>
+            <div class="container-box">
+                <h2 style="color: var(--gold-light);">👨‍🍳 الشيف خواجة - شو طبختنا اليوم؟</h2>
+                <div class="wheel-box">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="luckyWheel"></div>
+                    <button class="btn-primary" id="spinBtn" onclick="spinWheel()" style="margin-top: 20px; width: 160px;">🔮 لف عجلة الحظ</button>
+                </div>
+                <div id="wheelResult" style="text-align: center; font-size: 1.2rem; color: var(--gold-light); margin: 15px 0;"></div>
+                <div style="background: #1f2937; padding: 15px; border-radius: 8px;">
+                    <h4>🤖 مساعد الذكاء الاصطناعي لوصفات الطعام وفضّي الثلاجة:</h4>
+                    <input type="text" id="chefQuery" placeholder="اكتب المكونات المتوفرة عندك أو اسأل عن وصفة..." style="margin-top: 10px;">
+                    <button class="btn-primary" onclick="askAI('chef', 'chefQuery', 'chefResponse')" style="margin-top: 10px;">اسأل الشيف</button>
+                    <div id="chefResponse" class="ai-response-box" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+        <div id="mirrorView" class="view-section">
+            <button class="back-btn" onclick="showHome()">← العودة للأقسام</button>
+            <div class="container-box">
+                <h2 style="color: var(--gold-light);">🪞 مرآة الذكاء الاصطناعي وتريندات التجميل</h2>
+                <div class="controls-group">
+                    <label>اختر قصة الشعر والتسريحة:</label>
+                    <select id="hairStyle"><option>قصة كلاسيكية مدرجة</option><option>قصة بوب قصيرة</option><option>قصة عصرية فاد</option></select>
+                    <label>اختر لون الشعر:</label>
+                    <select id="hairColor"><option>بني كستنائي دافئ</option><option>أشقر ذهبي ملكي</option><option>أسود فاحم</option></select>
+                    <label>اختر لون العدسات:</label>
+                    <select id="lensColor"><option>عدسات عسلي طبيعي</option><option>عدسات رمادي ثلجي</option><option>عدسات أخضر زمردي</option></select>
+                    <button class="btn-primary" onclick="runMirrorAI()">✨ تشغيل الكاميرا وتطبيق المظهر ذكياً</button>
+                </div>
+                <div class="mirror-screen" id="mirrorScreen"><span style="color: var(--gold-light);">المرآة السحرية بانتظار تشغيل الكاميرا...</span></div>
+            </div>
+        </div>
+        <div id="pricesView" class="view-section">
+            <button class="back-btn" onclick="showHome()">← العودة للأقسام</button>
+            <div class="container-box">
+                <h2 style="color: var(--gold-light); margin-bottom: 15px;">📈 أسعار الصرف والذهب لحظة بلحظة</h2>
+                <div id="tickerContainer">
+                    <div class="price-ticker"><span>💵 دولار أمريكي (دمشق موازي)</span><span style="color: #10b981; font-weight:bold;">15,100 ل.س</span></div>
+                    <div class="price-ticker"><span>💶 يورو أوروبي (دمشق موازي)</span><span style="color: #10b981; font-weight:bold;">16,350 ل.س</span></div>
+                    <div class="price-ticker"><span>🌟 غرام الذهب عيار 21</span><span style="color: var(--gold-light); font-weight:bold;">1,020,000 ل.س</span></div>
+                </div>
+                <div style="margin-top: 25px; background: #1f2937; padding: 20px; border-radius: 8px;">
+                    <h4>🧮 حاسبة العملات الذكية</h4>
+                    <div class="controls-group">
+                        <input type="number" id="calcAmount" placeholder="أدخل المبلغ..." value="1">
+                        <select id="fromCurrency"><option value="USD">دولار أمريكي (USD)</option><option value="SYP">ليرة سورية (SYP)</option><option value="EUR">يورو (EUR)</option></select>
+                        <select id="toCurrency"><option value="SYP">ليرة سورية (SYP)</option><option value="USD">دولار أمريكي (USD)</option></select>
+    <script>
+        const sections = [
+            { id: 'prices', title: 'الأسعار والأسواق وتتبع الليرة', icon: '📈', desc: 'أسعار الصرف والذهب والسلع لحظة بلحظة، وحاسبة العملات الفورية ومنبه التغيرات السعرية' },
+            { id: 'chef', title: 'الشيف خواجة ووصفات الطعام', icon: '👨‍🍳', desc: 'عجلة الحظ التفاعلية للطبخات، خطط فطورك وغداك، ونظام فضّي الثلاجة الذكي' },
+            { id: 'mirror', title: 'تريندات الشعر ومرآة AI', icon: '🪞', desc: 'المرآة السحرية الذكية، تجربة قصات، ألوان صبغات وعدسات حية ومحلل أبعاد الوجه' },
+            { id: 'travel_visa', title: 'دليل السفر والهجرة والفيزا السورية', icon: '✈️', desc: 'البلدان المتاحة للجواز السوري، متطلبات التأشيرات الإلكترونية وتصديق الشهادات للمغتربين والطلاب' },
+            { id: 'domestic_economy', title: 'التدبير المنزلي والاقتصادي الذكي', icon: '🏠✨', desc: 'حيل التوفير الذكية للعائلات، صناعة البدائل المنزلية، وحفظ الأغذية والمؤونة بدون طاقة كهربائية مستمرة' },
+            { id: 'code_sandbox', title: 'مساعد البرمجة وحلول المطورين IT', icon: '💻', desc: 'فحص وتصحيح الأكواد البرمجية الفوري وتوليد الشيفرات البرمجية الذكية مجاناً لطلاب المعلوماتية والتقنية' },
+            { id: 'directory_services', title: 'الدليل الشامل للشركات والمحلات', icon: '🏢', desc: 'دليل تجاري وخدمي أصفر ذكي للبحث عن المحلات، الفعاليات، الورشات، والمكاتب في كافة المحافظات' },
+            { id: 'cash_shield', title: 'درع الأمان وحماية سيريتل وشام كاش', icon: '🛡️', desc: 'كشف الروابط المشبوهة والاحتيالية فوراً، ودليل تحصين المحافظ الإلكترونية المالية من السرقة والاختراق' },
+            { id: 'no_khosoosie', title: 'تعبتِ من الخصوصي؟', icon: '📚', desc: 'المدرس الافتراضي الفوري لتفكيك وشرح قواعد ومسائل المناهج وملخصات الدقائق الأخيرة' },
+            { id: 'engineer_vip', title: 'يا باش مهندس', icon: '🏗️', desc: 'مقترح ومولد أفكار مشاريع التخرج الهندسية المتكاملة، ومساعد حل الأكواد والمخططات' },
+            { id: 'marketing_vip', title: 'مستشار التسويق ومولد الإعلانات VIP', icon: '🎯', desc: 'صياغة منشورات إعلانية بيعية، هندسة خطط المحتوى الشهري، وأفكار ريلز لزيادة المبيعات' },
+            { id: 'video_factory_vip', title: 'مصنع السيناريوهات والخطافات VIP', icon: '🎬', desc: 'خطافات أول 3 ثوانٍ الفيروسية، كاتب سيناريو التيك توك والريلز، وعناوين يوتيوب جذابة' },
+            { id: 'trader_market', title: 'بورصة التاجر ومواد البناء', icon: '🧱', desc: 'أسعار الحديد والأسمنت ومواد الإكساء التموينية جملة، وحاسبة المقاولات التقديرية العظم والكامل' },
+            { id: 'trading_academy', title: 'أكاديمية التداول والبورصة الرقمية', icon: '🪙', desc: 'دليل تداول الذهب، الفضة، والعملات الرقمية، تفسير مؤشرات RSI والماكد ومحاكي محفظة وهمية' },
+            { id: 'freelance_vip', title: 'مركز العمل الحر وكورسات الأرباح VIP', icon: '🚀', desc: 'أسرار العمل على مستقل وUpwork، مهارات الذكاء الاصطناعي المربحة ومولّد بورتفوليو احترافي' },
+            { id: 'body_language', title: 'موسوعة لغة الجسد واختبارات الشخصية', icon: '👁️', desc: 'فك شفرات حركات العيون والجسد، رادار كشف الكذب الجنائي واختبار الأنماط MBTI' },
+            { id: 'apps_games', title: 'مكتبة البرامج والألعاب الآمنة', icon: '🎮', desc: 'تحميل مباشر لأحدث البرامج والألعاب، فاحص الفيروسات المدمج ومستشار مواصفات تشغيل الألعاب' },
+            { id: 'nostalgia_archive', title: 'أرشيف الذكريات الخالدة والفنون', icon: '📺', desc: 'توثيق روائع الدراما والأغاني التراثية والقدود، مع مسابقات واختبارات تفاعلية مسلية للزمن الجميل' },
+            { id: 'accounting_vip', title: 'المنظم المحاسبي وإدارة المخزون VIP', icon: '📊', desc: 'حاسبة التسعير اللحظي للبضائع والأرباح، الدفتر التجاري الإلكتروني الآمن محلياً وتنبيهات مستودعاتك' },
+            { id: 'civil', title: 'معاملات الأحوال الشخصية', icon: '🆔', desc: 'الأوراق الرسمية لـ الجوازات، الهويات، إخراج القيد، لا حكم عليه وحاسبة الرسوم الطوابعية' },
+            { id: 'realestate', title: 'الشؤون العقارية والتراخيص', icon: '🏠', desc: 'معاملات الطابو، الفراغ والبيوع، تراخيص البناء والترميم، والمقيّم العقاري التقريبي الذكي' },
+            { id: 'consular', title: 'المعاملات القنصلية والمغتربين', icon: '🌐', desc: 'خدمات السفارات، تنظيم الوكالات العامة والخاصة عن بعد وتصديق الوثائق وإجراءات زيارة البلاد' },
+            { id: 'legal', title: 'الاستشارات القانونية والقضاء', icon: '⚖️', desc: 'صياغة العقود الفورية، تفسير المواد الدستورية، دليل المحامين ونظام فض النزاعات ودياً' },
+            { id: 'business', title: 'دليل الأعمال والشركات', icon: '💼', desc: 'خطوات تأسيس الشركات بالسجل التجاري، مولّد أفكار المشاريع وحاسبة الضرائب التجارية السنوية' },
+            { id: 'jobs', title: 'الفرص الوظيفية والتشغيل', icon: '👨‍💻', desc: 'وظائف القطاعات، صانع السيرة الذاتية CV الاحترافي ومحاكي مقابلات العمل مع الـ HR' },
+            { id: 'energy', title: 'الطاقة والكهرباء والوقود', icon: '⚡', desc: 'مواعيد التقنين وتتبع الوقود، حاسبة تصاميم منظومات الطاقة الشمسية المنزلية والأنفرتر' },
+            { id: 'water', title: 'المياه والخدمات البلدية', icon: '🚰', desc: 'حاسبة ترشيد خزانات المياه والمجالس المحلية ودليل تدوير الاستهلاك المنزلي بذكاء' },
+            { id: 'telecom', title: 'الاتصالات والإنترنت', icon: '📱', desc: 'باقات الشابكة، حاسبة استهلاك الميغابايت ومحلل جودة الإشارة وتسريع الرواتر' },
+            { id: 'health', title: 'الخدمات الصحية والطوارئ', icon: '🏥', desc: 'المشخص الأولي للأعراض والموجه الطبي للتخصصات والصيدليات المناوبة والمشافي' },
+            { id: 'education', title: 'التعليم المدرسي والجامعي', icon: '🎓', desc: 'الموجه الدراسي ومخطط الامتحانات ومستشار فرز المفاضلات الجامعية لطلاب البكالوريا' },
+            { id: 'syria_curriculum', title: 'رادار المنهاج السوري الشامل', icon: '📚', desc: 'بنك ملخصات ونماذج امتحانية وحلول كتب الابتدائي والإعدادي والثانوي وشرح القواعد الصعبة' },
+            { id: 'solidarity', title: 'التضامن الاجتماعي والجمعيات', icon: '🤝', desc: 'منصة التكافل الخيري، صلة وصل الجمعيات الأهلية والفرص التطوعية الشبابية التنموية' },
+            { id: 'transport', title: 'النقل والمواصلات السفرية', icon: '🚌', desc: 'مخطط رحلات البولمان والقطارات بين المحافظات السورية وحاسبة التكلفة المبدئية للسفر' },
+            { id: 'cars_guide', title: 'دليل السيارات والقيادة', icon: '🚗', desc: 'مساعد تشخيص أعطال ميكانيك السيارات والدراجات ومحاكي الفحص النظري لشهادات السوق' },
+            { id: 'tourism', title: 'السياحة والدليل الجغرافي', icon: '🗺️', desc: 'المرشد السياحي لآثار ومصايف البلاد، وصانع برامج العطلات والجولات المتكاملة' },
+            { id: 'culture', title: 'الثقافة والفعاليات الفنية', icon: '🎭', desc: 'أجندة المعارض والمسارح والأمسيات، والصالون الأدبي النقدي لإبداعات الكتاب الهواة' },
+            { id: 'agriculture', title: 'الزراعة والثروة الحيوانية', icon: '🌾', desc: 'المهندس الزراعي لخدمة المحاصيل والوقاية من الآفات وطرق التربية المنزلية والإنتاجية' },
+            { id: 'fertilizers', title: 'بورصة الأسمدة والمغذيات', icon: '🧪', desc: 'حاسبة كميات التسميد الكيماوي والعضوي للدونم وصناعة الكومبوست الطبيعي من بقايا المنزل' },
+            { id: 'birds_pets', title: 'واحة الطيور وحيوانات الزينة', icon: '🦜', desc: 'العناية بالطيور والكناري والداجن، جداول التغذية وتشخيص الأمراض البيطرية الشائعة وعزلها' },
+            { id: 'sports_radar', title: 'رادار الملاعب وبث المباريات', icon: '⚽', desc: 'جدول مواعيد البث المباشر الفوري، إشعارات الأهداف التلقائية ومحلل تكتيك المباريات الحي' },
+            { id: 'news', title: 'أخبار المحافظات المباشرة', icon: '📰', desc: 'تغطية فخمة وموجزة لآخر الأحداث المحلية وتلخيصها عبر الذكاء الاصطناعي بحيادية تامة' },
+            { id: 'expatriates_invest', title: 'المغتربون يستثمرون داخل البلاد', icon: '💎', desc: 'أفكار مشاريع استثمارية وإنتاجية مدروسة ومربحة لتنمية المجتمع برؤوس أموال اغترابية' },
+            { id: 'heritage', title: 'التراث السوري اللامادي والأصالة', icon: '🏺', desc: 'موسوعة فلكلور المحافظات، الأهازيج، الأزياء والعادات الشعبية لحفظ الهوية السورية الوطنية' },
+            { id: 'security', title: 'درع الحماية والتحصين البرمجي', icon: '🛡️', desc: 'فحص فوري للروابط والملفات من الاختراق وكشف صفحات الاحتيال الإلكتروني لحمايتك رقمياً' },
+            { id: 'reports', title: 'بلاغات المواطن والشكاوى الإدارية', icon: '📩', desc: 'إعادة صياغة الشكاوى الموجهة للمديريات والمجالس المحلية بأسلوب رسمي وقانوني محكم' },
+            { id: 'syria_ai', title: 'المساعد الذكي سوريا AI الشامل', icon: '🤖', desc: 'محرك الدردشة المركزي والمجاني للإجابة الفورية عن أي معاملة أو تفصيل داخل القطر' }
+        ];
 
-    <!-- الواجهة الترحيبية -->
-    <section class="text-center py-8 px-4 bg-white border-b shadow-sm">
-        <h2 class="text-2xl md:text-4xl font-extrabold text-blue-950 mb-2">كلو بـ مكان واحد.. وعلى كيفك!</h2>
-        <p class="text-gray-600 text-sm md:text-base">إمبراطورية الخدمات والأسواق السورية المدعومة بالذكاء الاصطناعي (23 قسماً).</p>
-    </section>
-
-    <!-- الأقسام الرئيسية الـ 23 -->
-    <main class="max-w-4xl mx-auto p-4 space-y-6">
+        let activeSectionId = '';
+        const grid = document.getElementById('sectionsGrid');
         
-        <!-- 1 -->
-        <div class="bg-white p-
+        sections.forEach(sec => {
+            const card = document.createElement('div');
+            card.className = 'section-card';
+            card.onclick = () => openSection(sec.id, sec.title, sec.desc);
+            card.innerHTML = `<div class="card-icon">${sec.icon}</div><div class="card-title">${sec.title}</div><div class="card-desc">${sec.desc}</div>`;
+            grid.appendChild(card);
+        });
+
+        function hideAllViews() { document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active')); }
+        function showHome() { hideAllViews(); document.getElementById('homeView').classList.add('active'); }
+
+        function openSection(id, title, desc) {
+            hideAllViews();
+            activeSectionId = id;
+            if(id === 'chef') {
+                document.getElementById('chefView').classList.add('active');
+            } else if(id === 'mirror') {
+                document.getElementById('mirrorView').classList.add('active');
+            } else if(id === 'prices') {
+                document.getElementById('pricesView').classList.add('active');
+            } else {
+                document.getElementById('genericTitle').innerText = title;
+                document.getElementById('genericDesc').innerText = desc;
+                document.getElementById('genericQuery').value = '';
+                document.getElementById('genericResponse').style.display = 'none';
+                document.getElementById('genericView').classList.add('active');
+            }
+        }
+
