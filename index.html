@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة سورية الوطنية</title>
+    <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
     <style>
         :root {
             --primary: #007bff;
@@ -13,24 +13,56 @@
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
             --border-color: #333333;
+            --accent-gold: #ffca28;
+            --vip-color: #ffd700;
         }
         body { font-family: sans-serif; margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); }
+        
+        /* شريط الأسعار المؤشرات المباشرة */
         .price-ticker { display: flex; justify-content: space-between; background: #1a1a1a; color: #fff; padding: 12px 20px; font-size: 0.9rem; border-bottom: 1px solid var(--border-color); }
         .brand-title { font-size: 1.4rem; font-weight: bold; }
-        .stars-container { color: #ffca28; font-size: 1rem; }
+        .stars-container { color: var(--accent-gold); font-size: 1rem; }
+        
         main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+        
+        /* مساحات الإعلانات المخصصة للشركات */
+        .ad-space { background: #222222; border: 2px dashed #444444; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 15px; margin-bottom: 25px; transition: all 0.3s; font-weight: bold; }
+        .ad-space:hover { border-color: var(--primary); color: #fff; background: #262626; }
+        
+        /* صندوق المساعد الذكي الشامي */
         .container-box { background: #1a1a1a; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); }
         .controls-group { display: flex; gap: 10px; margin-bottom: 15px; }
         input[type="text"] { flex: 1; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); background: #2a2a2a; color: #fff; font-size: 1rem; }
         button.btn-primary { background: var(--primary); color: #ffffff; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; }
         button.btn-primary:hover { background: var(--primary-hover); }
         .ai-response-box { padding: 15px; background: #15233c; border-radius: 8px; border-right: 4px solid var(--primary); margin-top: 10px; }
-        .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; transition: all 0.3s ease; }
+        
+        /* أزرار المحاور التفاعلية (Tabs) */
+        .tabs-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; }
+        .tab-btn { background: #1a1a1a; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .tab-btn:hover, .tab-btn.active { background: var(--primary); border-color: var(--primary); }
+        
+        /* شبكة وبطاقات الأقسام الـ 54 */
+        .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; position: relative; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .section-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
-        .card-icon { font-size: 2.5rem; margin-bottom: 12px; }
-        .card-title { font-size: 1.2rem; margin: 8px 0; color: var(--text-main); }
-        .card-desc { font-size: 0.9rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
+        
+        /* شارات الـ VIP والأقسام الجديدة */
+        .badge-vip { background: linear-gradient(45deg, #d4af37, #f3e5ab); color: #000; font-size: 0.75rem; font-weight: bold; padding: 4px 8px; border-radius: 4px; position: absolute; top: 12px; left: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .badge-new { background: #e53935; color: #fff; font-size: 0.7rem; font-weight: bold; padding: 3px 6px; border-radius: 4px; position: absolute; top: 12px; right: 12px; }
+        
+        .card-content { text-align: center; margin-bottom: 15px; }
+        .card-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .card-title { font-size: 1.15rem; margin: 8px 0; color: var(--text-main); font-weight: bold; }
+        .card-desc { font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
+        
+        /* الميزات المتقدمة داخل كل بطاقة */
+        .features-list { border-top: 1px solid #2a2a2a; padding-top: 10px; margin-top: auto; font-size: 0.8rem; text-align: right; }
+        .feature-item { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; color: var(--text-muted); }
+        .feature-item.vip-feat { color: var(--accent-gold); font-weight: bold; cursor: pointer; }
+        .feature-item.vip-feat:hover { text-decoration: underline; }
+        
+        footer { text-align: center; padding: 20px; font-size: 0.9rem; background: #1a1a1a; margin-top: 40px; border-top: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
@@ -40,104 +72,690 @@
             <span class="brand-title">بوابة سورية الوطنية الماسية</span>
             <span class="stars-container">⭐⭐⭐⭐⭐</span>
         </div>
-        <div>تحديث الأسعار الفوري مباشر للخدمات والعملات البرمجية الذكية</div>
+        <div>مية أهلاً وسهلاً.. أسعار الصرف، الذهب، والسلع الحية تتابعونها هنا مباشرة دقيقة بدقيقة وبأعلى دقة</div>
     </div>
 
     <main>
-        <!-- صندوق ميزة الذكاء الاصطناعي المدمج -->
+        
+        <!-- 📢 الإعلان العلوي العريض المميز -->
+        <div class="ad-space">
+            📢 مساحة إعلانية شاغرة ومتاحة للشركات والمصانع السورية الرائدة • لتواصل الحملات الإعلانية اتصل بإدارة البوابة فوراً
+        </div>
+
+        <!-- صندوق المساعد الذكي المدمج والمجاني بالشكل الشامي الودود -->
         <div class="container-box">
-            <h2 style="margin-top: 0; font-size: 1.5rem;">الذكاء الاصطناعي المدمج المجاني الشامل</h2>
+            <h2 style="margin-top: 0; font-size: 1.5rem;">حاكينا ع المكشوف.. المساعد البرمجي الذكي لخدمتكم فوراً وبالمجان</h2>
             <div class="controls-group">
-                <input type="text" id="ai-input" placeholder="اسأل المساعد الذكي عن أي قسم أو خدمة داخل الموقع...">
-                <button class="btn-primary" onclick="askAI()">معالجة ذكية</button>
+                <input type="text" id="ai-input" placeholder="شوبدك تسأل يا بعدي؟ اكتب هون وبلبيلك طلبك ركض وفوراً...">
+                <button class="btn-primary" onclick="askAI()">تفضل أمرني</button>
             </div>
             <div class="ai-response-box" id="ai-response">
-                <p>مرحباً بك! أنا مساعد بوابة سورية الذكي. يمكنك الاستفسار عن أي خدمة وتلقي إجابة فورية.</p>
+                <p>مية مرحبا بك يا غالي! أنا أخوك المساعد الذكي المدمج مجاناً. اسألني عن أي خدمة أو تفاصيل بخص المحاور والبلد وبتلاقي جوابك عندي فوراً ومن عيوني.</p>
             </div>
         </div>
 
-        <h2 style="border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 25px;">أقسام المنصة الشاملة</h2>
+        <h2 style="padding-bottom: 5px; margin-bottom: 15px;">دليل المحاور الستة الكبرى (اختر المحور لتصفح الأقسام والخدمات الربحية)</h2>
+        
+        <!-- أزرار تبويب المحاور الاحترافية الستة لتنظيم التصفح -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchAxis('all')">كل الأقسام الشاملة</button>
+            <button class="tab-btn" onclick="switchAxis('gov')">🏛️ المعاملات والحكومة</button>
+            <button class="tab-btn" onclick="switchAxis('eco')">💰 المال والاقتصاد الشامي</button>
+            <button class="tab-btn" onclick="switchAxis('edu')">💼 التوظيف والتعليم والمستقبل</button>
+            <button class="tab-btn" onclick="switchAxis('health')">🏥 الصحة والزراعة وخيرات الأرض</button>
+            <button class="tab-btn" onclick="switchAxis('culture')">🗺️ السياحة والثقافة والدراما</button>
+            <button class="tab-btn" onclick="switchAxis('logistics')">📞 الاتصالات والمناقصات والربط</button>
+        </div>
 
-        <!-- بداية شبكة الأقسام -->
+        <!-- بداية شبكة الأقسام التفاعلية الموزعة بدقة احترافية -->
         <div class="sections-grid" id="main-grid">
-            
-            <!-- الأقسام من 1 إلى 10 -->
-            <div class="section-card"><div class="card-icon">🏛️</div><h3 class="card-title">1. الخدمات الحكومية الإلكترونية</h3><p class="card-desc">بوابة المعاملات الرسمية والمستندات الرقمية الحكومية</p></div>
-            <div class="section-card"><div class="card-icon">💼</div><h3 class="card-title">2. الاستثمار وتأسيس الشركات</h3><p class="card-desc">دليل التراخيص الشامل لرواد الأعمال والمستثمرين في سورية</p></div>
-            <div class="section-card"><div class="card-icon">🪪</div><h3 class="card-title">3. الهوية الرقمية والوثائق</h3><p class="card-desc">تجديد الأوراق الثبوتية، جوازات السفر، والبطاقات الشخصية</p></div>
-            <div class="section-card"><div class="card-icon">⚖️</div><h3 class="card-title">4. البوابة القانونية والقضائية</h3><p class="card-desc">استشارات الأنظمة، القوانين، والتشريعات السورية الصادرة</p></div>
-            <div class="section-card"><div class="card-icon">🛣️</div><h3 class="card-title">5. وزارة النقل والمرور</h3><p class="card-desc">معاملات المركبات، الاستعلام عن المخالفات، ورخص القيادة</p></div>
-            <div class="section-card"><div class="card-icon">🏠</div><h3 class="card-title">6. السجل العقاري والإسكان</h3><p class="card-desc">خدمات الملكية التوثيقية، مخططات تنظيمية وتراخيص البناء</p></div>
-            <div class="section-card"><div class="card-icon">💵</div><h3 class="card-title">7. الضرائب والرسوم المالية</h3><p class="card-desc">حساب وتخمين ودفع الرسوم المالية والضرائب إلكترونياً</p></div>
-            <div class="section-card"><div class="card-icon">📦</div><h3 class="card-title">8. الجمارك والاستيراد والتصدير</h3><p class="card-desc">معاملات المعابر الحدودية والتعرفة الجمركية الرسمية للبضائع</p></div>
-            <div class="section-card"><div class="card-icon">🤝</div><h3 class="card-title">9. الشؤون الاجتماعية والعمل</h3><p class="card-desc">خدمات الجمعيات الأهلية، برامج الرعاية والدعم الاجتماعي</p></div>
-            <div class="section-card"><div class="card-icon">📊</div><h3 class="card-title">10. مؤشرات المال والأعمال</h3><p class="card-desc">تحديثات البورصة، قيم الأسواق، والمؤشرات الاقتصادية المحلية</p></div>
-            <!-- الأقسام من 11 إلى 25 -->
-            <div class="section-card"><div class="card-icon">🏦</div><h3 class="card-title">11. الخدمات المصرفية والبنكية</h3><p class="card-desc">دليل البنوك السورية العامة والخاصة وشروط فتح الحسابات</p></div>
-            <div class="section-card"><div class="card-icon">💳</div><h3 class="card-title">12. الدفع الإلكتروني والبطاقات</h3><p class="card-desc">منظومة سداد الفواتير والمستحقات والربط الشبكي الموحد</p></div>
-            <div class="section-card"><div class="card-icon">🛒</div><h3 class="card-title">13. التجارة الداخلية وحماية المستهلك</h3><p class="card-desc">أسعار السلع الأساسية التموينية وبوابة تقديم الشكاوى الرسمية</p></div>
-            <div class="section-card"><div class="card-icon">🌍</div><h3 class="card-title">14. التجارة الخارجية والغرف التجارية</h3><p class="card-desc">اتفاقيات التبادل التجاري الإقليمي والدولي والعلاقات الاقتصادية</p></div>
-            <div class="section-card"><div class="card-icon">📈</div><h3 class="card-title">15. سوق دمشق للأوراق المالية</h3><p class="card-desc">متابعة فورية لأسهم الشركات السورية المدرجة وأحجام التداول</p></div>
-            <div class="section-card"><div class="card-icon">🏭</div><h3 class="card-title">16. المدن والمناطق الصناعية</h3><p class="card-desc">الفرص الاستثمارية في مدن عدرا، حسياء، والشيخ نجار الصناعية</p></div>
-            <div class="section-card"><div class="card-icon">💎</div><h3 class="card-title">17. المعادن الثمينة والذهب</h3><p class="card-desc">أسعار الذهب الرسمية اليومية الصادرة عن جمعية الصياغة</p></div>
-            <div class="section-card"><div class="card-icon">💰</div><h3 class="card-title">18. القروض والتمويل المصرفي</h3><p class="card-desc">شروط التسهيلات الائتمانية والقروض العقارية والإنتاجية</p></div>
-            <div class="section-card"><div class="card-icon">🔍</div><h3 class="card-title">19. بوابة التوظيف وفرص العمل</h3><p class="card-desc">أحدث الشواغر للشركات والتقدم للوظائف مجاناً للمواطنين</p></div>
-            <div class="section-card"><div class="card-icon">🎓</div><h3 class="card-title">20. التعليم العالي والجامعات</h3><p class="card-desc">مفاضلات القبول السنوية ودليل الجامعات الحكومية والخاصة</p></div>
-            <div class="section-card"><div class="card-icon">📝</div><h3 class="card-title">21. التربية والتعليم الأساسي</h3><p class="card-desc">مناهج التعليم، ونتائج الامتحانات الرسمية للشهادات العامة</p></div>
-            <div class="section-card"><div class="card-icon">🔬</div><h3 class="card-title">22. البحث العلمي والمخابر</h3><p class="card-desc">دعم الابتكارات الأكاديمية والدراسات والإنتاج المعرفي الوطني</p></div>
-            <div class="section-card"><div class="card-icon">🖥️</div><h3 class="card-title">23. التدريب المهني والتقني</h3><p class="card-desc">دورات البرمجة، الصيانة، والحرف اليدوية لتأهيل الكوادر</p></div>
-            <div class="section-card"><div class="card-icon">🗣️</div><h3 class="card-title">24. معاهد وتعلم اللغات</h3><p class="card-desc">المراكز المعتمدة محلياً لتعليم اللغات الأجنبية المختلفة</p></div>
-            <div class="section-card"><div class="card-icon">📚</div><h3 class="card-title">25. المكتبة السورية الرقمية</h3><p class="card-desc">أرشيف إلكتروني يضم المخطوطات والكتب والتاريخ السوري</p></div>
-            <!-- الأقسام من 26 إلى 40 -->
-            <div class="section-card"><div class="card-icon">🤖</div><h3 class="card-title">26. الابتكار والذكاء الاصطناعي</h3><p class="card-desc">دعم وتمكين مشاريع البرمجة والتقنيات الذكية الناشئة</p></div>
-            <div class="section-card"><div class="card-icon">🌐</div><h3 class="card-title">27. المنح الدراسية والتبادل</h3><p class="card-desc">فرص الدراسة الداخلية والخارجية والتبادل الثقافي للطلاب</p></div>
-            <div class="section-card"><div class="card-icon">🗺️</div><h3 class="card-title">28. دليل السياحة والآثار</h3><p class="card-desc">استكشاف القلاع والمتاحف والمدن الأثرية والتاريخية السورية</p></div>
-            <div class="section-card"><div class="card-icon">🏨</div><h3 class="card-title">29. الفنادق والمنتجعات</h3><p class="card-desc">أماكن الإقامة والخدمات السياحية الفندقية في المحافظات</p></div>
-            <div class="section-card"><div class="card-icon">🍽️</div><h3 class="card-title">30. المطاعم والمطبخ السوري</h3><p class="card-desc">أشهر المأكولات التراثية وتقييم المطاعم السياحية المميزة</p></div>
-            <div class="section-card"><div class="card-icon">🎭</div><h3 class="card-title">31. المسرح والسينما والفنون</h3><p class="card-desc">مواعيد العروض المسرحية والأنشطة الثقافية والمهرجانات</p></div>
-            <div class="section-card"><div class="card-icon">✍️</div><h3 class="card-title">32. اتحاد الكتاب والأدباء</h3><p class="card-desc">الندوات الشعرية، الإصدارات الروائية، والمجالس الثقافية</p></div>
-            <div class="section-card"><div class="card-icon">🎨</div><h3 class="card-title">33. الفنون التشكيلية والمعارض</h3><p class="card-desc">صالات العرض، لوحات، ومنحوتات الفنانين السوريين</p></div>
-            <div class="section-card"><div class="card-icon">🎵</div><h3 class="card-title">34. الموسيقى والتراث الغنائي</h3><p class="card-desc">الحفلات الأوركسترالية وحفظ التراث الموسيقي الشرقي القديم</p></div>
-            <div class="section-card"><div class="card-icon">🎞️</div><h3 class="card-title">35. الإنتاج الدرامي والتلفزيوني</h3><p class="card-desc">متابعة المسلسلات السورية وأخبار الفن وصناع الدراما</p></div>
-            <div class="section-card"><div class="card-icon">🏺</div><h3 class="card-title">36. الصناعات التراثية واليدوية</h3><p class="card-desc">البروكار، الموزاييك، الزجاج المعشق، والفخار التقليدي</p></div>
-            <div class="section-card"><div class="card-icon">🏥</div><h3 class="card-title">37. القطاع الصحي والمشافي</h3><p class="card-desc">المراكز الطبية الحكومية والخاصة وجداول المناوبات الصيدلانية</p></div>
-            <div class="section-card"><div class="card-icon">💊</div><h3 class="card-title">38. الدواء والصناعات الدوائية</h3><p class="card-desc">دليل المعامل الوطنية والأصناف الدوائية المسجلة والأسعار</p></div>
-            <div class="section-card"><div class="card-icon">🩺</div><h3 class="card-title">39. نقابة الأطباء والاستشارات</h3><p class="card-desc">بوابة البحث عن الأطباء التخصصيين والعيادات في سورية</p></div>
-            <div class="section-card"><div class="card-icon">🌾</div><h3 class="card-title">40. الثروة الزراعية والمحاصيل</h3><p class="card-desc">متابعة إنتاج القمح، الزيتون، الحمضيات وإرشادات الفلاحين</p></div>
-            <!-- الأقسام من 41 إلى 54 -->
-            <div class="section-card"><div class="card-icon">🥩</div><h3 class="card-title">41. الثروة الحيوانية والبيطرية</h3><p class="card-desc">تربية المواشي، الدواجن، والخدمات واللقاحات الوقائية الدورية</p></div>
-            <div class="section-card"><div class="card-icon">🚜</div><h3 class="card-title">42. المعدات والأسمدة الزراعية</h3><p class="card-desc">مستلزمات الإنتاج والتطوير الريفي ونظم الري الحديثة</p></div>
-            <div class="section-card"><div class="card-icon">⚡</div><h3 class="card-title">43. الطاقة والكهرباء</h3><p class="card-desc">مشاريع الطاقة البديلة والشمسية وتحديثات شبكات التوليد</p></div>
-            <div class="section-card"><div class="card-icon">🚰</div><h3 class="card-title">44. الموارد المائية والري</h3><p class="card-desc">إدارة السدود، شبكات مياه الشرب، والمعالجة الرقمية</p></div>
-            <div class="section-card"><div class="card-icon">🪵</div><h3 class="card-title">45. البيئة والغابات والحراج</h3><p class="card-desc">حماية الطبيعة، مكافحة التصحر، وإدارة المحميات الوطنية</p></div>
-            <div class="section-card"><div class="card-icon">📞</div><h3 class="card-title">46. الاتصالات والإنترنت</h3><p class="card-desc">بوابات ADSL، شبكات الخلوي، وباقات البيانات المشغلة محلياً</p></div>
-            <div class="section-card"><div class="card-icon">💻</div><h3 class="card-title">47. خدمات الاستضافة والمواقع</h3><p class="card-desc">حجز النطاقات المحلية (.sy) وتأجير السيرفرات السحابية</p></div>
-            <div class="section-card"><div class="card-icon">🛡️</div><h3 class="card-title">48. الأمن السيبراني والمعلوماتي</h3><p class="card-desc">إرشادات حماية البيانات والوقاية الرقمية من الجرائم الإلكترونية</p></div>
-            <div class="section-card"><div class="card-icon">⚽</div><h3 class="card-title">49. الرياضة والاتحادات الرياضية</h3><p class="card-desc">أخبار الدوري السوري والألعاب الفردية والجماعية والبطولات</p></div>
-            <div class="section-card"><div class="card-icon">📰</div><h3 class="card-title">50. الصحافة والإعلام الوطني</h3><p class="card-desc">الصحف الرسمية، وكالة سانا، والإذاعات والفضائيات المحلية</p></div>
-            <div class="section-card"><div class="card-icon">✈️</div><h3 class="card-title">51. الطيران والمطارات</h3><p class="card-desc">مواعيد الرحلات القادمة والمغادرة وحجوزات الخطوط السورية</p></div>
-            <div class="section-card"><div class="card-icon">🚢</div><h3 class="card-title">52. الموانئ والنقل البحري</h3><p class="card-desc">حركة السفن التجارية في مرفأ اللاذقية ومرفأ طرطوس الرسمي</p></div>
-            <div class="section-card"><div class="card-icon">📮</div><h3 class="card-title">53. البريد السوري والطرود</h3><p class="card-desc">شحن الوثائق، الحوالات البريدية الداخلية، والخدمات اللوجستية</p></div>
-            <div class="section-card"><div class="card-icon">📣</div><h3 class="card-title">54. مركز الإعلانات والمناقصات</h3><p class="card-desc">المزادات العلنية، العقود الحكومية، والفرص الاستثمارية المتاحة</p></div>
+            <!-- ================= محور المعاملات والحكومة (gov) ================= -->
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🏛️</div>
+                    <h3 class="card-title">1. أوراق ومعاملات الدولة</h3>
+                    <p class="card-desc">دليل الأوراق الثبوتية والرسوم العامة لكافة المعاملات الرسمية الحكومية الشاملة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح الأوراق المطلوبة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">💼</div>
+                    <h3 class="card-title">2. مصلحة واستثمار وتأسيس</h3>
+                    <p class="card-desc">خطوات إصدار السجلات التجارية وتراخيص الاستثمار لرواد الأعمال والمستثمرين.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 متطلبات الرخص والغرف التجارية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 صائغ ومراجع العقود والاتفاقيات بالذكاء الاصطناعي</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🪪</div>
+                    <h3 class="card-title">3. هويتك وجوازك وأوراقك</h3>
+                    <p class="card-desc">متابعة تجديد بطاقات الهوية الشخصية، دفاتر العائلة، وجوازات السفر السورية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 حجز الدور ومعرفة مراكز التسليم (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مدقق المستندات الفوري ومنبه مواعيد انتهاء الصلاحية</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">⚖️</div>
+                    <h3 class="card-title">4. القوانين وفض النزاعات</h3>
+                    <p class="card-desc">شرح الأنظمة القضائية والتشريعات الصادرة لتكون على بينة تامة بحقوقك.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 البحث في القوانين السورية العامة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مستشارك القانوني الخاص لتحليل القضايا والثغرات</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🛣️</div>
+                    <h3 class="card-title">5. وزارة النقل وتسيير المواتر</h3>
+                    <p class="card-desc">معاملات المركبات، رخص القيادة، وبوابة الاستعلام الفوري عن المخالفات المرورية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 الاستعلام اليدوي عن رسوم السيارات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حاسبة الرسوم والضرائب التقديرية للفراغ العقاري والسيارات</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🏠</div>
+                    <h3 class="card-title">6. السجل العقاري والطابو</h3>
+                    <p class="card-desc">خدمات توثيق الملكية العقارية، المخططات التنظيمية، وتراخيص البناء السكني.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 مراجعة شروط ومستندات طابو الملكية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 كاشف الإشارات العقارية والتحقق الذكي من صحة السندات</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">💵</div>
+                    <h3 class="card-title">7. المالية والضرائب والرسوم</h3>
+                    <p class="card-desc">بوابة تخمين الرسوم المالية والضرائب المترتبة على الأنشطة التجارية والأفراد.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 نماذج وجداول النسب الضريبية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 خبير الحسابات الضريبية الذكي لتقديم الإقرارات دون أخطاء</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📦</div>
+                    <h3 class="card-title">8. الجمارك والتلخيص والبضايع</h3>
+                    <p class="card-desc">بيانات التعرفة الجمركية للبضائع والأنظمة المعمول بها في المعابر والحدود السورية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح فئات المواد والتعرفة الأساسية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 المخلص الجمركي الآلي لحساب الرسوم الجمركية للبضائع المعقدة</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="gov">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🤝</div>
+                    <h3 class="card-title">9. الشؤون والجمعيات الحنونة</h3>
+                    <p class="card-desc">دليل الجمعيات الأهلية، برامج الرعاية الاجتماعية، وبوابات الدعم الإنساني الموثوقة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح أسماء وأرقام الجمعيات النشطة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 منسق تقديم طلبات الدعم المالي والعيني الآلي الموجه</div>
+                </div>
+            </div>
+
+            <!-- ================= محور المال والاقتصاد الشامي (eco) ================= -->
+            <div class="section-card" data-axis="eco">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">10. حركة السوق والمال</h3>
+                    <p class="card-desc">مؤشرات الاقتصاد المحلي، تحليلات حركة الأسواق، وتحديثات قيم التداول اليومية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 جداول أسعار السلع العامة الأسبوعية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 محلل اتجاهات الأسواق وتوقعات التضخم بالذكاء الاصطناعي</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="eco">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🏦</div>
+                    <h3 class="card-title">11. البنوك والمصارف الشامية</h3>
+                    <p class="card-desc">دليل شامل لكافة المصارف العامة والخاصة، مع توضيح شروط فتح وتفعيل الحسابات.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح الفروع وأرقام خدمة العملاء (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مستشار الاستثمار البنكي والمقارنة الآلية بين عوائد الفوائد</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="eco">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">💳</div>
+                    <h3 class="card-title">12. الدفع الإلكتروني والبطاقات</h3>
+                    <p class="card-desc">منظومة سداد الفواتير والمستحقات الحكومية والخاصة عبر الإنترنت دون عناء الطوابير.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 دليل الربط وتفعيل حسابات السداد (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 معالج ومجدول الفواتير التلقائي الفوري لتفادي الغرامات</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="eco">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🛒</div>
+                    <h3 class="card-title">13. التموين وحماية المستهلك</h3>
+                    <p class="card-desc">الأسعار الرسمية الصادرة للسلع الاستهلاكية، وبوابة تقديم الشكاوى على الغش والتلاعب.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 قائمة الأسعار التموينية الصادرة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 صانع ومتابع شكاوى التلاعب الذكي وربطها بالجهات الرقابية</div>
+                </div>
+            </div>
+
+            <!-- ================= محور التوظيف والتعليم والمستقبل (edu) ================= -->
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🔍</div>
+                    <h3 class="card-title">20. بوابات التوظيف وفرص العمل</h3>
+                    <p class="card-desc">أحدث الشواغر للشركات الخاصة والوظائف الحكومية المتاحة في المحافظات [1.3.2، 1.4.5].</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح الشواغر المتاحة يومياً (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 التقدم السريع والمميز ورفع السيرة الذاتية لأعلى القائمة [1.3.2، 1.4.5]</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🎓</div>
+                    <h3 class="card-title">21. الجامعات والتعليم العالي</h3>
+                    <p class="card-desc">مفاضلات القبول السنوية ودليل الجامعات الحكومية والخاصة والمعاهد العليا.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح شروط التسجيل والحدود الدنيا (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مرشد أكاديمي ذكي لاختيار الفرع الأنسب لمجموعك</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📝</div>
+                    <h3 class="card-title">22. المدارس والتربية والشهادات</h3>
+                    <p class="card-desc">مناهج التعليم، والوصول الفوري لنتائج الامتحانات الرسمية (تاسع وبكالوريا).</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح المناهج والنتائج اليدوية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 منبه النتائج الفوري عبر الواتساب فور صدورها من الوزارة</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🔬</div>
+                    <h3 class="card-title">23. البحث العلمي والاختراعات</h3>
+                    <p class="card-desc">دعم العقول السورية المبدعة، المخابر العلمية، والأبحاث الأكاديمية الوطنية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح الأبحاث والمجلات العلمية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مساعد البحث العلمي الآلي لتلخيص وتوثيق المصادر ومراجعتها</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🖥️</div>
+                    <h3 class="card-title">24. التدريب المهني وركوب الحرف</h3>
+                    <p class="card-desc">دورات تأهيل الكوادر في البرمجة، صيانة الموبايل، والحرف اليدوية الشامية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 دليل مراكز التدريب والمهن المتاحة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 صانع المسارات المهنية الذكي وخبير تحديد مجالات الشغف وتطويرها</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🗣️</div>
+                    <h3 class="card-title">25. معاهد وتعلم اللغات</h3>
+                    <p class="card-desc">المراكز المعتمدة محلياً لتعليم اللغات الأجنبية واجتياز اختبارات الكفاءة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 عناوين وتكاليف معاهد اللغات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 بوت المحادثة والذكاء الاصطناعي التفاعلي لتقييم المحادثة والنطق</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📚</div>
+                    <h3 class="card-title">26. المكتبة والأرشيف الرقمي</h3>
+                    <p class="card-desc">أرشيف إلكتروني ضخم يضم الكتب والمخطوطات التاريخية النادرة للثقافة السورية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 قراءة وتنزيل الكتب العامة المتاحة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 باحث المخطوطات والذكاء الاصطناعي لترجمة وتحليل النصوص العتيقة</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🤖</div>
+                    <h3 class="card-title">27. الابتكار والتكنولوجيا الحديثة</h3>
+                    <p class="card-desc">حاضنة تكنولوجية لدعم مشاريع البرمجة والتقنيات الذكية للشباب السوري.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح أخبار التكنولوجيا والحاضنات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مصحح ومراجع الأكواد البرمجية البرمجي التفاعلي الفوري</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="edu">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🌐</div>
+                    <h3 class="card-title">28. المنح الدراسية والسفر</h3>
+                    <p class="card-desc">فرص التبادل الثقافي والدراسة الخارجية والداخلية المتاحة للطلاب السوريين.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح إعلانات المنح وشروطها العامة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 صانع رسائل الدافع (Motivation Letter) وملفات التقديم الاحترافية</div>
+                </div>
+            </div>
+
+            <!-- ================= محور الصحة والزراعة وخيرات الأرض (health) ================= -->
+            <div class="section-card" data-axis="health">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🏥</div>
+                    <h3 class="card-title">29. الصحة والمشَافي والعيادات</h3>
+                    <p class="card-desc">دليل المراكز الطبية الحكومية والخاصة وجداول المناوبات الصيدلانية اليومية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح أسماء وأرقام الصيدليات المناوبة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مساعد الرعاية الصحية لتفسير الأعراض والإرشاد الأولي الفوري</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="health">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">💊</div>
+                    <h3 class="card-title">30. معامل الدواء والشفاء</h3>
+                    <p class="card-desc">دليل الصناعات الدوائية الوطنية، المكونات العلمية، والأسعار الرسمية المعتمدة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 البحث اليدوي عن بدائل الأدوية المتوفرة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 قارئ ومفسر الروشتات الطبية المصورة بالذكاء الاصطناعي الفوري</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="health">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🩺</div>
+                    <h3 class="card-title">31. أطباء الحارة والاستشارات</h3>
+                    <p class="card-desc">دليل البحث عن الأطباء التخصصيين بمختلف المحافظات والعيادات الطبية المعتمدة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح أرقام العيادات وأوقات الدوام (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 نظام الحجز الإلكتروني الفوري المباشر مع عيادة الطبيب دون وسيط</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="health">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🌾</div>
+                    <h3 class="card-title">32. زراعة وخيرات وأراضي</h3>
+                    <p class="card-desc">متابعة مواسم محاصيل القمح، الزيتون، والحمضيات وإرشادات الفلاحين والمهندسين الزراعيين.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 نصائح الإرشاد الزراعي ومواعيد المواسم (مجاني)</div>
+            <!-- ================= محور السياحة والثقافة والدراما (culture) ================= -->
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🗺️</div>
+                    <h3 class="card-title">39. سياحة وآثار وتاريخ عريق</h3>
+                    <p class="card-desc">استكشاف معالم القلاع والمتاحف والأسواق القديمة ومهد الحضارة والتاريخ السوري العريق.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح مواعيد عمل المتاحف والآثار (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مرشدك السياحي الذكي لتصميم رحلات مخصصة وحجز جولات خاصة</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🏨</div>
+                    <h3 class="card-title">40. فنادق ومنتجعات وضيافة</h3>
+                    <p class="card-desc">أماكن الإقامة، حجز الغرف، والمنتجعات والخدمات السياحية الفندقية بكافة المحافظات.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح قوائم الفنادق وأرقام الهواتف (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 محرك مقارنة الأسعار وحجز الغرف بأعلى كود خصم حصري للـ VIP</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🍽️</div>
+                    <h3 class="card-title">41. المطاعم والمطبخ الشامي العريق</h3>
+                    <p class="card-desc">أشهر المأكولات التراثية، المطابخ التقليدية، وتقييم جودة الخدمات في المطاعم السياحية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح عناوين المطاعم وقوائم الطعام (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حجز الطاولات المباشر وتنزيل كوبونات التخفيض الفورية للمشتركين</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🎭</div>
+                    <h3 class="card-title">42. مسارح وسينما وقعدة فن</h3>
+                    <p class="card-desc">مواعيد العروض المسرحية والسينمائية ومتابعة الأنشطة الثقافية والمهرجانات التراثية السنوية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 جدول عروض المسارح والسينما الأسبوعي (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حجز تذاكر المقاعد الأولى والـ VIP إلكترونياً دون طوابير</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">✍️</div>
+                    <h3 class="card-title">43. اتحاد الكتاب والأدباء والأشعار</h3>
+                    <p class="card-desc">الندوات الشعرية، الإصدارات الروائية الجديدة، والمجالس الأدبية والثقافية المعاصرة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 قراءة مقتطفات من الدواوين والروايات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 صانع وباحث الأبيات الشعرية والتدقيق الإملائي واللغوي الذكي</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🎨</div>
+                    <h3 class="card-title">44. فنون تشكيلية وصالات عرض</h3>
+                    <p class="card-desc">صالات المعارض الفنية، لوحات، ومنحوتات المبدعين والفنانين التشكيليين السوريين.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 مواعيد افتتاح صالات العرض التشكيلية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 قيم المعارض الافتراضي والتحليل الفني والجمالي الذكي للوحات</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🎵</div>
+                    <h3 class="card-title">45. الموسيقى والقدود الطربية</h3>
+                    <p class="card-desc">سهرات الطرب الأصيل، القدود الحلبية، وحفظ وتوثيق التراث الموسيقي الشرقي القديم.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 الاستماع للمقاطع التراثية والأناشيد العامة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مدرب المقامات والتحليل النغمي الذكي لطبقات الصوت البشري</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🎞️</div>
+                    <h3 class="card-title">46. الدراما والمسلسلات والسينما</h3>
+                    <p class="card-desc">أخبار نجوم ومخرجي الفن، تغطية الإنتاج التلفزيوني والدراما السورية الشهيرة.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح مواعيد عرض المسلسلات والقنوات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 ناقد الدراما الذكي لتلخيص الحلقات وتوقع سيناريوهات الأحداث</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🏺</div>
+                    <h3 class="card-title">47. صناعات تراثية وشغل إيدين</h3>
+                    <p class="card-desc">حرف البروكار الشامي، الموزاييك، الزجاج المعشق، والنقش ع النحاس والفخار التقليدي.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 دليل أسواق الحرفيين ومنتجاتهم الشهيرة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 خبير التحقق وتقييم أصالة التحف اليدوية وتخمين سعرها العادل</div>
+                </div>
+            </div>
+
+            <!-- ================= محور الاتصالات والمناقصات والربط (logistics) ================= -->
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📞</div>
+                    <h3 class="card-title">48. اتصالات وإنترنت وشبكات</h3>
+                    <p class="card-desc">بوابات الـ ADSL، خطوط الخلوي، عروض الدقائق، وباقات بيانات المشغلين المحليين.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 مقارنة أسعار الباقات والاتصالات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مستشارك الرقمي لاختيار الباقة الأعلى توفيراً لنمط استخدامك</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">💻</div>
+                    <h3 class="card-title">49. استضافة سيرفرات ومواقع (.sy)</h3>
+                    <p class="card-desc">حجز وتأجير النطاقات المحلية السورية، والسيرفرات والخدمات السحابية الوطنية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح أسعار النطاقات السنوية الرسمية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مراقب السيرفرات الذكي وتنبيهات الأمان السحابية الفورية</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 mيزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🛡️</div>
+                    <h3 class="card-title">50. أمان سيبراني وحماية بياناتك</h3>
+                    <p class="card-desc">طرق الحماية من الاختراق، والوقاية الأمنية من الجرائم الإلكترونية وتأمين الحسابات.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 إرشادات ونصائح الأمان الرقمي العامة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 فاحص الروابط والملفات المشبوهة الفوري بالذكاء الاصطناعي لحمايتك</div>
+                </div>
+            </div>
+
+              <!-- ================= تابع محور الاتصالات والمناقصات والربط (logistics) ================= -->
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">⚽</div>
+                    <h3 class="card-title">51. الرياضة والنوادي والبطولات</h3>
+                    <p class="card-desc">أخبار وترتيب الدوري السوري لكرة القدم، المنتخبات الوطنية، والألعاب الفردية والجماعية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 جدول المباريات وترتيب فرق الدوري (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 محلل الأداء الرياضي وتوقعات نتائج المباريات بالذكاء الاصطناعي</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📰</div>
+                    <h3 class="card-title">52. الصحافة وإعلام البلد</h3>
+                    <p class="card-desc">تغطية الصحف اليومية الرسمية، وكالة سانا، الإذاعات والفضائيات والإعلام الوطني الموثوق.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 قراءة الأخبار والعناوين الرئيسية اليومية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 ملخص الإعلام الذكي لدمج الأخبار من مصادر متعددة دون تكرار</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">✈️</div>
+                    <h3 class="card-title">53. طيران ومطارات وسفر سعيد</h3>
+                    <p class="card-desc">جداول ومواعيد رحلات السورية للطيران ومطارات دمشق وحلب واللاذقية وحجوزات التذاكر.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح مواعيد الإقلاع والهبوط الفورية (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 نظام التنبيه الفوري الذكي بتأجيل أو إلغاء الرحلات عبر الرسائل</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🚢</div>
+                    <h3 class="card-title">54. موانئ وبحر وبواخر شحن</h3>
+                    <p class="card-desc">حركة الملاحة التجارية والسفن والبواخر في مرفأ اللاذقية ومرفأ طرطوس الرسمي.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح مواعيد وصول ومغادرة البواخر (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حاسبة سلاسل التوريد وتتبع مكان الحاويات البحري الذكي المباشر</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📮</div>
+                    <h3 class="card-title">55. البريد السوري والطرود والأمانات</h3>
+                    <p class="card-desc">معاملات شحن الوثائق الرسمية، الطرود اللوجستية، والحوالات البريدية الداخلية الفورية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح تكاليف الشحن اليدوية وأسماء المكاتب (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 متتبع الطرود والأمانات الذكي مع ميزة التوقع الفوري لوقت الوصول</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="logistics">
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">📣</div>
+                    <h3 class="card-title">56. مناقصات ومزادات حارة الإعلانات</h3>
+                    <p class="card-desc">مركز تجميع المناقصات، العقود الحكومية، الفرص الاستثمارية والمزادات العلنية في سورية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 تصفح الإعلانات العامة للمناقصات (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 كاشف ومحلل كراسات الشروط والمطابقة الآلية مع ملف شركتك</div>
+                </div>
+            </div>
+
+            <div class="section-card" data-axis="culture">
+                <span class="badge-new">جديد 🔥</span>
+                <span class="badge-vip">👑 ميزات VIP</span>
+                <div class="card-content">
+                    <div class="card-icon">🍳🍲</div>
+                    <h3 class="card-title">57. الشيف خواجة وطبخة اليوم</h3>
+                    <p class="card-desc">أداة تفاعلية شامية مسلية تقترح عليك أكلات طبخ يومية مع المقادير وتكلفتها التقديرية بالأسواق الحالية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 اقتراح طبخات عشوائية ومكوناتها (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حاسبة تكلفة المكونات الفورية التقديرية حسب أسعار الأسواق اليوم</div>
+                </div>
+            </div>
+
         </div> <!-- إغلاق شبكة الأقسام -->
-    </main>
+
+        <div class="ad-space" style="margin-top: 30px; margin-bottom: 0;">
+            📢 مساحة إعلانية متاحة • لربط البانرات أو الإعلان عن شركاتكم تواصل مع إدارة بوابة سورية الماسية فوراً
+        </div>
+
+    <div id="vip-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
+        <div style="background:#1a1a1a; border:2px solid #ffd700; border-radius:12px; padding:30px; max-width:450px; width:90%; text-align:center; box-shadow:0 5px 25px rgba(255,215,0,0.3); position:relative;">
+            <span style="position:absolute; top:10px; left:15px; font-size:1.5rem; color:#aaa; cursor:pointer;" onclick="closeVipModal()">&times;</span>
+            <div style="font-size:3rem; margin-bottom:10px;">👑</div>
+            <h3 style="color:#ffd700; font-size:1.6rem; margin-top:0;">انضم لعائلة الباقة الماسية VIP</h3>
+            <p style="color:#fff; font-size:0.95rem; line-height:1.5;">تؤبرني هالميزة حصرياً للمشتركين بـ <b>الباقة الماسية</b>! اشترك الآن وافتح كل أدوات الذكاء الاصطناعي التوليدي، معقبات المعاملات، وتنبيهات الأسعار الفورية ع الواتساب فوراً وبلا إعلانات.</p>
+            <div style="background:#222; border-radius:8px; padding:15px; margin:20px 0; text-align:right; font-size:0.85rem; color:#eee;">
+                ⭐️ فتح 57 أداة ذكاء اصطناعي تخصصية خبيرة<br>
+                ⭐️ تنبيهات الأسعار الفورية (ذهب وعملات) ع الواتساب<br>
+                ⭐️ إخفاء كافة الإعلانات المزعجة من الموقع نهائياً
+            </div>
+            <button class="btn-primary" style="background:#ffd700; color:#000; width:100%; font-size:1.1rem;" onclick="alert('تكرم عينك! جاري توجيهك لبوابة سداد الاشتراك الماسي بأمان...')">اشترك الآن وافتح الميزات</button>
+        </div>
+    </div>
 
     <footer>
-        <p>جميع الحقوق محفوظة لمنصة بوابة سورية الوطنية الماسية الشاملة المدعومة بالذكاء الاصطناعي © 2026</p>
+        <p>جميع الحقوق محفوظة لمنصة بوابة سورية الوطنية الماسية الشاملة والمزودة بالذكاء الشامي والاصطناعي الحنون © 2026</p>
     </footer>
 
     <script>
-        <script>
+        function switchAxis(axis) {
+            var buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if(event) { event.target.classList.add('active'); }
+            
+            var cards = document.querySelectorAll('.section-card');
+            cards.forEach(card => {
+                if (axis === 'all' || card.getAttribute('data-axis') === axis) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openVipModal() {
+            document.getElementById('vip-modal').style.display = 'flex';
+        }
+        function closeVipModal() {
+            document.getElementById('vip-modal').style.display = 'none';
+        }
+
         function askAI() {
             var input = document.getElementById('ai-input').value.trim();
             var responseBox = document.getElementById('ai-response');
             
             if (input === "") {
-                responseBox.innerHTML = "<p style='color:#ef4444;'>الرجاء كتابة استفسار ليتمكن المساعد الذكي من الإجابة.</p>";
+                responseBox.innerHTML = "<p style='color:#ef4444;'>تكرم عينك بس اكتبلي شوبدك تسأل بالبقا مشان جاوبك فوراً!</p>";
                 return;
             }
             
-            responseBox.innerHTML = "<p>⏳ جاري فحص الأقسام الـ 54 برمجياً...</p>";
+            responseBox.innerHTML = "<p>⏳ طول بالك عليي شوي يا بعدي، عم فتشلك بين الـ 57 قسم والخدمات ركض...</p>";
             
             setTimeout(function() {
                 var cards = document.querySelectorAll('.section-card');
@@ -156,13 +774,13 @@
                 }
                 
                 if (foundSections.length > 0) {
-                    responseBox.innerHTML = "<p>✅ <b>الرد الذكي:</b> تم العثور على أقسام مطابقة لطلبك:<br><br>🔍 <b>الأقسام:</b> " + foundSections.join(' | ') + "</p>";
+                       responseBox.innerHTML = "<p>✅ <b>الرد الذكي الشامي:</b> على راسي حارتك! لقيتلك طلبك بهدول الأقسام المخصصة بالمنصة، تفضل فوت عليهن دغري:<br><br> 🔍 <b>الأقسام المقترحة لعيونك:</b> " + foundSections.join(' | ') + "</p>";
                 } else {
-                    responseBox.innerHTML = "<p>💡 <b>الرد الذكي:</b> استفسارك حول '" + input + "' متاح ضمن خدمات التغطية الشاملة للبوابة. يمكنك تصفح الأقسام الـ 54 بالأسفل للوصول للخدمة مباشرة.</p>";
+                    responseBox.innerHTML = "<p>💡 <b>الرد الذكي الشامي:</b> يوه تؤبرني! بحثتلك بكل دقة عن '" + input + "' ومو مبين اسمو حرفياً كعنوان قسم، بس ولا يهمك موضوعك ضمن تغطية الـ 57 قسم الشاملة بالأسفل، خود نظرة على المحور الأقرب لإلو وبتلاقي مرادك ميسر وبأعلى كفاءة.</p>";
                 }
-            }, 400);
+            }, 600);
         }
     </script>
 </body>
 </html>
-    
+               
