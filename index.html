@@ -127,38 +127,36 @@
     </footer>
 
     <script>
+            <script>
         function askAI() {
-            const input = document.getElementById('ai-input').value.trim();
-            const responseBox = document.getElementById('ai-response');
+            var input = document.getElementById('ai-input').value.trim();
+            var responseBox = document.getElementById('ai-response');
             
-            if(input === "") {
+            if (input === "") {
                 responseBox.innerHTML = "<p style='color:#ef4444;'>الرجاء كتابة استفسار ليتمكن المساعد الذكي من الإجابة.</p>";
                 return;
             }
             
-            responseBox.innerHTML = "<p>⏳ جاري معالجة الاستفسار برمجياً وفحص الأقسام الـ 54...</p>";
+            responseBox.innerHTML = "<p>⏳ جاري فحص الأقسام الـ 54 برمجياً...</p>";
             
-            setTimeout(() => {
-                // مصفوفة تحتوي على الكلمات الدلالية للأقسام للبحث الذكي المدمج
-                const cards = document.querySelectorAll('.section-card');
-                let foundSections = [];
+            setTimeout(function() {
+                var cards = document.getElementsByClassName('section-card');
+                var foundSections = [];
                 
-                cards.forEach(card => {
-                    const title = card.querySelector('.card-title').innerText;
-                    const desc = card.querySelector('.card-desc').innerText;
+                for (var i = 0; i < cards.length; i++) {
+                    var title = cards[i].getElementsByClassName('card-title')[0].innerText;
+                    var desc = cards[i].getElementsByClassName('card-desc')[0].innerText;
                     
-                    if(title.includes(input) || desc.includes(input) || input.split(' ').some(word => title.includes(word) && word.length > 2)) {
+                    if (title.indexOf(input) !== -1 || desc.indexOf(input) !== -1) {
                         foundSections.push(title);
                     }
-                });
-                
-                if(foundSections.length > 0) {
-                    responseBox.innerHTML = `<p>✅ <b>الرد الذكي:</b> استفسارك يتعلق بالخدمات المتاحة في المنصة الشاملة. لقد عثرت على أقسام مطابقة لطلبك يمكنك التوجه إليها مباشرة:<br><br> 🔍 <b>الأقسام المقترحة:</b> ${foundSections.join(' | ')}</p>`;
-                } else {
-                    responseBox.innerHTML = `<p>💡 <b>الرد الذكي:</b> تلقيت استفسارك حول "${input}". هذا الموضوع يقع ضمن خدمات التغطية الشاملة لمنصة بوابة سورية الرقمية. يمكنك تصفح الأقسام الـ 54 أدناه للوصول إلى الخدمة بدقة، أو إعادة صياغة كلمات البحث.</p>`;
                 }
-            }, 800);
+                
+                if (foundSections.length > 0) {
+                    responseBox.innerHTML = "<p>✅ <b>الرد الذكي:</b> تم العثور على أقسام مطابقة لطلبك:<br><br>🔍 <b>الأقسام:</b> " + foundSections.join(' | ') + "</p>";
+                } else {
+                    responseBox.innerHTML = "<p>💡 <b>الرد الذكي:</b> استفسارك حول '" + input + "' متاح ضمن خدمات التغطية الشاملة للبوابة. يمكنك تصفح الأقسام الـ 54 بالأسفل للوصول للخدمة مباشرة.</p>";
+                }
+            }, 400);
         }
     </script>
-</body>
-</html>
