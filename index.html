@@ -6,15 +6,17 @@
     <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
     <style>
         :root {
-            --primary: #007bff;
-            --primary-hover: #0056b3;
+            --primary: #1b4d3e; /* الأخضر الزيتي السوري الفخم */
+            --primary-hover: #123329;
             --bg-card: #1e1e1e;
             --bg-body: #121212;
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
             --border-color: #333333;
-            --accent-gold: #ffca28;
+            --accent-gold: #d4af37; /* الذهبي الأصلي للـ VIP */
             --vip-color: #ffd700;
+            --free-badge: #007bff;
+            --secure-badge: #28a745;
         }
         body { font-family: sans-serif; margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); }
         
@@ -45,12 +47,15 @@
         /* شبكة بطاقات الخدمات والأقسام الـ 59 المحدثة */
         .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; position: relative; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; }
-        .section-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
+        .section-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(27, 77, 62, 0.3); }
         
+        /* شارات التميز وباقات الربح المحدثة */
+        .badge-sys { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; z-index: 10; }
+        .badge-sys.free { background-color: var(--free-badge); color: #fff; }
+        .badge-sys.vip { background: linear-gradient(45deg, #b8860b, var(--vip-color)); color: #000; }
+        .badge-sys.secure { background-color: var(--secure-badge); color: #fff; }
+
         /* شارات التميز وباقات الربح */
-        .badge-vip { background: linear-gradient(45deg, #d4af37, #f3e5ab); color: #000; font-size: 0.75rem; font-weight: bold; padding: 4px 8px; border-radius: 4px; position: absolute; top: 12px; left: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .badge-new { background: #e53935; color: #fff; font-size: 0.7rem; font-weight: bold; padding: 3px 6px; border-radius: 4px; position: absolute; top: 12px; right: 12px; }
-        
         .card-content { text-align: center; margin-bottom: 15px; padding-top: 15px; }
         .card-icon { font-size: 2.5rem; margin-bottom: 10px; }
         .card-title { font-size: 1.15rem; margin: 8px 0; color: var(--text-main); font-weight: bold; }
