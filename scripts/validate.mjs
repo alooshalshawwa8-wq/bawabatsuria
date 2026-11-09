@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 
+// Regression checks for honest feature availability and keyboard usability.
 const html = await readFile('index.html', 'utf8');
 const manifest = JSON.parse(await readFile('manifest.json', 'utf8'));
 const vercel = JSON.parse(await readFile('vercel.json', 'utf8'));
