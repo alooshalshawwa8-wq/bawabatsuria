@@ -7,7 +7,7 @@ const vercel = JSON.parse(await readFile('vercel.json', 'utf8'));
 const api = await readFile('api/chat.js', 'utf8');
 const worker = await readFile('sw.js', 'utf8');
 
-const inlineScripts = [...html.matchAll(/<script\\b[^>]*>([\\s\\S]*?)<\\/script>/gi)].map(match => match[1]);
+const inlineScripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
 assert.ok(inlineScripts.length > 0, 'index.html must contain an application script');
 for (const script of inlineScripts) new Function(script);
 
@@ -24,11 +24,11 @@ assert.ok(html.includes("fetch('/api/chat'"), 'Frontend must call the chat API r
 assert.ok(html.includes("navigator.serviceWorker.register('/sw.js')"), 'Service worker must be registered');
 
 const markup = html
-  .replace(/<!--[\\s\\S]*?-->/g, '')
-  .replace(/<script\\b[\\s\\S]*?<\\/script>/gi, '')
-  .replace(/<style\\b[\\s\\S]*?<\\/style>/gi, '');
-const opened = (markup.match(/<div\\b/gi) || []).length;
-const closed = (markup.match(/<\\/div>/gi) || []).length;
+  .replace(/<!--[\s\S]*?-->/g, '')
+  .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+  .replace(/<style\b[\s\S]*?<\/style>/gi, '');
+const opened = (markup.match(/<div\b/gi) || []).length;
+const closed = (markup.match(/<\/div>/gi) || []).length;
 assert.equal(opened, closed, 'div elements must be balanced');
 
 console.log('Portal validation passed.');
