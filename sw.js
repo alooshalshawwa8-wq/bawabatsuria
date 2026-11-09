@@ -1,12 +1,1 @@
-const CACHE_NAME = 'syria-portal-v1';
-const assets = ['/index.html'];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(assets)));
-});
-
-self.addEventListener('fetch', canvasEvent => {
-  canvasEvent.respondWith(
-    caches.match(canvasEvent.request).then(res => res || fetch(canvasEvent.request))
-  );
-});
+const CACHE="trendspark-shell-v1";const FILES=["/","/index.html","/styles.css","/app.js","/manifest.json","/assets/icon.svg"];self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));self.addEventListener("fetch",e=>{let r=e.request,u=new URL(r.url);if(r.method!=="GET"||u.origin!==location.origin||u.pathname.startsWith("/api/"))return;e.respondWith(fetch(r).then(res=>{if(res.ok&&(r.mode==="navigate"||FILES.includes(u.pathname)))caches.open(CACHE).then(c=>c.put(r,res.clone()));return res}).catch(async()=>await caches.match(r)||(r.mode==="navigate"?caches.match("/index.html"):Response.error())))});

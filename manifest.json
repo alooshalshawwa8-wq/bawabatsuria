@@ -1,17 +1,20 @@
-
 {
-  "short_name": "بوابة سورية",
-  "name": "بوابة سورية - المنصة المتكاملة للخدمات",
+  "id": "/",
+  "name": "TrendSpark AI — بوابة سورية",
+  "short_name": "TrendSpark",
+  "description": "Practical AI tools for everyone.",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d1422",
+  "theme_color": "#101827",
   "icons": [
     {
-      "src": "https://flaticon.com",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
-  ],
-  "start_url": "/index.html",
-  "background_color": "#121212",
-  "theme_color": "#1b4d3e",
-  "display": "standalone",
-  "orientation": "portrait"
+  ]
 }
