@@ -719,33 +719,39 @@ function switchAxis(axis, selectedButton) {
 }
 
 // --- محرك الذكاء الاصطناعي الشامي التفاعلي المتكامل (أبو النور) ---
-function askAI() {
+async function askAI() {
     const inputField = document.getElementById('ai-input') || document.getElementById('chatInput');
     const responseBox = document.getElementById('ai-response-box');
     if (!inputField || inputField.value.trim() === "") return;
 
-    let userMessage = inputField.value.trim();
+    const userMessage = inputField.value.trim();
+    if (userMessage.length > 2000) {
+        if (responseBox) responseBox.textContent = "الرسالة طويلة كتير؛ اختصرها لأقل من 2000 حرف لو سمحت.";
+        return;
+    }
 
-    // فحص المحتوى فوراً لمنع أي إساءة أو فتنة أو كلام سياسي
     if (checkInputSecurity(userMessage)) {
         alert("تنبيه أمني: بوابة سورية منصة خدمية وأخوية لكل السوريين. بنعتذر منك يا غالي، الأحاديث السياسية أو الألفاظ غير المناسبة مالها مكان بيناتنا! 🇸🇾❤️");
         inputField.value = "";
         return;
     }
 
-    // تنظيف وعرض استجابة البوت الشامي التفاعلي (مزاح، ألعاب، شروحات مجانية بالكامل)
-    if (responseBox) {
-        responseBox.textContent = "عم فكرلك فيها... ثواني صغيرة من عيوني... ⏱️";
-    }
-
-    setTimeout(() => {
-        let botReply = getShamiBotResponse(userMessage);
-        if (responseBox) {
-            responseBox.textContent = "المساعد الشامي: " + botReply;
-        }
-    }, 600);
-
+    if (responseBox) responseBox.textContent = "عم وصّل سؤالك بالمساعد الذكي... لحظة من عيونك ⏱️";
     inputField.value = "";
+
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'تعذر الاتصال بالمساعد حالياً');
+        if (responseBox) responseBox.textContent = "المساعد الشامي الذكي: " + (data.reply || "ما قدرت كوّن جواب هالمرة، جرّب من جديد.");
+    } catch (error) {
+        const localReply = getShamiBotResponse(userMessage);
+        if (responseBox) responseBox.textContent = "المساعد المحلي (وضع محدود): " + localReply + " — الاتصال بالذكاء الاصطناعي غير متاح حالياً.";
+    }
 }
 
 function getShamiBotResponse(msg) {
