@@ -17,7 +17,7 @@ new Function(worker);
 assert.equal(manifest.lang, 'ar');
 assert.equal(manifest.dir, 'rtl');
 assert.ok(manifest.icons.some(icon => icon.src === '/icon.svg'));
-assert.equal(vercel.version, 2);
+assert.equal(vercel.functions?.['api/chat.js']?.maxDuration, 30);
 assert.ok(api.includes('process.env.GEMINI_API_KEY'), 'Gemini key must be read server-side');
 assert.ok(!html.includes('GEMINI_API_KEY'), 'Gemini key must not appear in browser HTML');
 assert.ok(html.includes("fetch('/api/chat'"), 'Frontend must call the chat API route');
