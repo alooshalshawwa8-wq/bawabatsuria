@@ -864,20 +864,6 @@ function closeVipModal() {
     if (modal) modal.style.display = 'none';
 }
 
-// --- دالات التحكم بالنوافذ المنبثقة (Modals) ---
-function closeBlockModal() { document.getElementById('vipBlockModal').style.display = "none"; }
-function showTransferDetails() { 
-    closeBlockModal();
-    document.getElementById('transferModal').style.display = "flex"; 
-}
-function closeTransferModal() { document.getElementById('transferModal').style.display = "none"; }
-
-// تفعيل الـ VIP بالنقاط المجانية المكسبة من التفاعل والألعاب
-function activateWithPoints() {
-    openVipModal();
-    alert('تفعيل الاشتراك المدفوع غير متاح قبل ربط نظام حسابات ودفع موثّق وآمن.');
-}
-
 // تحديث عداد النقاط على الشاشة تلقائياً
 function updatePointsOnScreen() {
     const pointsElem = document.getElementById('points-count');
