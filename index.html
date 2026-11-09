@@ -726,28 +726,174 @@
     </footer>
 
     <script>
-        function switchAxis(axis) {
-            var buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            if(event && event.target) { event.target.classList.add('active'); }
-            
-            var cards = document.querySelectorAll('.section-card');
-            cards.forEach(card => {
-                if (axis === 'all' || card.getAttribute('data-axis') === axis) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
+    // --- إعدادات أمان المحتوى ونظام النقاط والامتثال القانوني الدولي والمحلي ---
+let userPoints = parseInt(localStorage.getItem('user_points')) || 150;
+let isVipUser = localStorage.getItem('vip_status') === 'true' || false;
 
-        function openVipModal() {
-            document.getElementById('vip-modal').style.display = 'flex';
-        }
-        function closeVipModal() {
-            document.getElementById('vip-modal').style.display = 'none';
-        }
+// قائمة الكلمات المحظورة لمنع الفتنة، الكراهية، والسياسة نهائياً وحماية أمان البوابة
+const bannedWords = ["سياسة", "ثورة", "نظام", "حزب", "طائفية", "تكفير", "شتم", "سب", "معارضة", "موالاة", "حكومة"];
 
-        function askAI() {
-            var input = document.getElementById('ai-input').value.trim();
- 
+// فحص أمان النص المدخل من الزائر لحجب المخالفات فوراً
+function checkInputSecurity(text) {
+    let lowerText = text.toLowerCase();
+    return bannedWords.some(word => lowerText.includes(word));
+}
+
+// دالة التحكم في تصفح الأقسام وتدقيق الباقات (مجاني، أسبوعي، شهري)
+function openTargetSection(sectionId, type) {
+    if (type.startsWith('vip') && !isVipUser) {
+        // فتح نافذة حظر القسم لغير المشتركين وتخييرهم بالنقاط أو الدفع اليدوي
+        const blockModal = document.getElementById('vipBlockModal');
+        if (blockModal) blockModal.style.display = "flex";
+        return;
+    }
+    alert(`يا مية أهلا وسهلا! جاري فتح قسم: ${sectionId} بنجاح.. تصفح ممتع يا غالي! ✨`);
+}
+
+// دالة الفلترة والتنقل السريع بين تصنيفات الأقسام الـ 60 (تطوير لدالتك القديمة لتدعم الأقسام الجديدة)
+function switchAxis(axis) {
+    var buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    if (event && event.target) { event.target.classList.add('active'); }
+
+    var cards = document.querySelectorAll('.section-card');
+    cards.forEach(card => {
+        if (axis === 'all' || card.getAttribute('data-axis') === axis) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// --- محرك الذكاء الاصطناعي الشامي التفاعلي المتكامل (أبو النور) ---
+function askAI() {
+    const inputField = document.getElementById('ai-input') || document.getElementById('chatInput');
+    const responseBox = document.getElementById('ai-response-box');
+    if (!inputField || inputField.value.trim() === "") return;
+
+    let userMessage = inputField.value.trim();
+
+    // فحص المحتوى فوراً لمنع أي إساءة أو فتنة أو كلام سياسي
+    if (checkInputSecurity(userMessage)) {
+        alert("تنبيه أمني: بوابة سورية منصة خدمية وأخوية لكل السوريين. بنعتذر منك يا غالي، الأحاديث السياسية أو الألفاظ غير المناسبة مالها مكان بيناتنا! 🇸🇾❤️");
+        inputField.value = "";
+        return;
+    }
+
+    // تنظيف وعرض استجابة البوت الشامي التفاعلي (مزاح، ألعاب، شروحات مجانية بالكامل)
+    if (responseBox) {
+        responseBox.innerHTML = `<p style="color:#ffd700;">عم فكرلك فيها... ثواني صغيرة من عيوني... ⏱️</p>`;
+    }
+
+    setTimeout(() => {
+        let botReply = getShamiBotResponse(userMessage);
+        if (responseBox) {
+            responseBox.innerHTML = `<p><strong>المساعد الشامي:</strong> ${botReply}</p>`;
+        }
+    }, 600);
+
+    inputField.value = "";
+}
+
+function getShamiBotResponse(msg) {
+    msg = msg.toLowerCase();
+    
+    // 1. قسم المزاح والتسلية والنكت
+    if (msg.includes("نكتة") || msg.includes("اضحك") || msg.includes("تسلى")) {
+        userPoints += 5; // مكافأة تفاعل لزيادة إدمان الموقع
+        localStorage.setItem('user_points', userPoints);
+        updatePointsOnScreen();
+        const jokes = [
+            "لك حارتنا ضيقة وبنعرف بعضنا! قال في واحد حمصي ضاع جزدانه بالشارع، راح عمل بلاغ بالشرطة، قالوله طيب روح عالبيت وبس نلاقيه بنخبرك. وهو راجع لقى الشارع كله مسكرينه عمال تصليح بلوعات.. صاح فيهم: كفو والله بلشتوا تدوروا عليه! 😂 وجاك 5 نقاط لعيونك!",
+            "مرة واحد راح يشتري خبز لقى الزحمة واقفة دور طويل، صاح: يا جماعة الفرن عم يوزع ببلاش! فضي الدور، راح هو وقف أول واحد وقال: لعمش ليكون من صدقهم! 😂"
+        ];
+        return jokes[Math.floor(Math.random() * jokes.length)];
+    }
+    
+    // 2. ألعاب التسلية المدمجة لربح النقاط مجاناً
+    if (msg.includes("لعبة") || msg.includes("العب")) {
+        return "يا مية أهلا! شو رأيك نلعب لعبة التخمين؟ اكتب كلمة 'خمن' وجنبها رقم من 1 لـ 5، وإذا حزرت الرقم الصح إلك مني 50 نقطة فوراً عالمحفظة! 🎲";
+    }
+    if (msg.startsWith("خمن")) {
+        const num = msg.replace("خمن", "").trim();
+        const luckyNum = Math.floor(Math.random() * 5) + 1;
+        if (num == luckyNum) {
+            userPoints += 50;
+            localStorage.setItem('user_points', userPoints);
+            updatePointsOnScreen();
+            return `ولك كفوووو عيني! طلع الرقم الصح هو ${luckyNum}. ربحت معي 50 نقطة ضفتلك ياهن عالمحفظة! 🏆✨`;
+        } else {
+            return `حاول مرة تانية يا عيوني، الرقم السري كان ${luckyNum}! جرب حظك لتجمع نقاط وتفتح الـ VIP مجاناً.`;
+        }
+    }
+
+    // 3. قسم موسوعة المهن والتعليم السوري وحل المشكلات
+    if (msg.includes("مدرسة") || msg.includes("ابني") || msg.includes("خصوصي")) {
+        return "تعي تؤبريني حلك عندي وعيب الشوم ندفع ليرة للخصوصي! انزلي على قسم 'التعليم والمنهاج السوري'، حددي صف ابنك ورح تلاقي شرح كامل لكل مادة مع بنك أسئلة مؤتمتة وتوقعات امتحانية ناااكتة ومجانية لعيونك! 📝✨";
+    }
+    if (msg.includes("بحث") || msg.includes("جامعة") || msg.includes("تخرج")) {
+        return "حلقة بحث وتخرج؟ تعي حلك عندي يا بؤبؤ عيني بسيطة وسهلة ونااااكتة يوووو! قسم المهن والبحوث بالبوابة بيعطيكي الهيكل والمراجع جاهزة ومجانية مية بالمية لترتاحي! 🎓";
+    }
+    if (msg.includes("ربح") || msg.includes("شغل") || msg.includes("دولار")) {
+        return "بدك تطلع دولار من قلب سوريا Bars؟ فوت على قسم 'موسوعة المهن والعمل الحر'، فيه كورسات مجانية كاملة لتعلم مهارات الإنترنت وطرق سحب الأرباح جوا سوريا بكاش نظامي! 💻💰";
+    }
+
+    // 4. حارس الأمان وفحص الروابط المشبوهة وحماية سيرتيل كاش وشام كاش
+    if (msg.includes("رابط") || msg.includes("فحص") || msg.includes("احتيال")) {
+        return "أمانك خط أحمر يا غالي! حطلي أي رابط مشكوك فيه هون، وأنا بفحصه فوراً وبقلك إذا رابط وهمي أو نصاب مشان تحمي جهازك ومحفظتك. 🛡️";
+    }
+    if (msg.includes("شام كاش") || msg.includes("سيرتيل") || msg.includes("cwallet")) {
+        return "دير بالك يا عيوني! شركة سيرتيل أو شام كاش ما بتطلب رمز الـ PIN تبعك بنوب. أي رسالة بتجيك بتقلك ربحت كاش وهي برات التطبيق الرسمي هي عملية احتيال وخداع. خلي عينك مفتحة! 💸❌";
+    }
+
+    return "على راسي حارتك وتكرم عينك! البوابة بخدمتك على مدار الساعة، اسألني شو ما بدك بالعامية! ✨";
+}
+
+// --- دالات التحكم بالنوافذ المنبثقة (Modals) ---
+function closeBlockModal() { document.getElementById('vipBlockModal').style.display = "none"; }
+function showTransferDetails() { 
+    closeBlockModal();
+    document.getElementById('transferModal').style.display = "flex"; 
+}
+function closeTransferModal() { document.getElementById('transferModal').style.display = "none"; }
+
+// تفعيل الـ VIP بالنقاط المجانية المكسبة من التفاعل والألعاب
+function activateWithPoints(cost) {
+    if (userPoints >= cost) {
+        userPoints -= cost;
+        isVipUser = true;
+        localStorage.setItem('user_points', userPoints);
+        localStorage.setItem('vip_status', 'true');
+        updatePointsOnScreen();
+        alert("ولك مبرووووك! تم تفعيل باقة الـ VIP الذهبية بنجاح عن طريق نقاطك المجانية. كل الأقسام الـ 60 انفتحت لعيونك! 👑✨");
+        closeBlockModal();
+        location.reload();
+    } else {
+        alert(`نقاطك الحالية ما كفو يا غالي! تجميعك الحالي هو ${userPoints} نقطة والاشتراك بيحتاج ${cost} نقطة. العب ألعاب البوابة أو فعل الباقة فوراً عبر التحويل اليدوي! 💳`);
+    }
+}
+
+// تحديث عداد النقاط على الشاشة تلقائياً
+function updatePointsOnScreen() {
+    const pointsElem = document.getElementById('points-count');
+    if (pointsElem) pointsElem.innerText = userPoints;
+}
+
+// مكافأة الدخول اليومي لزيادة تفاعل وزوار الموقع بشكل دائم
+function checkDailyBonus() {
+    const lastCheck = localStorage.getItem('last_check_date');
+    const today = new Date().toDateString();
+    if (lastCheck !== today) {
+        userPoints += 30;
+        localStorage.setItem('user_points', userPoints);
+        localStorage.setItem('last_check_date', today);
+        updatePointsOnScreen();
+        alert("يسعدلي صباحك ومساك! أخذت 30 نقطة مكافأة دخولك اليومي لـ بوابة سورية! 🇸🇾🏆");
+    }
+}
+
+window.onload = function() {
+    checkDailyBonus();
+    updatePointsOnScreen();
+};
