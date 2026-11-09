@@ -175,11 +175,11 @@
                 <div class="card-content">
                     <div class="card-icon">🔒</div>
                     <h3 class="card-title">9 مكرر. حارس الأمان الرقمي</h3>
-                    <p class="card-desc">فحص الروابط الاحتيالية والمشبوهة وتأمين حسابات شام كاش وسيرتيل كاش من الاختراق مجاناً.</p>
+                    <p class="card-desc">إرشادات توعوية للتعرّف على الروابط المشبوهة وحماية المحافظ الرقمية. لا يجري هذا القسم فحصاً تقنياً مباشراً للروابط حالياً.</p>
                 </div>
                 <div class="features-list">
-                    <div class="feature-item">🔹 مجاني: فحص روابط مباشر</div>
-                    <div class="feature-item secure">• مجاني: نصائح حماية الكاش</div>
+                    <div class="feature-item">🔹 إرشادات للتعرّف على علامات التصيّد</div>
+                    <div class="feature-item secure">• نصائح لحماية PIN ورموز التحقق</div>
                 </div>
             </div>
             <div class="section-card" data-axis="eco" onclick="openTargetSection('banks', 'free')">
@@ -678,13 +678,13 @@
             <span style="position:absolute; top:10px; left:15px; font-size:1.5rem; color:#aaa; cursor:pointer;" onclick="closeVipModal()">&times;</span>
             <div style="font-size:3rem; margin-bottom:10px;">👑</div>
             <h3 style="color:#ffd700; font-size:1.6rem; margin-top:0;">انضم لعائلة الباقة الماسية VIP</h3>
-            <p style="color:#fff; font-size:0.95rem; line-height:1.5;">تؤبرني هالميزة حصرياً للمشتركين بـ <b>الباقة الماسية</b>! اشترك الآن وافتح كل أدوات الذكاء الاصطناعي التوليدي التخصصي، الكابتن الرياضي، رادار الموضة، وتنبيهات المناقصات والأسعار الفورية ع الواتساب فوراً وبلا إعلانات نهائياً.</p>
+            <p style="color:#fff; font-size:0.95rem; line-height:1.7;">هذه معاينة لخدمات الباقة الماسية المقترحة. ما زالت العضويات والدفع والميزات التخصصية قيد التطوير، ولا يوجد اشتراك مدفوع متاح حالياً.</p>
             <div style="background:#222; border-radius:8px; padding:15px; margin:20px 0; text-align:right; font-size:0.85rem; color:#eee;">
-                ⭐️ فتح كل أدوات الذكاء الاصطناعي الـ 59 التخصصية الخبيرة<br>
-                ⭐️ تنبيهات الأسعار الفورية ورادار التوريدات ع الواتساب لحظياً<br>
-                ⭐️ تصفح سريع للمنصة وإخفاء كافة الإعلانات التجارية نهائياً
+                • الحسابات والتحقق من الاشتراكات غير مفعّلة بعد<br>
+                • لا توجد بوابة دفع متصلة أو تنبيهات واتساب حالياً<br>
+                • لن نطلب منك تحويل أي مبلغ قبل إطلاق نظام دفع موثوق
             </div>
-            <button class="btn-primary" style="background:#ffd700; color:#000; width:100%; font-size:1.1rem; border:none;" onclick="alert('خدمة الدفع الإلكتروني لم تُربط بعد. لن نطلب منك تحويل أي مبلغ قبل توفير بوابة دفع موثوقة وإيصال رسمي.')">اشترك الآن وافتح الميزات</button>
+            <button class="btn-primary" type="button" onclick="closeVipModal()">حسناً، فهمت</button>
         </div>
     </div>
 
@@ -693,10 +693,8 @@
     </footer>
 
     <script>
-    // --- إعدادات أمان المحتوى ونظام النقاط والامتثال القانوني الدولي والمحلي ---
-let userPoints = parseInt(localStorage.getItem('user_points')) || 150;
-// لا نعتمد على قيمة VIP مخزنة في المتصفح؛ يلزم تحقق خادمي قبل تفعيل اشتراك مدفوع.
-let isVipUser = false;
+    // --- إعدادات الواجهة ---
+ // لا تُمنح نقاط أو صلاحيات اشتراك من المتصفح؛ يلزم نظام حسابات وخادم موثوق.
 
 // فتح الأقسام بوضوح دون الادعاء بوجود صفحات أو بيانات غير مبنية بعد
 function openTargetSection(sectionId, type) {
@@ -779,57 +777,36 @@ async function askAI() {
 }
 
 function getShamiBotResponse(msg) {
-    msg = msg.toLowerCase();
-    
-    // 1. قسم المزاح والتسلية والنكت
-    if (msg.includes("نكتة") || msg.includes("اضحك") || msg.includes("تسلى")) {
-        userPoints += 5; // مكافأة تفاعل لزيادة إدمان الموقع
-        localStorage.setItem('user_points', userPoints);
-        updatePointsOnScreen();
+    const text = String(msg || '').toLowerCase();
+
+    if (text.includes("نكتة") || text.includes("اضحك") || text.includes("تسلى")) {
         const jokes = [
-            "لك حارتنا ضيقة وبنعرف بعضنا! قال في واحد حمصي ضاع جزدانه بالشارع، راح عمل بلاغ بالشرطة، قالوله طيب روح عالبيت وبس نلاقيه بنخبرك. وهو راجع لقى الشارع كله مسكرينه عمال تصليح بلوعات.. صاح فيهم: كفو والله بلشتوا تدوروا عليه! 😂 وجاك 5 نقاط لعيونك!",
-            "مرة واحد راح يشتري خبز لقى الزحمة واقفة دور طويل، صاح: يا جماعة الفرن عم يوزع ببلاش! فضي الدور، راح هو وقف أول واحد وقال: لعمش ليكون من صدقهم! 😂"
+            "مرة واحد سأل صاحبه: ليش الساعة واقفة؟ قاله: يمكن تعبت من الركض 😂",
+            "واحد اشترى سرير طابقين، نام تحت حتى ما يوقع بالحلم 😄"
         ];
         return jokes[Math.floor(Math.random() * jokes.length)];
     }
-    
-    // 2. ألعاب التسلية المدمجة لربح النقاط مجاناً
-    if (msg.includes("لعبة") || msg.includes("العب")) {
-        return "يا مية أهلا! شو رأيك نلعب لعبة التخمين؟ اكتب كلمة 'خمن' وجنبها رقم من 1 لـ 5، وإذا حزرت الرقم الصح إلك مني 50 نقطة فوراً عالمحفظة! 🎲";
+
+    if (text.includes("لعبة") || text.includes("العب")) {
+        return "أكيد! فينا نلعب لعبة تخمين للتسلية فقط، من دون نقاط أو جوائز: اختر رقماً من 1 إلى 5 واكتبه بكلمة «خمن» ثم الرقم.";
     }
-    if (msg.startsWith("خمن")) {
-        const num = msg.replace("خمن", "").trim();
+    if (text.startsWith("خمن")) {
+        const match = text.match(/^خمن\s*([1-5])$/);
+        if (!match) return "اكتب «خمن» ثم رقماً من 1 إلى 5.";
         const luckyNum = Math.floor(Math.random() * 5) + 1;
-        if (num == luckyNum) {
-            userPoints += 50;
-            localStorage.setItem('user_points', userPoints);
-            updatePointsOnScreen();
-            return `ولك كفوووو عيني! طلع الرقم الصح هو ${luckyNum}. ربحت معي 50 نقطة ضفتلك ياهن عالمحفظة! 🏆✨`;
-        } else {
-            return `حاول مرة تانية يا عيوني، الرقم السري كان ${luckyNum}! جرب حظك لتجمع نقاط وتفتح الـ VIP مجاناً.`;
-        }
+        return Number(match[1]) === luckyNum
+            ? "أحسنت! أصبت الرقم 🎉 هذه لعبة للتسلية فقط ولا تمنح نقاطاً أو مزايا مدفوعة."
+            : "لم تصب هذه المرة؛ الرقم كان " + luckyNum + ". جرّب مجدداً، للتسلية فقط 🙂";
     }
 
-    // 3. قسم موسوعة المهن والتعليم السوري وحل المشكلات
-    if (msg.includes("مدرسة") || msg.includes("ابني") || msg.includes("خصوصي")) {
-        return "تعي تؤبريني حلك عندي وعيب الشوم ندفع ليرة للخصوصي! انزلي على قسم 'التعليم والمنهاج السوري'، حددي صف ابنك ورح تلاقي شرح كامل لكل مادة مع بنك أسئلة مؤتمتة وتوقعات امتحانية ناااكتة ومجانية لعيونك! 📝✨";
+    if (text.includes("رابط") || text.includes("فحص") || text.includes("احتيال")) {
+        return "تنبيه مهم: الموقع لا يملك حالياً أداة فحص تقني مباشر للروابط. لا تفتح الرابط المشبوه، ولا تدخل كلمة المرور أو PIN أو رمز التحقق. افحص اسم النطاق من القناة الرسمية، ويمكنك إرسال نص الرسالة (من دون بياناتك الخاصة) لأساعدك في تقييم علامات الاحتيال.";
     }
-    if (msg.includes("بحث") || msg.includes("جامعة") || msg.includes("تخرج")) {
-        return "حلقة بحث وتخرج؟ تعي حلك عندي يا بؤبؤ عيني بسيطة وسهلة ونااااكتة يوووو! قسم المهن والبحوث بالبوابة بيعطيكي الهيكل والمراجع جاهزة ومجانية مية بالمية لترتاحي! 🎓";
-    }
-    if (msg.includes("ربح") || msg.includes("شغل") || msg.includes("دولار")) {
-        return "بدك تطلع دولار من قلب سوريا Bars؟ فوت على قسم 'موسوعة المهن والعمل الحر'، فيه كورسات مجانية كاملة لتعلم مهارات الإنترنت وطرق سحب الأرباح جوا سوريا بكاش نظامي! 💻💰";
+    if (text.includes("شام كاش") || text.includes("سيرتيل") || text.includes("cwallet")) {
+        return "لا تشارك أبداً PIN أو كلمة المرور أو رمز التحقق مع أي شخص. افتح تطبيق المحفظة من مصدره الرسمي فقط، وتواصل مع دعم الشركة عبر قنواتها الرسمية عند الشك.";
     }
 
-    // 4. حارس الأمان وفحص الروابط المشبوهة وحماية سيرتيل كاش وشام كاش
-    if (msg.includes("رابط") || msg.includes("فحص") || msg.includes("احتيال")) {
-        return "أمانك خط أحمر يا غالي! حطلي أي رابط مشكوك فيه هون، وأنا بفحصه فوراً وبقلك إذا رابط وهمي أو نصاب مشان تحمي جهازك ومحفظتك. 🛡️";
-    }
-    if (msg.includes("شام كاش") || msg.includes("سيرتيل") || msg.includes("cwallet")) {
-        return "دير بالك يا عيوني! شركة سيرتيل أو شام كاش ما بتطلب رمز الـ PIN تبعك بنوب. أي رسالة بتجيك بتقلك ربحت كاش وهي برات التطبيق الرسمي هي عملية احتيال وخداع. خلي عينك مفتحة! 💸❌";
-    }
-
-    return "على راسي حارتك وتكرم عينك! البوابة بخدمتك على مدار الساعة، اسألني شو ما بدك بالعامية! ✨";
+    return "المساعد المتصل غير متاح حالياً، وهذه نسخة مساعدة محدودة. جرّب سؤالاً قصيراً، أو أعد المحاولة لاحقاً عند تفعيل الاتصال بالخادم.";
 }
 
 // جعل البطاقات التي لا تملك مساراً بعد قابلة للاستكشاف برسالة واضحة
@@ -865,25 +842,6 @@ function closeVipModal() {
     if (modal) modal.style.display = 'none';
 }
 
-// تحديث عداد النقاط على الشاشة تلقائياً
-function updatePointsOnScreen() {
-    const pointsElem = document.getElementById('points-count');
-    if (pointsElem) pointsElem.innerText = userPoints;
-}
-
-// مكافأة الدخول اليومي لزيادة تفاعل وزوار الموقع بشكل دائم
-function checkDailyBonus() {
-    const lastCheck = localStorage.getItem('last_check_date');
-    const today = new Date().toDateString();
-    if (lastCheck !== today) {
-        userPoints += 30;
-        localStorage.setItem('user_points', userPoints);
-        localStorage.setItem('last_check_date', today);
-        updatePointsOnScreen();
-        alert("يسعدلي صباحك ومساك! أخذت 30 نقطة مكافأة دخولك اليومي لـ بوابة سورية! 🇸🇾🏆");
-    }
-}
-
       window.onload = function() {
     enablePlaceholderCards();
     // تحميل بيان التطبيق الثابت من ملف manifest.json
@@ -892,9 +850,15 @@ function checkDailyBonus() {
         navigator.serviceWorker.register('/sw.js').catch(function(err){ console.log(err); }); 
     }
     
-    // تشغيل ميزات النقاط والدخول اليومي
-    if (typeof checkDailyBonus === "function") { checkDailyBonus(); }
-    if (typeof updatePointsOnScreen === "function") { updatePointsOnScreen(); }
+    const aiInput = document.getElementById('ai-input');
+    if (aiInput) {
+        aiInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.isComposing) {
+                event.preventDefault();
+                askAI();
+            }
+        });
+    }
 };
   </script>
 </body>
