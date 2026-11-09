@@ -22,6 +22,9 @@ assert.ok(api.includes('process.env.GEMINI_API_KEY'), 'Gemini key must be read s
 assert.ok(!html.includes('GEMINI_API_KEY'), 'Gemini key must not appear in browser HTML');
 assert.ok(html.includes("fetch('/api/chat'"), 'Frontend must call the chat API route');
 assert.ok(html.includes("navigator.serviceWorker.register('/sw.js')"), 'Service worker must be registered');
+assert.ok(!html.includes('user_points') && !html.includes('checkDailyBonus'), 'No fake browser-only reward balance may be presented');
+assert.ok(html.includes("event.key === 'Enter'"), 'AI input should support Enter to submit');
+assert.ok(html.includes('لا يجري هذا القسم فحصاً تقنياً مباشراً'), 'Security section must not claim live URL scanning');
 
 const markup = html
   .replace(/<!--[\s\S]*?-->/g, '')
