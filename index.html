@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <link rel="manifest" href="/manifest.json">
     <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
     <style>
         :root {
@@ -841,30 +841,7 @@ function checkDailyBonus() {
 }
 
       window.onload = function() {
-    // محرك حقن الـ Manifest الذكي لتصحيح أخطاء الموبايل وتفعيل التطبيق فوراً
-    try {
-        let manifestContent = {
-            "short_name": "بوابة سورية",
-            "name": "بوابة سورية - المنصة المتكاملة للخدمات",
-            "icons": [{
-                "src": "https://flaticon.com",
-                "type": "image/png",
-                "sizes": "512x512"
-            }],
-            "start_url": "/index.html",
-            "background_color": "#121212",
-            "theme_color": "#1b4d3e",
-            "display": "standalone",
-            "orientation": "portrait"
-        };
-        let blob = new Blob([JSON.stringify(manifestContent)], {type: 'application/json'});
-        let manifestURL = URL.createObjectURL(blob);
-        let link = document.createElement('link');
-        link.rel = 'manifest';
-        link.href = manifestURL;
-        document.head.appendChild(link);
-    } catch(e) { console.log("Manifest ready"); }
-
+    // تحميل بيان التطبيق الثابت من ملف manifest.json
     // تشغيل ملف الموبايل sw.js لتثبيت التطبيق على جهاز الزائر
     if ('serviceWorker' in navigator) { 
         navigator.serviceWorker.register('/sw.js').catch(function(err){ console.log(err); }); 
