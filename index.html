@@ -694,7 +694,8 @@
     <script>
     // --- إعدادات أمان المحتوى ونظام النقاط والامتثال القانوني الدولي والمحلي ---
 let userPoints = parseInt(localStorage.getItem('user_points')) || 150;
-// لا نعتمد على قيمة VIP مخزنة في المتصفح؛ يلزم تحقق خادمي قبل تفعيل اشتراك مدفوع.\nlet isVipUser = false;
+// لا نعتمد على قيمة VIP مخزنة في المتصفح؛ يلزم تحقق خادمي قبل تفعيل اشتراك مدفوع.
+let isVipUser = false;
 
 // فتح الأقسام بوضوح دون الادعاء بوجود صفحات أو بيانات غير مبنية بعد
 function openTargetSection(sectionId, type) {
