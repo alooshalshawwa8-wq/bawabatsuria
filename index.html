@@ -49,8 +49,7 @@
         .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; position: relative; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .section-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(27, 77, 62, 0.3); }
         
-        /* شارات التميز وباقات الربح المحدثة */
-        .badge-sys { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; z-index: 10; }
+                .badge-sys { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; z-index: 10; }
         .badge-sys.free { background-color: var(--free-badge); color: #fff; }
         .badge-sys.vip { background: linear-gradient(45deg, #b8860b, var(--vip-color)); color: #000; }
         .badge-sys.secure { background-color: var(--secure-badge); color: #fff; }
@@ -61,7 +60,7 @@
         .card-title { font-size: 1.15rem; margin: 8px 0; color: var(--text-main); font-weight: bold; }
         .card-desc { font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
         
-        /* ميزات التقسيم داخل البطاقة (مجاني / VIP رابح) */
+        /* mيزات التقسيم داخل البطاقة (مجاني / VIP رابح) */
         .features-list { border-top: 1px solid #2a2a2a; padding-top: 10px; margin-top: auto; font-size: 0.8rem; text-align: right; }
         .feature-item { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; color: var(--text-muted); }
         .feature-item.vip-feat { color: var(--accent-gold); font-weight: bold; cursor: pointer; }
@@ -94,7 +93,8 @@
                 <input type="text" id="ai-input" placeholder="شوبدك تسأل يا بعدي؟ اكتب هون وبلبيلك طلبك ركض وفوراً...">
                 <button class="btn-primary" onclick="askAI()">تفضل أمرني</button>
             </div>
-            <div class="ai-response-box" id="ai-response">
+            <!-- تصحيح الـ ID ليطابق محرك الـ JavaScript المطور تماماً وعرض النكت والألعاب -->
+            <div class="ai-response-box" id="ai-response-box">
                 <p>مية مرحبا بك يا غالي! أنا أخوك المساعد الذكي المدمج مجاناً. اسألني عن أي خدمة أو تفاصيل بخص المحاور وعالم التجارة أو الموضة أو الرياضة وبتلاقي جوابك عندي من عيوني.</p>
             </div>
         </div>
@@ -115,8 +115,8 @@
         <!-- بداية شبكة الأقسام التفاعلية الموزعة بدقة احترافية -->
         <div class="sections-grid" id="main-grid">
             <!-- ================= محور المعاملات والحكومة والقانون (gov) ================= -->
-            <div class="section-card" data-axis="gov">
-                <span class="badge-vip">👑 ميزات VIP</span>
+            <div class="section-card" data-axis="gov" onclick="openTargetSection('government_papers', 'free')">
+                <span class="badge-sys vip">👑 ميزات VIP</span>
                 <div class="card-content">
                     <div class="card-icon">🏛️</div>
                     <h3 class="card-title">1. أوراق ومعاملات الدولة</h3>
@@ -124,12 +124,12 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 تصفح الأوراق المطلوبة والرسوم (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً وتنزيلها جاهزة للطباعة</div>
+                    <div class="feature-item vip-feat" onclick="openTargetSection('government_papers', 'vip')">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً وتنزيلها جاهزة للطباعة</div>
                 </div>
             </div>
 
-            <div class="section-card" data-axis="gov">
-                <span class="badge-vip">👑 ميزات VIP</span>
+            <div class="section-card" data-axis="gov" onclick="openTargetSection('business_investment', 'free')">
+                <span class="badge-sys vip">👑 ميزات VIP</span>
                 <div class="card-content">
                     <div class="card-icon">💼</div>
                     <h3 class="card-title">2. مصلحة واستثمار وتأسيس</h3>
@@ -137,17 +137,18 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 متطلبات الرخص والغرف التجارية (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 صائغ ومراجع العقود والاتفاقيات التجارية بالذكاء الاصطناعي لحماية مصالحك</div>
+                    <div class="feature-item vip-feat" onclick="openTargetSection('business_investment', 'vip')">👑 صائغ ومراجع العقود والاتفاقيات التجارية بالذكاء الاصطناعي لحماية مصالحك</div>
                 </div>
             </div>
 
-            <div class="section-card" data-axis="gov">
-                <span class="badge-vip">👑 ميزات VIP</span>
+            
+                <span class="badge-sys vip">👑 ميزات VIP</span>
                 <div class="card-content">
                     <div class="card-icon">🪪</div>
                     <h3 class="card-title">3. هويتك وجوازك وأوراقك</h3>
                     <p class="card-desc">متابعة تجديد بطاقات الهوية الشخصية، دفاتر العيلة، وجوازات السفر السورية بيسر وسهولة.</p>
                 </div>
+
                 <div class="features-list">
                     <div class="feature-item">🔹 حجز الدور ومعرفة مراكز التسليم (مجاني)</div>
                     <div class="feature-item vip-feat" onclick="openVipModal()">👑 مدقق ومكتشف نقص الأوراق والمستندات الفوري ومنبه مواعيد انتهاء الصلاحية</div>
