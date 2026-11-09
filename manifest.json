@@ -1,0 +1,17 @@
+
+{
+  "short_name": "بوابة سورية",
+  "name": "بوابة سورية - المنصة المتكاملة للخدمات",
+  "icons": [
+    {
+      "src": "https://flaticon.com",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#121212",
+  "theme_color": "#1b4d3e",
+  "display": "standalone",
+  "orientation": "portrait"
+}
