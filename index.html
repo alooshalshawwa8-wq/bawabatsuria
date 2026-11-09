@@ -124,7 +124,7 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 تصفح الأوراق المطلوبة والرسوم (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openTargetSection('government_papers', 'vip')">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً وتنزيلها جاهزة للطباعة</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openTargetSection('government_papers', 'vip')">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً وتنزيلها جاهزة للطباعة</div>
                 </div>
             </div>
 
@@ -137,7 +137,7 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 متطلبات الرخص والغرف التجارية (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openTargetSection('business_investment', 'vip')">👑 صائغ ومراجع العقود والاتفاقيات التجارية بالذكاء الاصطناعي لحماية مصالحك</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openTargetSection('business_investment', 'vip')">👑 صائغ ومراجع العقود والاتفاقيات التجارية بالذكاء الاصطناعي لحماية مصالحك</div>
                 </div>
             </div>
 
@@ -687,7 +687,7 @@ function checkInputSecurity(text) {
 
 // دالة التحكم في تصفح الأقسام وتدقيق الباقات (مجاني، أسبوعي، شهري)
 function openTargetSection(sectionId, type) {
-    if (type.startsWith('vip') && !isVipUser) {
+    if (String(type).startsWith('vip') && !isVipUser) {
         // فتح نافذة حظر القسم لغير المشتركين وتخييرهم بالنقاط أو الدفع اليدوي
         const blockModal = document.getElementById('vipBlockModal');
         if (blockModal) blockModal.style.display = "flex";
