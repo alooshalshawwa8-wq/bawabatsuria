@@ -1,17 +1,16 @@
-
 {
+  "id": "/",
+  "name": "بوابة سورية الوطنية الماسية الشاملة",
   "short_name": "بوابة سورية",
-  "name": "بوابة سورية - المنصة المتكاملة للخدمات",
-  "icons": [
-    {
-      "src": "https://flaticon.com",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": "/index.html",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#1b4d3e",
-  "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
 }
