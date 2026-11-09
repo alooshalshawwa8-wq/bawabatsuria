@@ -103,13 +103,13 @@
         
         <!-- أزرار التبويبات الفخمة للفلترة والتنقل الفوري السلس بين اهتمامات الزوار -->
         <div class="tabs-container">
-            <button class="tab-btn active" onclick="switchAxis('all')">كل الأقسام الشاملة</button>
-            <button class="tab-btn" onclick="switchAxis('gov')">🏛️ المعاملات والحكومة</button>
-            <button class="tab-btn" onclick="switchAxis('eco')">💰 المال وعالم التجار</button>
-            <button class="tab-btn" onclick="switchAxis('edu')">💼 التوظيف والتعليم والمستقبل</button>
-            <button class="tab-btn" onclick="switchAxis('health')">🏥 الصحة والزراعة وخيرات الأرض</button>
-            <button class="tab-btn" onclick="switchAxis('culture')">🗺️ السياحة والموضة والدراما</button>
-            <button class="tab-btn" onclick="switchAxis('logistics')">📞 الاتصالات ورادار الرياضيين</button>
+            <button class="tab-btn active" onclick="switchAxis('all', this)">كل الأقسام الشاملة</button>
+            <button class="tab-btn" onclick="switchAxis('gov', this)">🏛️ المعاملات والحكومة</button>
+            <button class="tab-btn" onclick="switchAxis('eco', this)">💰 المال وعالم التجار</button>
+            <button class="tab-btn" onclick="switchAxis('edu', this)">💼 التوظيف والتعليم والمستقبل</button>
+            <button class="tab-btn" onclick="switchAxis('health', this)">🏥 الصحة والزراعة وخيرات الأرض</button>
+            <button class="tab-btn" onclick="switchAxis('culture', this)">🗺️ السياحة والموضة والدراما</button>
+            <button class="tab-btn" onclick="switchAxis('logistics', this)">📞 الاتصالات ورادار الرياضيين</button>
         </div>
 
         <!-- بداية شبكة الأقسام التفاعلية الموزعة بدقة احترافية -->
@@ -678,10 +678,16 @@ function openTargetSection(sectionId, type) {
 }
 
 // دالة الفلترة والتنقل السريع بين تصنيفات الأقسام الـ 60 (تطوير لدالتك القديمة لتدعم الأقسام الجديدة)
-function switchAxis(axis) {
+function switchAxis(axis, selectedButton) {
     var buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    if (event && event.target) { event.target.classList.add('active'); }
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+    });
+    if (selectedButton && selectedButton.classList) {
+        selectedButton.classList.add('active');
+        selectedButton.setAttribute('aria-pressed', 'true');
+    }
 
     var cards = document.querySelectorAll('.section-card');
     cards.forEach(card => {
@@ -710,13 +716,13 @@ function askAI() {
 
     // تنظيف وعرض استجابة البوت الشامي التفاعلي (مزاح، ألعاب، شروحات مجانية بالكامل)
     if (responseBox) {
-        responseBox.innerHTML = `<p style="color:#ffd700;">عم فكرلك فيها... ثواني صغيرة من عيوني... ⏱️</p>`;
+        responseBox.textContent = "عم فكرلك فيها... ثواني صغيرة من عيوني... ⏱️";
     }
 
     setTimeout(() => {
         let botReply = getShamiBotResponse(userMessage);
         if (responseBox) {
-            responseBox.innerHTML = `<p><strong>المساعد الشامي:</strong> ${botReply}</p>`;
+            responseBox.textContent = "المساعد الشامي: " + botReply;
         }
     }, 600);
 
@@ -775,6 +781,20 @@ function getShamiBotResponse(msg) {
     }
 
     return "على راسي حارتك وتكرم عينك! البوابة بخدمتك على مدار الساعة، اسألني شو ما بدك بالعامية! ✨";
+}
+
+// إظهار نافذة الاشتراك الماسية وإغلاقها بشكل موحد
+function openVipModal() {
+    const modal = document.getElementById('vip-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('role', 'dialog');
+    }
+}
+function closeVipModal() {
+    const modal = document.getElementById('vip-modal');
+    if (modal) modal.style.display = 'none';
 }
 
 // --- دالات التحكم بالنوافذ المنبثقة (Modals) ---
