@@ -683,7 +683,7 @@
                 ⭐️ تنبيهات الأسعار الفورية ورادار التوريدات ع الواتساب لحظياً<br>
                 ⭐️ تصفح سريع للمنصة وإخفاء كافة الإعلانات التجارية نهائياً
             </div>
-            <button class="btn-primary" style="background:#ffd700; color:#000; width:100%; font-size:1.1rem; border:none;" onclick="alert('تكرم عينك! جاري توجيهك لبوابة سداد الاشتراك الماسي بأمان للترقية...')">اشترك الآن وافتح الميزات</button>
+            <button class="btn-primary" style="background:#ffd700; color:#000; width:100%; font-size:1.1rem; border:none;" onclick="alert('خدمة الدفع الإلكتروني لم تُربط بعد. لن نطلب منك تحويل أي مبلغ قبل توفير بوابة دفع موثوقة وإيصال رسمي.')">اشترك الآن وافتح الميزات</button>
         </div>
     </div>
 
@@ -695,15 +695,6 @@
     // --- إعدادات أمان المحتوى ونظام النقاط والامتثال القانوني الدولي والمحلي ---
 let userPoints = parseInt(localStorage.getItem('user_points')) || 150;
 // لا نعتمد على قيمة VIP مخزنة في المتصفح؛ يلزم تحقق خادمي قبل تفعيل اشتراك مدفوع.\nlet isVipUser = false;
-
-// قائمة الكلمات المحظورة لمنع الفتنة، الكراهية، والسياسة نهائياً وحماية أمان البوابة
-const bannedWords = ["سياسة", "ثورة", "نظام", "حزب", "طائفية", "تكفير", "شتم", "سب", "معارضة", "موالاة", "حكومة"];
-
-// فحص أمان النص المدخل من الزائر لحجب المخالفات فوراً
-function checkInputSecurity(text) {
-    let lowerText = text.toLowerCase();
-    return bannedWords.some(word => lowerText.includes(word));
-}
 
 // فتح الأقسام بوضوح دون الادعاء بوجود صفحات أو بيانات غير مبنية بعد
 function openTargetSection(sectionId, type) {
@@ -764,12 +755,6 @@ async function askAI() {
     const userMessage = inputField.value.trim();
     if (userMessage.length > 2000) {
         if (responseBox) responseBox.textContent = "الرسالة طويلة كتير؛ اختصرها لأقل من 2000 حرف لو سمحت.";
-        return;
-    }
-
-    if (checkInputSecurity(userMessage)) {
-        alert("تنبيه أمني: بوابة سورية منصة خدمية وأخوية لكل السوريين. بنعتذر منك يا غالي، الأحاديث السياسية أو الألفاظ غير المناسبة مالها مكان بيناتنا! 🇸🇾❤️");
-        inputField.value = "";
         return;
     }
 
@@ -845,6 +830,25 @@ function getShamiBotResponse(msg) {
     return "على راسي حارتك وتكرم عينك! البوابة بخدمتك على مدار الساعة، اسألني شو ما بدك بالعامية! ✨";
 }
 
+// جعل البطاقات التي لا تملك مساراً بعد قابلة للاستكشاف برسالة واضحة
+function enablePlaceholderCards() {
+    document.querySelectorAll('.section-card:not([onclick])').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            const title = card.querySelector('.card-title')?.textContent || 'قسم من بوابة سورية';
+            const modal = document.getElementById('section-modal');
+            const titleBox = document.getElementById('section-modal-title');
+            const body = document.getElementById('section-modal-body');
+            if (titleBox) titleBox.textContent = title;
+            if (body) body.textContent = 'هذا القسم ضمن خارطة خدمات بوابة سورية. يجري تجهيز محتواه وروابطه ومصادره الموثوقة؛ لن نعرض معلومات أو أسعاراً غير متحققة على أنها بيانات رسمية أو مباشرة.';
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.setAttribute('aria-hidden', 'false');
+            }
+        });
+    });
+}
+
 // إظهار نافذة الاشتراك الماسية وإغلاقها بشكل موحد
 function openVipModal() {
     const modal = document.getElementById('vip-modal');
@@ -892,7 +896,7 @@ function checkDailyBonus() {
     }
 }
 
-      window.onload = function() {
+      window.onload = function() {\n    enablePlaceholderCards();
     // تحميل بيان التطبيق الثابت من ملف manifest.json
     // تشغيل ملف الموبايل sw.js لتثبيت التطبيق على جهاز الزائر
     if ('serviceWorker' in navigator) { 
