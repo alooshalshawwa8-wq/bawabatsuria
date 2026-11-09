@@ -190,7 +190,7 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 تصفح الفروع وأرقام خدمة العملاء وعناوينها (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مستشار التمويل والمقارنة الآلية الفورية بين عوائد القروض البنكية</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openVipModal()">👑 مستشار التمويل والمقارنة الآلية الفورية بين عوائد القروض البنكية</div>
                 </div>
             </div>
 
@@ -663,6 +663,15 @@
             📢 مساحة إعلانية متاحة للبراندات والفعاليات الاقتصادية • لربط البانرات التسويقية تواصل مع إدارة بوابة سورية الماسية فوراً
         </div>
 
+    <div id="section-modal" role="dialog" aria-modal="true" aria-hidden="true" style="display:none; position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,.82); justify-content:center; align-items:center; padding:18px;" onclick="if(event.target===this) closeSectionModal()">
+        <div style="background:#1a1a1a; border:1px solid #d4af37; border-radius:14px; padding:24px; max-width:480px; width:100%; color:#fff; text-align:right;">
+            <button type="button" aria-label="إغلاق" onclick="closeSectionModal()" style="float:left; background:transparent; color:#fff; border:0; font-size:1.5rem; cursor:pointer;">&times;</button>
+            <h3 id="section-modal-title" style="color:#d4af37; margin-top:0;">قسم من بوابة سورية</h3>
+            <p id="section-modal-body" style="line-height:1.8;"></p>
+            <button type="button" class="btn-primary" onclick="closeSectionModal()">حسناً</button>
+        </div>
+    </div>
+
     <div id="vip-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
         <div style="background:#1a1a1a; border:2px solid #ffd700; border-radius:12px; padding:30px; max-width:450px; width:90%; text-align:center; box-shadow:0 5px 25px rgba(255,215,0,0.3); position:relative;">
             <span style="position:absolute; top:10px; left:15px; font-size:1.5rem; color:#aaa; cursor:pointer;" onclick="closeVipModal()">&times;</span>
@@ -685,7 +694,7 @@
     <script>
     // --- إعدادات أمان المحتوى ونظام النقاط والامتثال القانوني الدولي والمحلي ---
 let userPoints = parseInt(localStorage.getItem('user_points')) || 150;
-let isVipUser = localStorage.getItem('vip_status') === 'true' || false;
+// لا نعتمد على قيمة VIP مخزنة في المتصفح؛ يلزم تحقق خادمي قبل تفعيل اشتراك مدفوع.\nlet isVipUser = false;
 
 // قائمة الكلمات المحظورة لمنع الفتنة، الكراهية، والسياسة نهائياً وحماية أمان البوابة
 const bannedWords = ["سياسة", "ثورة", "نظام", "حزب", "طائفية", "تكفير", "شتم", "سب", "معارضة", "موالاة", "حكومة"];
@@ -696,15 +705,32 @@ function checkInputSecurity(text) {
     return bannedWords.some(word => lowerText.includes(word));
 }
 
-// دالة التحكم في تصفح الأقسام وتدقيق الباقات (مجاني، أسبوعي، شهري)
+// فتح الأقسام بوضوح دون الادعاء بوجود صفحات أو بيانات غير مبنية بعد
 function openTargetSection(sectionId, type) {
-    if (String(type).startsWith('vip') && !isVipUser) {
-        // فتح نافذة حظر القسم لغير المشتركين وتخييرهم بالنقاط أو الدفع اليدوي
-        const blockModal = document.getElementById('vipBlockModal');
-        if (blockModal) blockModal.style.display = "flex";
+    if (String(type).startsWith('vip')) {
+        openVipModal();
         return;
     }
-    alert(`يا مية أهلا وسهلا! جاري فتح قسم: ${sectionId} بنجاح.. تصفح ممتع يا غالي! ✨`);
+    const modal = document.getElementById('section-modal');
+    const title = document.getElementById('section-modal-title');
+    const body = document.getElementById('section-modal-body');
+    const card = Array.from(document.querySelectorAll('.section-card')).find(item =>
+        item.getAttribute('onclick') && item.getAttribute('onclick').includes(sectionId)
+    );
+    const heading = card ? card.querySelector('.card-title') : null;
+    if (title) title.textContent = heading ? heading.textContent : 'قسم من بوابة سورية';
+    if (body) body.textContent = 'هذا القسم ضمن خارطة خدمات بوابة سورية. يجري تجهيز محتواه وروابطه ومصادره الموثوقة؛ لن نعرض معلومات أو أسعاراً غير متحققة على أنها بيانات رسمية أو مباشرة.';
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+    }
+}
+function closeSectionModal() {
+    const modal = document.getElementById('section-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+    }
 }
 
 // دالة الفلترة والتنقل السريع بين تصنيفات الأقسام الـ 60 (تطوير لدالتك القديمة لتدعم الأقسام الجديدة)
@@ -842,19 +868,9 @@ function showTransferDetails() {
 function closeTransferModal() { document.getElementById('transferModal').style.display = "none"; }
 
 // تفعيل الـ VIP بالنقاط المجانية المكسبة من التفاعل والألعاب
-function activateWithPoints(cost) {
-    if (userPoints >= cost) {
-        userPoints -= cost;
-        isVipUser = true;
-        localStorage.setItem('user_points', userPoints);
-        localStorage.setItem('vip_status', 'true');
-        updatePointsOnScreen();
-        alert("ولك مبرووووك! تم تفعيل باقة الـ VIP الذهبية بنجاح عن طريق نقاطك المجانية. كل الأقسام الـ 60 انفتحت لعيونك! 👑✨");
-        closeBlockModal();
-        location.reload();
-    } else {
-        alert(`نقاطك الحالية ما كفو يا غالي! تجميعك الحالي هو ${userPoints} نقطة والاشتراك بيحتاج ${cost} نقطة. العب ألعاب البوابة أو فعل الباقة فوراً عبر التحويل اليدوي! 💳`);
-    }
+function activateWithPoints() {
+    openVipModal();
+    alert('تفعيل الاشتراك المدفوع غير متاح قبل ربط نظام حسابات ودفع موثّق وآمن.');
 }
 
 // تحديث عداد النقاط على الشاشة تلقائياً
