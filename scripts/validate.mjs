@@ -57,7 +57,7 @@ for (const name of footballArt) {
   const assetPath = `assets/football/${name}.svg`;
   const svg = await readFile(assetPath, 'utf8');
   assert.ok(svg.includes('<svg') && svg.includes('</svg>'), `${assetPath} must be a valid SVG asset`);
-  assert.ok(football.includes(`assets/football/${name}.svg`), `Football branch must reference ${assetPath}`);
+  assert.ok(football.includes(`${name}:\"${name}\"`), `Football hub must map the ${name} illustration`);
   assert.ok(worker.includes(`assets/football/${name}.svg`), `Offline shell must precache ${assetPath}`);
 }
 console.log('Portal validation passed.');
