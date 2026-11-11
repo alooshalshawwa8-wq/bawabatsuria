@@ -419,7 +419,18 @@ Deno.serve(async (request: Request) => {
       let providerStateRows = await providerStateRead.json();
       let providerState = Array.isArray(providerStateRows) ? providerStateRows[0] : null;
       const providerHeaderAt = budgetSnapshot?.providerHeaderAt ? Date.parse(budgetSnapshot.providerHeaderAt) : 0;
-      if (apiKey && providerState?.provider_blocked === false && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000) {
+      const statusProbeDue = apiKey && providerState?.provider_blocked === false && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000;
+      let statusProbeAllowed = false;
+      if (statusProbeDue) {
+        const statusRateAllowed = await persistentRateAllowed("api-football-global", 6);
+        if (statusRateAllowed === true) {
+          try {
+            const statusBudget = await reserveFootballBudget("emergency", "status");
+            statusProbeAllowed = statusBudget?.allowed === true;
+          } catch { statusProbeAllowed = false; }
+        }
+      }
+      if (statusProbeAllowed) {
         providerStatusCheckAt = Date.now();
         const statusStarted = Date.now();
         try {
