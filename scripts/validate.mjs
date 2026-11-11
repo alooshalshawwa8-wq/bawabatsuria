@@ -9,6 +9,7 @@ const api = await readFile('api/chat.js', 'utf8');
 const worker = await readFile('sw.js', 'utf8');
 const football = await readFile('football.js', 'utf8');
 const footballCss = await readFile('football.css', 'utf8');
+const footballBackend = await readFile('supabase/functions/football-data/index.ts', 'utf8');
 
 const inlineScripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
 assert.ok(inlineScripts.length > 0, 'index.html must contain an application script');
@@ -32,6 +33,10 @@ assert.ok(football.includes('functions/v1/football-data'), 'Football data must u
 assert.ok(football.includes('sb_publishable_'), 'Only a public publishable key may be present in the browser');
 assert.ok(!football.includes('API_FOOTBALL_KEY') && !football.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Server secrets must not appear in browser JavaScript');
 assert.ok(footballCss.includes('.football-world'), 'Football styles must be present');
+assert.ok(footballBackend.includes('FOOTBALL_PROVIDER_SUSPENDED'), 'Backend must block a suspended provider');
+assert.ok(footballBackend.includes('provider_blocked'), 'Backend must use persistent provider block state');
+assert.ok(footballBackend.includes('fixtures'), 'Backend must retain the fixtures data route');
+assert.ok(!football.includes('x-apisports-key'), 'Browser must never call API-Football directly');
 assert.ok(!html.includes('user_points') && !html.includes('checkDailyBonus'), 'No fake browser-only reward balance may be presented');
 assert.ok(html.includes("event.key === 'Enter'"), 'AI input should support Enter to submit');
 assert.ok(html.includes('لا يجري هذا القسم فحصاً تقنياً مباشراً'), 'Security section must not claim live URL scanning');
