@@ -41,6 +41,24 @@ async function dbRest(path: string, init: RequestInit = {}) {
     },
   });
 }
+let providerPolicyMemo: { until: number; data: Record<string, any> } | null = null;
+async function getProviderPolicy(): Promise<Record<string, any> | null> {
+  if (providerPolicyMemo && providerPolicyMemo.until > Date.now()) return providerPolicyMemo.data;
+  const response = await dbRest("football_api_budget_policy?select=provider_blocked,provider_block_reason,live_cache_seconds,non_live_refresh_minutes,finished_match_cache_hours&singleton=eq.true&limit=1");
+  if (!response.ok) return null;
+  const rows = await response.json();
+  const policy = Array.isArray(rows) ? rows[0] : null;
+  if (policy) providerPolicyMemo = { until: Date.now() + 15_000, data: policy };
+  return policy;
+}
+function fixtureCacheTtls(policy: Record<string, any>) {
+  return {
+    live: Math.max(15, Number(policy.live_cache_seconds) || 30) * 1000,
+    nonLive: Math.max(1, Number(policy.non_live_refresh_minutes) || 10) * 60_000,
+    finished: Math.max(1, Number(policy.finished_match_cache_hours) || 24) * 60 * 60_000
+  };
+}
+
 async function persistentCacheGet(key: string, allowStale = false): Promise<unknown | null> {
   try {
     const response = await dbRest("football_api_cache?cache_key=eq." + encodeURIComponent(key) + "&select=payload,expires_at&limit=1");
@@ -203,15 +221,19 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
     cache.set("provider:" + cacheKey, { until: Date.now() + Math.min(ttl, 60_000), data: persisted });
     return persisted as Record<string, any>;
   }
-  const providerStateResponse = await dbRest("football_api_budget_policy?select=provider_blocked,provider_block_reason&singleton=eq.true&limit=1");
-  if (!providerStateResponse.ok) {
+  const providerState = await getProviderPolicy();
+  if (!providerState) {
     const error = new Error("FOOTBALL_PROVIDER_STATE_UNAVAILABLE");
     (error as any).status = 503;
     throw error;
   }
-  const providerStateRows = await providerStateResponse.json();
-  const providerState = Array.isArray(providerStateRows) ? providerStateRows[0] : null;
-  if (providerState?.provider_blocked === true) {
+  const cacheTtls = fixtureCacheTtls(providerState);
+  let effectiveTtl = ttl;
+  if (path === "fixtures") {
+    if (query.live) effectiveTtl = cacheTtls.live;
+    else if (query.id || query.date || query.league || query.team) effectiveTtl = cacheTtls.nonLive;
+  }
+  if (providerState.provider_blocked === true) {
     const stale = await persistentCacheGet(cacheKey, true);
     if (stale && typeof stale === "object") {
       tracker.cacheHits++; tracker.staleHits++; tracker.budgetBlocked++;
@@ -292,6 +314,7 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
         provider_block_reason: providerErrorText.slice(0, 500)
       })
     });
+    providerPolicyMemo = null;
   }
   if (!upstream.ok || hasProviderErrors(data.errors)) {
     const stale = await persistentCacheGet(cacheKey, true);
@@ -303,13 +326,19 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
     (err as any).status = upstream.status;
     throw err;
   }
+  if (path === "fixtures" && query.id) {
+    const fixtureStatus = String(data.response?.[0]?.fixture?.status?.short ?? "");
+    if (["1H","HT","2H","ET","BT","P","LIVE"].includes(fixtureStatus)) effectiveTtl = cacheTtls.live;
+    else if (["FT","AET","PEN"].includes(fixtureStatus)) effectiveTtl = cacheTtls.finished;
+    else effectiveTtl = cacheTtls.nonLive;
+  }
   const result = {
     response: Array.isArray(data.response) ? data.response : [],
     results: Number(data.results ?? 0), paging: data.paging ?? null,
     provider: "API-Football", fetchedAt: new Date().toISOString(), cached: false
   };
-  cache.set("provider:" + cacheKey, { until: Date.now() + Math.min(ttl, 60_000), data: result });
-  await persistentCacheSet(cacheKey, path, result, ttl);
+  cache.set("provider:" + cacheKey, { until: Date.now() + Math.min(effectiveTtl, 60_000), data: result });
+  await persistentCacheSet(cacheKey, path, result, effectiveTtl);
   return result;
 }
 
@@ -391,6 +420,7 @@ Deno.serve(async (request: Request) => {
                 provider_block_reason: statusErrorText.slice(0, 500)
               })
             });
+            providerPolicyMemo = null;
           } else if (statusResponse.ok && !hasProviderErrors(statusData?.errors)) {
             await dbRest("football_api_budget_policy?singleton=eq.true", {
               method: "PATCH",
@@ -401,6 +431,7 @@ Deno.serve(async (request: Request) => {
                 provider_block_reason: null
               })
             });
+            providerPolicyMemo = null;
           }
           const statusAccount = statusData?.response ?? {};
           const requestStats = statusAccount?.requests ?? {};
@@ -605,7 +636,12 @@ Deno.serve(async (request: Request) => {
         requestsMade: tracker.upstreamCalls, cacheHits: tracker.cacheHits,
         staleHits: tracker.staleHits, staleData: tracker.staleHits > 0, usageTracked: true
       };
-      cache.set(cacheKey, { until: Date.now() + 60_000, data: result });
+      const matchPolicy = await getProviderPolicy();
+      if (!matchPolicy) throw new Error("FOOTBALL_PROVIDER_STATE_UNAVAILABLE");
+      const matchTtls = fixtureCacheTtls(matchPolicy);
+      const matchStatus = String(match.fixture?.status?.short ?? "");
+      const matchTtl = ["1H","HT","2H","ET","BT","P","LIVE"].includes(matchStatus) ? matchTtls.live : (["FT","AET","PEN"].includes(matchStatus) ? matchTtls.finished : matchTtls.nonLive);
+      cache.set(cacheKey, { until: Date.now() + matchTtl, data: result });
       return reply(result);
     } catch (error) {
       if ((error as any)?.message === "FOOTBALL_PROVIDER_SUSPENDED") {
@@ -633,7 +669,10 @@ Deno.serve(async (request: Request) => {
       if (!match) return reply({ error: "لم يعثر API-Football على المباراة بهذا الرقم." }, 404);
       const matchIsLive = ["1H","HT","2H","ET","BT","P","LIVE"].includes(String(match.fixture?.status?.short ?? ""));
       const fixtureStatusForTtl = String(match.fixture?.status?.short ?? "");
-      const fixtureTtl = ["1H","HT","2H","ET","BT","P","LIVE"].includes(fixtureStatusForTtl) ? 30_000 : (["FT","AET","PEN"].includes(fixtureStatusForTtl) ? 6 * 60 * 60_000 : 15 * 60_000);
+      const studioPolicy = await getProviderPolicy();
+      if (!studioPolicy) throw new Error("FOOTBALL_PROVIDER_STATE_UNAVAILABLE");
+      const studioTtls = fixtureCacheTtls(studioPolicy);
+      const fixtureTtl = ["1H","HT","2H","ET","BT","P","LIVE"].includes(fixtureStatusForTtl) ? studioTtls.live : (["FT","AET","PEN"].includes(fixtureStatusForTtl) ? studioTtls.finished : studioTtls.nonLive);
       const fixtureCacheKey = "fixtures?id=" + fixtureId + "&timezone=Asia%2FDamascus";
       cache.set("provider:" + fixtureCacheKey, { until: Date.now() + Math.min(fixtureTtl, 60_000), data: fixtureRowsData });
       await persistentCacheSet(fixtureCacheKey, "fixtures", fixtureRowsData, fixtureTtl);
@@ -707,11 +746,11 @@ Deno.serve(async (request: Request) => {
         usageTracked: true,
         provider: "API-Football",
         fetchedAt: new Date().toISOString(),
-        cacheSeconds: live ? 60 : (["FT","AET","PEN"].includes(status) ? 21600 : 900),
+        cacheSeconds: Math.floor(fixtureTtl / 1000),
         cached: false
       };
-      cache.set(studioCacheKey, { until: Date.now() + (live ? 60_000 : (["FT","AET","PEN"].includes(status) ? 6 * 60 * 60_000 : 15 * 60_000)), data: result });
-      await persistentCacheSet(studioCacheKey, "studio", result, live ? 60_000 : (["FT","AET","PEN"].includes(status) ? 6 * 60 * 60_000 : 15 * 60_000));
+      cache.set(studioCacheKey, { until: Date.now() + fixtureTtl, data: result });
+      await persistentCacheSet(studioCacheKey, "studio", result, fixtureTtl);
       return reply(result);
     } catch (error) {
       console.error("Football studio error", String(error).slice(0, 300));
