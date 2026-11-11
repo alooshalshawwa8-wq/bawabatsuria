@@ -52,6 +52,14 @@ const opened = (markup.match(/<div\b/gi) || []).length;
 const closed = (markup.match(/<\/div>/gi) || []).length;
 assert.equal(opened, closed, 'div elements must be balanced');
 
+const footballArt = ['live','competitions','leaders','clubs','players','match','predict','tactics','dna','moments','passport','academy','derby'];
+for (const name of footballArt) {
+  const assetPath = `assets/football/${name}.svg`;
+  const svg = await readFile(assetPath, 'utf8');
+  assert.ok(svg.includes('<svg') && svg.includes('</svg>'), `${assetPath} must be a valid SVG asset`);
+  assert.ok(football.includes(`assets/football/${name}.svg`), `Football branch must reference ${assetPath}`);
+  assert.ok(worker.includes(`assets/football/${name}.svg`), `Offline shell must precache ${assetPath}`);
+}
 console.log('Portal validation passed.');
 
 assert.ok(footballBackend.includes('api-football-global') && footballBackend.includes('FOOTBALL_PROVIDER_MINUTE_LIMIT'), 'Backend must enforce a shared global provider rate limit below the Free plan cap');
