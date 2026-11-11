@@ -182,7 +182,7 @@
         ["🧠","التوقعات","predictions"],["🩺","الإصابات","injuries"],["🤝","المواجهات","headtohead"],["🏆","الترتيب","standings"],["📊","الاحتمالات","odds"],
         ["📈","إحصاءات المضيف","home_stats"],["📉","إحصاءات الضيف","away_stats"],["📅","آخر مباريات المضيف","home_recent"],["📅","آخر مباريات الضيف","away_recent"],
         ["🏟️","ملف المضيف","home_team"],["🏟️","ملف الضيف","away_team"]
-      ].map(x=>'<button class="football-feature" data-action="match-extra" data-extra="'+x[2]+'"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>طلب مستقل عند الاختيار</small></button>').join("")+'</div>'+button("تحميل الاستوديو الشامل دفعة واحدة (قد يستخدم 9–13 طلباً)","studio-load",'data-fixture="'+esc(fixtureId)+'"')+'<div id="football-match-extras" style="margin-top:12px"></div></section>';
+      ].map(x=>'<button class="football-feature" data-action="match-extra" data-extra="'+x[2]+'"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>طلب مستقل عند الاختيار</small></button>').join("")+'</div><div id="football-match-extras" style="margin-top:12px"></div></section>';
       else html+=renderAdvancedStudio(data)+'<p class="football-footnote">عدد الطلبات الفعلية لهذه العملية: '+esc(data.requestsMade??"غير متاح")+' · الأقسام غير المتاحة: '+esc(arr(data.unavailable).join("، ")||"لا يوجد")+'</p>';
       $("football-match-detail").innerHTML=html;
     }catch(e){$("football-match-detail").innerHTML=errorBox(e.message);}
