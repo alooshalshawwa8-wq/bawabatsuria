@@ -37,6 +37,7 @@ assert.ok(!football.includes('API_FOOTBALL_KEY') && !football.includes('SUPABASE
 assert.ok(footballCss.includes('.football-world'), 'Football styles must be present');
 assert.ok(footballBackend.includes('FOOTBALL_PROVIDER_SUSPENDED'), 'Backend must block a suspended provider');
 assert.ok(footballBackend.includes('provider_blocked'), 'Backend must use persistent provider block state');
+assert.ok(footballBackend.includes('finished_match_cache_hours') && footballBackend.includes('live_cache_seconds'), 'Backend must honor configured cache lifetimes');
 assert.ok(footballBackend.includes('fixtures'), 'Backend must retain the fixtures data route');
 assert.ok(!football.includes('x-apisports-key'), 'Browser must never call API-Football directly');
 assert.ok(!html.includes('user_points') && !html.includes('checkDailyBonus'), 'No fake browser-only reward balance may be presented');
