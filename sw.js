@@ -1,4 +1,4 @@
-const CACHE_NAME = 'syria-portal-v4';
+const CACHE_NAME = 'syria-portal-v5';
 const APP_BASE = new URL('./', self.location.href);
 const APP_SHELL = ['', 'index.html', 'manifest.json', 'icon.svg', 'football.css', 'football.js'].map(path => new URL(path, APP_BASE).toString());
 
