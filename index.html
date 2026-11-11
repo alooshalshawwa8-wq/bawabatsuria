@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="football.css">
     <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
     <style>
         :root {
@@ -103,13 +105,13 @@
         
         <!-- أزرار التبويبات الفخمة للفلترة والتنقل الفوري السلس بين اهتمامات الزوار -->
         <div class="tabs-container">
-            <button class="tab-btn active" onclick="switchAxis('all')">كل الأقسام الشاملة</button>
-            <button class="tab-btn" onclick="switchAxis('gov')">🏛️ المعاملات والحكومة</button>
-            <button class="tab-btn" onclick="switchAxis('eco')">💰 المال وعالم التجار</button>
-            <button class="tab-btn" onclick="switchAxis('edu')">💼 التوظيف والتعليم والمستقبل</button>
-            <button class="tab-btn" onclick="switchAxis('health')">🏥 الصحة والزراعة وخيرات الأرض</button>
-            <button class="tab-btn" onclick="switchAxis('culture')">🗺️ السياحة والموضة والدراما</button>
-            <button class="tab-btn" onclick="switchAxis('logistics')">📞 الاتصالات ورادار الرياضيين</button>
+            <button class="tab-btn active" onclick="switchAxis('all', this)">كل الأقسام الشاملة</button>
+            <button class="tab-btn" onclick="switchAxis('gov', this)">🏛️ المعاملات والحكومة</button>
+            <button class="tab-btn" onclick="switchAxis('eco', this)">💰 المال وعالم التجار</button>
+            <button class="tab-btn" onclick="switchAxis('edu', this)">💼 التوظيف والتعليم والمستقبل</button>
+            <button class="tab-btn" onclick="switchAxis('health', this)">🏥 الصحة والزراعة وخيرات الأرض</button>
+            <button class="tab-btn" onclick="switchAxis('culture', this)">🗺️ السياحة والموضة والدراما</button>
+            <button class="tab-btn" onclick="switchAxis('logistics', this)">📞 الاتصالات ورادار الرياضيين</button>
         </div>
 
         <!-- بداية شبكة الأقسام التفاعلية الموزعة بدقة احترافية -->
@@ -124,7 +126,7 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 تصفح الأوراق المطلوبة والرسوم (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openTargetSection('government_papers', 'vip')">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً وتنزيلها جاهزة للطباعة</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openTargetSection('government_papers', 'vip')">👑 معقب المعاملات الذكي وملء الاستمارات تلقائياً وتنزيلها جاهزة للطباعة</div>
                 </div>
             </div>
 
@@ -137,22 +139,34 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 متطلبات الرخص والغرف التجارية (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openTargetSection('business_investment', 'vip')">👑 صائغ ومراجع العقود والاتفاقيات التجارية بالذكاء الاصطناعي لحماية مصالحك</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openTargetSection('business_investment', 'vip')">👑 صائغ ومراجع العقود والاتفاقيات التجارية بالذكاء الاصطناعي لحماية مصالحك</div>
                 </div>
             </div>
 
-            
+
+            <div class="section-card" data-axis="gov" onclick="openTargetSection('identity_documents', 'free')">
                 <span class="badge-sys vip">👑 ميزات VIP</span>
                 <div class="card-content">
                     <div class="card-icon">🪪</div>
                     <h3 class="card-title">3. هويتك وجوازك وأوراقك</h3>
-                    <p class="card-desc">متابعة تجديد بطاقات الهوية الشخصية، دفاتر العيلة، وجوازات السفر السورية بيسر وسهولة.</p>
+                    <p class="card-desc">دليل إرشادي لمعاملات الهوية الشخصية ودفتر العائلة وجواز السفر، مع توضيح الوثائق المطلوبة وروابط الجهات الرسمية عند توفرها.</p>
                 </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 معلومات عامة عن الوثائق وخطوات التجديد (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openVipModal()">👑 مساعد تجهيز قائمة أوراقك ونماذج طلبك قبل مراجعة الجهة المختصة</div>
+                </div>
+            </div>
 
-                   <div class="features-list">
-                    <div class="feature-item">🔹 جداول أسعار السلع العامة الأسبوعية (مجاني)</div>
-                    <!-- تفعيل رادار أسعار التجار وربطه بباقة الـ VIP الأسبوعية بالنقاط أو التحويل المالي -->
-                    <div class="feature-item vip-feat" onclick="openTargetSection('trader_radar', 'vip_weekly')">👑 رادر أسعار المواد الأولية للتجار (حديد، إسمنت، بلاستيك، أقمشة) دقيقة بدقيقة</div>
+            <div class="section-card" data-axis="eco" onclick="openTargetSection('trader_radar', 'free')">
+                <span class="badge-sys">📊 معلومات للتجار</span>
+                <div class="card-content">
+                    <div class="card-icon">📈</div>
+                    <h3 class="card-title">4. رادار أسعار السوق والمواد الأولية</h3>
+                    <p class="card-desc">مساحة لمتابعة أسعار السلع والمواد الأولية مثل الحديد والإسمنت والبلاستيك والأقمشة. تُعرض الأسعار فقط عند توفر مصدر وتاريخ تحديث واضحين.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 إرشادات حول مقارنة عروض الموردين وتسجيل الأسعار (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openVipModal()">👑 أدوات تنظيم ومقارنة عروض الأسعار للتجار</div>
                 </div>
             </div>
 
@@ -162,14 +176,15 @@
                 <div class="card-content">
                     <div class="card-icon">🔒</div>
                     <h3 class="card-title">9 مكرر. حارس الأمان الرقمي</h3>
-                    <p class="card-desc">فحص الروابط الاحتيالية والمشبوهة وتأمين حسابات شام كاش وسيرتيل كاش من الاختراق مجاناً.</p>
+                    <p class="card-desc">إرشادات توعوية للتعرّف على الروابط المشبوهة وحماية المحافظ الرقمية. لا يجري هذا القسم فحصاً تقنياً مباشراً للروابط حالياً.</p>
                 </div>
                 <div class="features-list">
-                    <div class="feature-item">🔹 مجاني: فحص روابط مباشر</div>
-                    <div class="feature-item secure">• مجاني: نصائح حماية الكاش</div>
+                    <div class="feature-item">🔹 إرشادات للتعرّف على علامات التصيّد</div>
+                    <div class="feature-item secure">• نصائح لحماية PIN ورموز التحقق</div>
                 </div>
             </div>
-             <span class="badge-vip">👑 ميزات VIP</span>
+            <div class="section-card" data-axis="eco" onclick="openTargetSection('banks', 'free')">
+                <span class="badge-vip">👑 ميزات VIP</span>
                 <div class="card-content">
                     <div class="card-icon">🏦</div>
                     <h3 class="card-title">11. البنوك والمصارف الشامية</h3>
@@ -177,7 +192,7 @@
                 </div>
                 <div class="features-list">
                     <div class="feature-item">🔹 تصفح الفروع وأرقام خدمة العملاء وعناوينها (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مستشار التمويل والمقارنة الآلية الفورية بين عوائد القروض البنكية</div>
+                    <div class="feature-item vip-feat" onclick="event.stopPropagation(); openVipModal()">👑 مستشار التمويل والمقارنة الآلية الفورية بين عوائد القروض البنكية</div>
                 </div>
             </div>
 
@@ -199,6 +214,14 @@
                 <div class="card-content">
                     <div class="card-icon">🛒</div>
                     <h3 class="card-title">13. التموين وحماية المستهلك</h3>
+                    <p class="card-desc">معلومات إرشادية عن السلع الأساسية، الأسعار المعلنة، وحقوق المستهلك وآليات تقديم الشكاوى.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 إرشادات حماية المستهلك ومعلومات التموين العامة (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مساعد تنظيم قوائم المشتريات ومقارنة الأسعار عند توفر البيانات</div>
+                </div>
+            </div>
+
             <!-- ================= محور التوظيف والتعليم وبناء المستقبل (edu) ================= -->
             <div class="section-card" data-axis="edu">
                 <span class="badge-vip">👑 ميزات VIP</span>
@@ -361,6 +384,15 @@
                 <span class="badge-vip">👑 ميزات VIP</span>
                 <div class="card-content">
                     <div class="card-icon">🌾</div>
+                    <h3 class="card-title">32. الزراعة والإنتاج الريفي</h3>
+                    <p class="card-desc">إرشادات ومعلومات عامة للمزارعين حول المحاصيل والمواسم والموارد الزراعية.</p>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">🔹 معلومات إرشادية عن المواسم والمحاصيل (مجاني)</div>
+                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 مساعد تخطيط زراعي وتنظيم تكاليف الإنتاج</div>
+                </div>
+            </div>
+
             <!-- ================= محور السياحة والموضة والدراما (culture) ================= -->
             <div class="section-card" data-axis="culture">
                 <span class="badge-vip">👑 ميزات VIP</span>
@@ -521,16 +553,16 @@
             </div>
 
                                <!-- ================= تابع محور الاتصالات ورادار الرياضيين والمناقصات (logistics) ================= -->
-            <div class="section-card" data-axis="logistics">
-                <span class="badge-vip">👑 ميزات VIP</span>
+            <div class="section-card" data-axis="logistics" role="button" tabindex="0" onclick="openFootballWorld()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFootballWorld();}">
+                <span class="badge-vip">⚽ عالم كرة القدم · تجربة مجانية</span>
                 <div class="card-content">
                     <div class="card-icon">⚽</div>
-                    <h3 class="card-title">52. الرياضة والنوادي والبطولات</h3>
-                    <p class="card-desc">رادار حماس الرياضيين، نتائج الدوري السوري، هدافي النوادي، وجدول تمارين حديد وكابتن ذكي VIP.</p>
+                    <h3 class="card-title">52. عالم كرة القدم الاحترافي</h3>
+                    <p class="card-desc">مركز مباريات ودوريات وأندية ولاعبين، مع التشكيلات والأحداث والتقييمات وكشاف المواهب والتحليل التكتيكي.</p>
                 </div>
                 <div class="features-list">
-                    <div class="feature-item">🔹 جدول المباريات وترتيب فرق الدوري (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حاسبة التغذية الرياضية وجدول تمارين حديد وكابتن ذكي مخصص لوزنك</div>
+                    <div class="feature-item">🔹 النتائج والمباريات المباشرة وجداول البطولات والهدافين وصناعة اللعب</div>
+                    <div class="feature-item">🔹 ملفات الأندية والملاعب واللاعبين واستوديو المباراة ومؤشرات الأداء</div>
                 </div>
             </div>
 
@@ -633,18 +665,59 @@
             📢 مساحة إعلانية متاحة للبراندات والفعاليات الاقتصادية • لربط البانرات التسويقية تواصل مع إدارة بوابة سورية الماسية فوراً
         </div>
 
+    <div id="football-world" class="football-world" hidden aria-label="عالم كرة القدم">
+        <div class="football-shell">
+            <header class="football-topbar">
+                <div class="football-brand">
+                    <div class="football-brand-mark">⚽</div>
+                    <div><strong>أُفُق | عالم كرة القدم</strong><small>بيانات المباريات والبطولات واللاعبين من API-Football</small></div>
+                </div>
+                <button id="football-close" class="football-close" type="button">إغلاق ✕</button>
+            </header>
+            <section class="football-hero">
+                <div>
+                    <div class="football-kicker">AFaq Football Intelligence</div>
+                    <h2>اللعبة أكبر من النتيجة</h2>
+                    <p>من صافرة البداية إلى تحليل الأداء: المباريات، الدوريات، الأندية، اللاعبين، الخطط، اللحظات، وكشاف المواهب في مركز واحد.</p>
+                </div>
+                <div>
+                    <div class="football-provider-pill" id="football-provider-status">حالة مزود البيانات قيد التحقق</div>
+                    <p class="football-footnote">كل الميزات مجانية خلال فترة التجربة</p>
+                </div>
+            </section>
+            <nav id="football-nav" class="football-nav" aria-label="فروع عالم كرة القدم"></nav>
+            <div class="football-toolbar">
+                <button id="football-refresh" class="football-refresh" type="button">↻ تحديث القسم عند الطلب</button>
+                <span id="football-update-note" class="football-toolbar-note">التحديث عند الطلب لحماية حصة API</span>
+            </div>
+            <main id="football-content" class="football-panel">
+                <div class="football-empty">اختر أحد فروع عالم كرة القدم للبدء.</div>
+            </main>
+            <p class="football-footnote">قد تختلف البيانات المتاحة حسب تغطية البطولة والموسم. لا نعرض إحصاءً غير متوفر على أنه صفر، ولا نحدّث تلقائياً حتى لا نهدر الحصة.</p>
+        </div>
+    </div>
+
+    <div id="section-modal" role="dialog" aria-modal="true" aria-hidden="true" style="display:none; position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,.82); justify-content:center; align-items:center; padding:18px;" onclick="if(event.target===this) closeSectionModal()">
+        <div style="background:#1a1a1a; border:1px solid #d4af37; border-radius:14px; padding:24px; max-width:480px; width:100%; color:#fff; text-align:right;">
+            <button type="button" aria-label="إغلاق" onclick="closeSectionModal()" style="float:left; background:transparent; color:#fff; border:0; font-size:1.5rem; cursor:pointer;">&times;</button>
+            <h3 id="section-modal-title" style="color:#d4af37; margin-top:0;">قسم من بوابة سورية</h3>
+            <p id="section-modal-body" style="line-height:1.8;"></p>
+            <button type="button" class="btn-primary" onclick="closeSectionModal()">حسناً</button>
+        </div>
+    </div>
+
     <div id="vip-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
         <div style="background:#1a1a1a; border:2px solid #ffd700; border-radius:12px; padding:30px; max-width:450px; width:90%; text-align:center; box-shadow:0 5px 25px rgba(255,215,0,0.3); position:relative;">
             <span style="position:absolute; top:10px; left:15px; font-size:1.5rem; color:#aaa; cursor:pointer;" onclick="closeVipModal()">&times;</span>
             <div style="font-size:3rem; margin-bottom:10px;">👑</div>
             <h3 style="color:#ffd700; font-size:1.6rem; margin-top:0;">انضم لعائلة الباقة الماسية VIP</h3>
-            <p style="color:#fff; font-size:0.95rem; line-height:1.5;">تؤبرني هالميزة حصرياً للمشتركين بـ <b>الباقة الماسية</b>! اشترك الآن وافتح كل أدوات الذكاء الاصطناعي التوليدي التخصصي، الكابتن الرياضي، رادار الموضة، وتنبيهات المناقصات والأسعار الفورية ع الواتساب فوراً وبلا إعلانات نهائياً.</p>
+            <p style="color:#fff; font-size:0.95rem; line-height:1.7;">هذه معاينة لخدمات الباقة الماسية المقترحة. ما زالت العضويات والدفع والميزات التخصصية قيد التطوير، ولا يوجد اشتراك مدفوع متاح حالياً.</p>
             <div style="background:#222; border-radius:8px; padding:15px; margin:20px 0; text-align:right; font-size:0.85rem; color:#eee;">
-                ⭐️ فتح كل أدوات الذكاء الاصطناعي الـ 59 التخصصية الخبيرة<br>
-                ⭐️ تنبيهات الأسعار الفورية ورادار التوريدات ع الواتساب لحظياً<br>
-                ⭐️ تصفح سريع للمنصة وإخفاء كافة الإعلانات التجارية نهائياً
+                • الحسابات والتحقق من الاشتراكات غير مفعّلة بعد<br>
+                • لا توجد بوابة دفع متصلة أو تنبيهات واتساب حالياً<br>
+                • لن نطلب منك تحويل أي مبلغ قبل إطلاق نظام دفع موثوق
             </div>
-            <button class="btn-primary" style="background:#ffd700; color:#000; width:100%; font-size:1.1rem; border:none;" onclick="alert('تكرم عينك! جاري توجيهك لبوابة سداد الاشتراك الماسي بأمان للترقية...')">اشترك الآن وافتح الميزات</button>
+            <button class="btn-primary" type="button" onclick="closeVipModal()">حسناً، فهمت</button>
         </div>
     </div>
 
@@ -653,35 +726,48 @@
     </footer>
 
     <script>
-    // --- إعدادات أمان المحتوى ونظام النقاط والامتثال القانوني الدولي والمحلي ---
-let userPoints = parseInt(localStorage.getItem('user_points')) || 150;
-let isVipUser = localStorage.getItem('vip_status') === 'true' || false;
+    // --- إعدادات الواجهة ---
+ // لا تُمنح نقاط أو صلاحيات اشتراك من المتصفح؛ يلزم نظام حسابات وخادم موثوق.
 
-// قائمة الكلمات المحظورة لمنع الفتنة، الكراهية، والسياسة نهائياً وحماية أمان البوابة
-const bannedWords = ["سياسة", "ثورة", "نظام", "حزب", "طائفية", "تكفير", "شتم", "سب", "معارضة", "موالاة", "حكومة"];
-
-// فحص أمان النص المدخل من الزائر لحجب المخالفات فوراً
-function checkInputSecurity(text) {
-    let lowerText = text.toLowerCase();
-    return bannedWords.some(word => lowerText.includes(word));
-}
-
-// دالة التحكم في تصفح الأقسام وتدقيق الباقات (مجاني، أسبوعي، شهري)
+// فتح الأقسام بوضوح دون الادعاء بوجود صفحات أو بيانات غير مبنية بعد
 function openTargetSection(sectionId, type) {
-    if (type.startsWith('vip') && !isVipUser) {
-        // فتح نافذة حظر القسم لغير المشتركين وتخييرهم بالنقاط أو الدفع اليدوي
-        const blockModal = document.getElementById('vipBlockModal');
-        if (blockModal) blockModal.style.display = "flex";
+    if (String(type).startsWith('vip')) {
+        openVipModal();
         return;
     }
-    alert(`يا مية أهلا وسهلا! جاري فتح قسم: ${sectionId} بنجاح.. تصفح ممتع يا غالي! ✨`);
+    const modal = document.getElementById('section-modal');
+    const title = document.getElementById('section-modal-title');
+    const body = document.getElementById('section-modal-body');
+    const card = Array.from(document.querySelectorAll('.section-card')).find(item =>
+        item.getAttribute('onclick') && item.getAttribute('onclick').includes(sectionId)
+    );
+    const heading = card ? card.querySelector('.card-title') : null;
+    if (title) title.textContent = heading ? heading.textContent : 'قسم من بوابة سورية';
+    if (body) body.textContent = 'هذا القسم ضمن خارطة خدمات بوابة سورية. يجري تجهيز محتواه وروابطه ومصادره الموثوقة؛ لن نعرض معلومات أو أسعاراً غير متحققة على أنها بيانات رسمية أو مباشرة.';
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+    }
+}
+function closeSectionModal() {
+    const modal = document.getElementById('section-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+    }
 }
 
 // دالة الفلترة والتنقل السريع بين تصنيفات الأقسام الـ 60 (تطوير لدالتك القديمة لتدعم الأقسام الجديدة)
-function switchAxis(axis) {
+function switchAxis(axis, selectedButton) {
     var buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    if (event && event.target) { event.target.classList.add('active'); }
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+    });
+    if (selectedButton && selectedButton.classList) {
+        selectedButton.classList.add('active');
+        selectedButton.setAttribute('aria-pressed', 'true');
+    }
 
     var cards = document.querySelectorAll('.section-card');
     cards.forEach(card => {
@@ -694,167 +780,121 @@ function switchAxis(axis) {
 }
 
 // --- محرك الذكاء الاصطناعي الشامي التفاعلي المتكامل (أبو النور) ---
-function askAI() {
+async function askAI() {
     const inputField = document.getElementById('ai-input') || document.getElementById('chatInput');
     const responseBox = document.getElementById('ai-response-box');
     if (!inputField || inputField.value.trim() === "") return;
 
-    let userMessage = inputField.value.trim();
-
-    // فحص المحتوى فوراً لمنع أي إساءة أو فتنة أو كلام سياسي
-    if (checkInputSecurity(userMessage)) {
-        alert("تنبيه أمني: بوابة سورية منصة خدمية وأخوية لكل السوريين. بنعتذر منك يا غالي، الأحاديث السياسية أو الألفاظ غير المناسبة مالها مكان بيناتنا! 🇸🇾❤️");
-        inputField.value = "";
+    const userMessage = inputField.value.trim();
+    if (userMessage.length > 2000) {
+        if (responseBox) responseBox.textContent = "الرسالة طويلة كتير؛ اختصرها لأقل من 2000 حرف لو سمحت.";
         return;
     }
 
-    // تنظيف وعرض استجابة البوت الشامي التفاعلي (مزاح، ألعاب، شروحات مجانية بالكامل)
-    if (responseBox) {
-        responseBox.innerHTML = `<p style="color:#ffd700;">عم فكرلك فيها... ثواني صغيرة من عيوني... ⏱️</p>`;
-    }
-
-    setTimeout(() => {
-        let botReply = getShamiBotResponse(userMessage);
-        if (responseBox) {
-            responseBox.innerHTML = `<p><strong>المساعد الشامي:</strong> ${botReply}</p>`;
-        }
-    }, 600);
-
+    if (responseBox) responseBox.textContent = "عم وصّل سؤالك بالمساعد الذكي... لحظة من عيونك ⏱️";
     inputField.value = "";
+
+    try {
+        const response = await fetch('api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'تعذر الاتصال بالمساعد حالياً');
+        if (responseBox) responseBox.textContent = "المساعد الشامي الذكي: " + (data.reply || "ما قدرت كوّن جواب هالمرة، جرّب من جديد.");
+    } catch (error) {
+        const localReply = getShamiBotResponse(userMessage);
+        if (responseBox) responseBox.textContent = "المساعد المحلي (وضع محدود): " + localReply + " — الاتصال بالذكاء الاصطناعي غير متاح حالياً.";
+    }
 }
 
 function getShamiBotResponse(msg) {
-    msg = msg.toLowerCase();
-    
-    // 1. قسم المزاح والتسلية والنكت
-    if (msg.includes("نكتة") || msg.includes("اضحك") || msg.includes("تسلى")) {
-        userPoints += 5; // مكافأة تفاعل لزيادة إدمان الموقع
-        localStorage.setItem('user_points', userPoints);
-        updatePointsOnScreen();
+    const text = String(msg || '').toLowerCase();
+
+    if (text.includes("نكتة") || text.includes("اضحك") || text.includes("تسلى")) {
         const jokes = [
-            "لك حارتنا ضيقة وبنعرف بعضنا! قال في واحد حمصي ضاع جزدانه بالشارع، راح عمل بلاغ بالشرطة، قالوله طيب روح عالبيت وبس نلاقيه بنخبرك. وهو راجع لقى الشارع كله مسكرينه عمال تصليح بلوعات.. صاح فيهم: كفو والله بلشتوا تدوروا عليه! 😂 وجاك 5 نقاط لعيونك!",
-            "مرة واحد راح يشتري خبز لقى الزحمة واقفة دور طويل، صاح: يا جماعة الفرن عم يوزع ببلاش! فضي الدور، راح هو وقف أول واحد وقال: لعمش ليكون من صدقهم! 😂"
+            "مرة واحد سأل صاحبه: ليش الساعة واقفة؟ قاله: يمكن تعبت من الركض 😂",
+            "واحد اشترى سرير طابقين، نام تحت حتى ما يوقع بالحلم 😄"
         ];
         return jokes[Math.floor(Math.random() * jokes.length)];
     }
-    
-    // 2. ألعاب التسلية المدمجة لربح النقاط مجاناً
-    if (msg.includes("لعبة") || msg.includes("العب")) {
-        return "يا مية أهلا! شو رأيك نلعب لعبة التخمين؟ اكتب كلمة 'خمن' وجنبها رقم من 1 لـ 5، وإذا حزرت الرقم الصح إلك مني 50 نقطة فوراً عالمحفظة! 🎲";
+
+    if (text.includes("لعبة") || text.includes("العب")) {
+        return "أكيد! فينا نلعب لعبة تخمين للتسلية فقط، من دون نقاط أو جوائز: اختر رقماً من 1 إلى 5 واكتبه بكلمة «خمن» ثم الرقم.";
     }
-    if (msg.startsWith("خمن")) {
-        const num = msg.replace("خمن", "").trim();
+    if (text.startsWith("خمن")) {
+        const match = text.match(/^خمن\s*([1-5])$/);
+        if (!match) return "اكتب «خمن» ثم رقماً من 1 إلى 5.";
         const luckyNum = Math.floor(Math.random() * 5) + 1;
-        if (num == luckyNum) {
-            userPoints += 50;
-            localStorage.setItem('user_points', userPoints);
-            updatePointsOnScreen();
-            return `ولك كفوووو عيني! طلع الرقم الصح هو ${luckyNum}. ربحت معي 50 نقطة ضفتلك ياهن عالمحفظة! 🏆✨`;
-        } else {
-            return `حاول مرة تانية يا عيوني، الرقم السري كان ${luckyNum}! جرب حظك لتجمع نقاط وتفتح الـ VIP مجاناً.`;
-        }
+        return Number(match[1]) === luckyNum
+            ? "أحسنت! أصبت الرقم 🎉 هذه لعبة للتسلية فقط ولا تمنح نقاطاً أو مزايا مدفوعة."
+            : "لم تصب هذه المرة؛ الرقم كان " + luckyNum + ". جرّب مجدداً، للتسلية فقط 🙂";
     }
 
-    // 3. قسم موسوعة المهن والتعليم السوري وحل المشكلات
-    if (msg.includes("مدرسة") || msg.includes("ابني") || msg.includes("خصوصي")) {
-        return "تعي تؤبريني حلك عندي وعيب الشوم ندفع ليرة للخصوصي! انزلي على قسم 'التعليم والمنهاج السوري'، حددي صف ابنك ورح تلاقي شرح كامل لكل مادة مع بنك أسئلة مؤتمتة وتوقعات امتحانية ناااكتة ومجانية لعيونك! 📝✨";
+    if (text.includes("رابط") || text.includes("فحص") || text.includes("احتيال")) {
+        return "تنبيه مهم: الموقع لا يملك حالياً أداة فحص تقني مباشر للروابط. لا تفتح الرابط المشبوه، ولا تدخل كلمة المرور أو PIN أو رمز التحقق. افحص اسم النطاق من القناة الرسمية، ويمكنك إرسال نص الرسالة (من دون بياناتك الخاصة) لأساعدك في تقييم علامات الاحتيال.";
     }
-    if (msg.includes("بحث") || msg.includes("جامعة") || msg.includes("تخرج")) {
-        return "حلقة بحث وتخرج؟ تعي حلك عندي يا بؤبؤ عيني بسيطة وسهلة ونااااكتة يوووو! قسم المهن والبحوث بالبوابة بيعطيكي الهيكل والمراجع جاهزة ومجانية مية بالمية لترتاحي! 🎓";
-    }
-    if (msg.includes("ربح") || msg.includes("شغل") || msg.includes("دولار")) {
-        return "بدك تطلع دولار من قلب سوريا Bars؟ فوت على قسم 'موسوعة المهن والعمل الحر'، فيه كورسات مجانية كاملة لتعلم مهارات الإنترنت وطرق سحب الأرباح جوا سوريا بكاش نظامي! 💻💰";
+    if (text.includes("شام كاش") || text.includes("سيرتيل") || text.includes("cwallet")) {
+        return "لا تشارك أبداً PIN أو كلمة المرور أو رمز التحقق مع أي شخص. افتح تطبيق المحفظة من مصدره الرسمي فقط، وتواصل مع دعم الشركة عبر قنواتها الرسمية عند الشك.";
     }
 
-    // 4. حارس الأمان وفحص الروابط المشبوهة وحماية سيرتيل كاش وشام كاش
-    if (msg.includes("رابط") || msg.includes("فحص") || msg.includes("احتيال")) {
-        return "أمانك خط أحمر يا غالي! حطلي أي رابط مشكوك فيه هون، وأنا بفحصه فوراً وبقلك إذا رابط وهمي أو نصاب مشان تحمي جهازك ومحفظتك. 🛡️";
-    }
-    if (msg.includes("شام كاش") || msg.includes("سيرتيل") || msg.includes("cwallet")) {
-        return "دير بالك يا عيوني! شركة سيرتيل أو شام كاش ما بتطلب رمز الـ PIN تبعك بنوب. أي رسالة بتجيك بتقلك ربحت كاش وهي برات التطبيق الرسمي هي عملية احتيال وخداع. خلي عينك مفتحة! 💸❌";
-    }
-
-    return "على راسي حارتك وتكرم عينك! البوابة بخدمتك على مدار الساعة، اسألني شو ما بدك بالعامية! ✨";
+    return "المساعد المتصل غير متاح حالياً، وهذه نسخة مساعدة محدودة. جرّب سؤالاً قصيراً، أو أعد المحاولة لاحقاً عند تفعيل الاتصال بالخادم.";
 }
 
-// --- دالات التحكم بالنوافذ المنبثقة (Modals) ---
-function closeBlockModal() { document.getElementById('vipBlockModal').style.display = "none"; }
-function showTransferDetails() { 
-    closeBlockModal();
-    document.getElementById('transferModal').style.display = "flex"; 
+// جعل البطاقات التي لا تملك مساراً بعد قابلة للاستكشاف برسالة واضحة
+function enablePlaceholderCards() {
+    document.querySelectorAll('.section-card:not([onclick])').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            const title = card.querySelector('.card-title')?.textContent || 'قسم من بوابة سورية';
+            const modal = document.getElementById('section-modal');
+            const titleBox = document.getElementById('section-modal-title');
+            const body = document.getElementById('section-modal-body');
+            if (titleBox) titleBox.textContent = title;
+            if (body) body.textContent = 'هذا القسم ضمن خارطة خدمات بوابة سورية. يجري تجهيز محتواه وروابطه ومصادره الموثوقة؛ لن نعرض معلومات أو أسعاراً غير متحققة على أنها بيانات رسمية أو مباشرة.';
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.setAttribute('aria-hidden', 'false');
+            }
+        });
+    });
 }
-function closeTransferModal() { document.getElementById('transferModal').style.display = "none"; }
 
-// تفعيل الـ VIP بالنقاط المجانية المكسبة من التفاعل والألعاب
-function activateWithPoints(cost) {
-    if (userPoints >= cost) {
-        userPoints -= cost;
-        isVipUser = true;
-        localStorage.setItem('user_points', userPoints);
-        localStorage.setItem('vip_status', 'true');
-        updatePointsOnScreen();
-        alert("ولك مبرووووك! تم تفعيل باقة الـ VIP الذهبية بنجاح عن طريق نقاطك المجانية. كل الأقسام الـ 60 انفتحت لعيونك! 👑✨");
-        closeBlockModal();
-        location.reload();
-    } else {
-        alert(`نقاطك الحالية ما كفو يا غالي! تجميعك الحالي هو ${userPoints} نقطة والاشتراك بيحتاج ${cost} نقطة. العب ألعاب البوابة أو فعل الباقة فوراً عبر التحويل اليدوي! 💳`);
+// إظهار نافذة الاشتراك الماسية وإغلاقها بشكل موحد
+function openVipModal() {
+    const modal = document.getElementById('vip-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('role', 'dialog');
     }
 }
-
-// تحديث عداد النقاط على الشاشة تلقائياً
-function updatePointsOnScreen() {
-    const pointsElem = document.getElementById('points-count');
-    if (pointsElem) pointsElem.innerText = userPoints;
-}
-
-// مكافأة الدخول اليومي لزيادة تفاعل وزوار الموقع بشكل دائم
-function checkDailyBonus() {
-    const lastCheck = localStorage.getItem('last_check_date');
-    const today = new Date().toDateString();
-    if (lastCheck !== today) {
-        userPoints += 30;
-        localStorage.setItem('user_points', userPoints);
-        localStorage.setItem('last_check_date', today);
-        updatePointsOnScreen();
-        alert("يسعدلي صباحك ومساك! أخذت 30 نقطة مكافأة دخولك اليومي لـ بوابة سورية! 🇸🇾🏆");
-    }
+function closeVipModal() {
+    const modal = document.getElementById('vip-modal');
+    if (modal) modal.style.display = 'none';
 }
 
       window.onload = function() {
-    // محرك حقن الـ Manifest الذكي لتصحيح أخطاء الموبايل وتفعيل التطبيق فوراً
-    try {
-        let manifestContent = {
-            "short_name": "بوابة سورية",
-            "name": "بوابة سورية - المنصة المتكاملة للخدمات",
-            "icons": [{
-                "src": "https://flaticon.com",
-                "type": "image/png",
-                "sizes": "512x512"
-            }],
-            "start_url": "/index.html",
-            "background_color": "#121212",
-            "theme_color": "#1b4d3e",
-            "display": "standalone",
-            "orientation": "portrait"
-        };
-        let blob = new Blob([JSON.stringify(manifestContent)], {type: 'application/json'});
-        let manifestURL = URL.createObjectURL(blob);
-        let link = document.createElement('link');
-        link.rel = 'manifest';
-        link.href = manifestURL;
-        document.head.appendChild(link);
-    } catch(e) { console.log("Manifest ready"); }
-
+    enablePlaceholderCards();
+    // تحميل بيان التطبيق الثابت من ملف manifest.json
     // تشغيل ملف الموبايل sw.js لتثبيت التطبيق على جهاز الزائر
     if ('serviceWorker' in navigator) { 
-        navigator.serviceWorker.register('/sw.js').catch(function(err){ console.log(err); }); 
+        navigator.serviceWorker.register('sw.js').catch(function(err){ console.log(err); }); 
     }
     
-    // تشغيل ميزات النقاط والدخول اليومي
-    if (typeof checkDailyBonus === "function") { checkDailyBonus(); }
-    if (typeof updatePointsOnScreen === "function") { updatePointsOnScreen(); }
+    const aiInput = document.getElementById('ai-input');
+    if (aiInput) {
+        aiInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.isComposing) {
+                event.preventDefault();
+                askAI();
+            }
+        });
+    }
 };
   </script>
+    <script src="football.js" defer></script>
 </body>
 </html>
 

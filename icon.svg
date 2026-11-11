@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#1b4d3e"/>
+  <path d="M256 64 296 185 424 185 320 260 360 384 256 307 152 384 192 260 88 185 216 185Z" fill="#d4af37"/>
+  <path d="M128 414h256" stroke="#fff" stroke-width="18" stroke-linecap="round" opacity=".9"/>
+  <text x="256" y="468" font-size="42" text-anchor="middle" fill="#fff" font-family="sans-serif">سورية</text>
+</svg>
