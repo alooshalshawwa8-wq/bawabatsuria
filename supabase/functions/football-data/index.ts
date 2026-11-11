@@ -422,7 +422,11 @@ Deno.serve(async (request: Request) => {
           const statusRateAllowed = await persistentRateAllowed("api-football-global", 6);
           if (statusRateAllowed !== true) throw new Error("FOOTBALL_STATUS_RATE_GUARD_BLOCKED");
           const statusBudget = await reserveFootballBudget("emergency", "status");
-          if (!statusBudget?.allowed) throw new Error("FOOTBALL_STATUS_BUDGET_BLOCKED");
+          if (statusBudget?.allowed === true) {
+            // Only a confirmed reservation may proceed to the provider.
+          } else {
+            throw new Error("FOOTBALL_STATUS_BUDGET_BLOCKED");
+          }
           const statusResponse = await fetch("https://v3.football.api-sports.io/status", {
             headers: { "x-apisports-key": apiKey, "Accept": "application/json" }
           });
