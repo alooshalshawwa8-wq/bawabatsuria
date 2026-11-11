@@ -21,11 +21,11 @@ new Function(football);
 
 assert.equal(manifest.lang, 'ar');
 assert.equal(manifest.dir, 'rtl');
-assert.ok(manifest.icons.some(icon => icon.src === '/icon.svg'));
+assert.ok(manifest.icons.some(icon => icon.src === 'icon.svg'));
 assert.equal(vercel.functions?.['api/chat.js']?.maxDuration, 30);
 assert.ok(api.includes('process.env.GEMINI_API_KEY'), 'Gemini key must be read server-side');
 assert.ok(!html.includes('GEMINI_API_KEY'), 'Gemini key must not appear in browser HTML');
-assert.ok(html.includes("fetch('/api/chat'"), 'Frontend must call the chat API route');
+assert.ok(html.includes("fetch('api/chat'"), 'Frontend must call the chat API route');
 assert.ok(html.includes("navigator.serviceWorker.register('sw.js')"), 'Service worker must be registered');
 assert.ok(html.includes('id="football-world"') && html.includes('openFootballWorld()'), 'Football world must be integrated into the portal');
 assert.ok(html.includes('football.css') && html.includes('football.js'), 'Football assets must be linked');
