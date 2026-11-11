@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/football.css">
     <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
     <style>
         :root {
@@ -552,16 +553,16 @@
             </div>
 
                                <!-- ================= تابع محور الاتصالات ورادار الرياضيين والمناقصات (logistics) ================= -->
-            <div class="section-card" data-axis="logistics">
-                <span class="badge-vip">👑 ميزات VIP</span>
+            <div class="section-card" data-axis="logistics" role="button" tabindex="0" onclick="openFootballWorld()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFootballWorld();}">
+                <span class="badge-vip">⚽ عالم كرة القدم · تجربة مجانية</span>
                 <div class="card-content">
                     <div class="card-icon">⚽</div>
-                    <h3 class="card-title">52. الرياضة والنوادي والبطولات</h3>
-                    <p class="card-desc">رادار حماس الرياضيين، نتائج الدوري السوري، هدافي النوادي، وجدول تمارين حديد وكابتن ذكي VIP.</p>
+                    <h3 class="card-title">52. عالم كرة القدم الاحترافي</h3>
+                    <p class="card-desc">مركز مباريات ودوريات وأندية ولاعبين، مع التشكيلات والأحداث والتقييمات وكشاف المواهب والتحليل التكتيكي.</p>
                 </div>
                 <div class="features-list">
-                    <div class="feature-item">🔹 جدول المباريات وترتيب فرق الدوري (مجاني)</div>
-                    <div class="feature-item vip-feat" onclick="openVipModal()">👑 حاسبة التغذية الرياضية وجدول تمارين حديد وكابتن ذكي مخصص لوزنك</div>
+                    <div class="feature-item">🔹 النتائج والمباريات المباشرة وجداول البطولات والهدافين وصناعة اللعب</div>
+                    <div class="feature-item">🔹 ملفات الأندية والملاعب واللاعبين واستوديو المباراة ومؤشرات الأداء</div>
                 </div>
             </div>
 
@@ -663,6 +664,38 @@
         <div class="ad-space" style="margin-top: 30px; margin-bottom: 0;">
             📢 مساحة إعلانية متاحة للبراندات والفعاليات الاقتصادية • لربط البانرات التسويقية تواصل مع إدارة بوابة سورية الماسية فوراً
         </div>
+
+    <div id="football-world" class="football-world" hidden aria-label="عالم كرة القدم">
+        <div class="football-shell">
+            <header class="football-topbar">
+                <div class="football-brand">
+                    <div class="football-brand-mark">⚽</div>
+                    <div><strong>أُفُق | عالم كرة القدم</strong><small>بيانات المباريات والبطولات واللاعبين من API-Football</small></div>
+                </div>
+                <button id="football-close" class="football-close" type="button">إغلاق ✕</button>
+            </header>
+            <section class="football-hero">
+                <div>
+                    <div class="football-kicker">AFaq Football Intelligence</div>
+                    <h2>اللعبة أكبر من النتيجة</h2>
+                    <p>من صافرة البداية إلى تحليل الأداء: المباريات، الدوريات، الأندية، اللاعبين، الخطط، اللحظات، وكشاف المواهب في مركز واحد.</p>
+                </div>
+                <div>
+                    <div class="football-provider-pill" id="football-provider-status">حالة مزود البيانات قيد التحقق</div>
+                    <p class="football-footnote">كل الميزات مجانية خلال فترة التجربة</p>
+                </div>
+            </section>
+            <nav id="football-nav" class="football-nav" aria-label="فروع عالم كرة القدم"></nav>
+            <div class="football-toolbar">
+                <button id="football-refresh" class="football-refresh" type="button">↻ تحديث القسم عند الطلب</button>
+                <span id="football-update-note" class="football-toolbar-note">التحديث عند الطلب لحماية حصة API</span>
+            </div>
+            <main id="football-content" class="football-panel">
+                <div class="football-empty">اختر أحد فروع عالم كرة القدم للبدء.</div>
+            </main>
+            <p class="football-footnote">قد تختلف البيانات المتاحة حسب تغطية البطولة والموسم. لا نعرض إحصاءً غير متوفر على أنه صفر، ولا نحدّث تلقائياً حتى لا نهدر الحصة.</p>
+        </div>
+    </div>
 
     <div id="section-modal" role="dialog" aria-modal="true" aria-hidden="true" style="display:none; position:fixed; inset:0; z-index:9998; background:rgba(0,0,0,.82); justify-content:center; align-items:center; padding:18px;" onclick="if(event.target===this) closeSectionModal()">
         <div style="background:#1a1a1a; border:1px solid #d4af37; border-radius:14px; padding:24px; max-width:480px; width:100%; color:#fff; text-align:right;">
@@ -861,6 +894,7 @@ function closeVipModal() {
     }
 };
   </script>
+    <script src="/football.js" defer></script>
 </body>
 </html>
 
