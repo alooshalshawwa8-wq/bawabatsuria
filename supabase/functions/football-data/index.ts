@@ -275,6 +275,11 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
       tracker.cacheHits++; tracker.staleHits++;
       return { ...stale as Record<string, any>, cached: true, stale: true, budgetLimited: true, budgetReason: budget.reason };
     }
+    if (budget?.reason === "provider_blocked") {
+      const error = new Error("FOOTBALL_PROVIDER_SUSPENDED");
+      (error as any).status = 503;
+      throw error;
+    }
     const error = new Error("FOOTBALL_DAILY_BUDGET_LIMIT");
     (error as any).status = 429;
     (error as any).budget = budget;
@@ -414,7 +419,7 @@ Deno.serve(async (request: Request) => {
       let providerStateRows = await providerStateRead.json();
       let providerState = Array.isArray(providerStateRows) ? providerStateRows[0] : null;
       const providerHeaderAt = budgetSnapshot?.providerHeaderAt ? Date.parse(budgetSnapshot.providerHeaderAt) : 0;
-      if (apiKey && providerState?.provider_blocked !== true && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000) {
+      if (apiKey && providerState?.provider_blocked === false && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000) {
         providerStatusCheckAt = Date.now();
         const statusStarted = Date.now();
         try {
