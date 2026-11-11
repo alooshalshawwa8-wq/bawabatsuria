@@ -1,5 +1,5 @@
-const CACHE_NAME = 'syria-portal-v2';
-const APP_SHELL = ['/','/index.html','/manifest.json','/icon.svg'];
+const CACHE_NAME = 'syria-portal-v3';
+const APP_SHELL = ['/','/index.html','/manifest.json','/icon.svg','/football.css','/football.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
