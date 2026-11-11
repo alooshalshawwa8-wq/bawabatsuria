@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="/football.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="football.css">
     <title>منصة بوابة سورية الوطنية الماسية الشاملة</title>
     <style>
         :root {
@@ -795,7 +795,7 @@ async function askAI() {
     inputField.value = "";
 
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch('api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: userMessage })
@@ -880,7 +880,7 @@ function closeVipModal() {
     // تحميل بيان التطبيق الثابت من ملف manifest.json
     // تشغيل ملف الموبايل sw.js لتثبيت التطبيق على جهاز الزائر
     if ('serviceWorker' in navigator) { 
-        navigator.serviceWorker.register('/sw.js').catch(function(err){ console.log(err); }); 
+        navigator.serviceWorker.register('sw.js').catch(function(err){ console.log(err); }); 
     }
     
     const aiInput = document.getElementById('ai-input');
@@ -894,7 +894,7 @@ function closeVipModal() {
     }
 };
   </script>
-    <script src="/football.js" defer></script>
+    <script src="football.js" defer></script>
 </body>
 </html>
 
