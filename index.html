@@ -46,7 +46,7 @@
         .tab-btn { background: #1a1a1a; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
         .tab-btn:hover, .tab-btn.active { background: var(--primary); border-color: var(--primary); }
         
-        /* شبكة بطاقات الخدمات والأقسام الـ 59 المحدثة */
+        /* شبكة بطاقات الخدمات والأقسام المتاحة حالياً */
         .sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; position: relative; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .section-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(27, 77, 62, 0.3); }
@@ -78,7 +78,7 @@
             <span class="brand-title">بوابة سورية الوطنية الماسية</span>
             <span class="stars-container">⭐⭐⭐⭐⭐</span>
         </div>
-        <div>تحديث الأسعار الفوري مباشر لأسواق الذهب، الصرف، والمواد الأولية للتجار والشركات السورية</div>
+        <div>مركز متابعة أسعار الذهب والصرف والمواد الأولية — تُعرض الأسعار المباشرة فقط عند ربط مصدر موثوق وتوثيق وقت التحديث</div>
     </div>
 
     <main>
@@ -729,25 +729,42 @@
     // --- إعدادات الواجهة ---
  // لا تُمنح نقاط أو صلاحيات اشتراك من المتصفح؛ يلزم نظام حسابات وخادم موثوق.
 
-// فتح الأقسام بوضوح دون الادعاء بوجود صفحات أو بيانات غير مبنية بعد
+// عرض بطاقة الخدمة بمعلوماتها الفعلية مع توضيح ما لم يُنفّذ بعد
+function showSectionPreview(card) {
+    const modal = document.getElementById('section-modal');
+    const title = document.getElementById('section-modal-title');
+    const body = document.getElementById('section-modal-body');
+    const heading = card?.querySelector('.card-title');
+    const description = card?.querySelector('.card-desc');
+    const features = Array.from(card?.querySelectorAll('.feature-item') || [])
+        .map(item => item.textContent.trim())
+        .filter(Boolean);
+    if (title) title.textContent = heading?.textContent?.trim() || 'قسم من بوابة سورية';
+    const details = [
+        description?.textContent?.trim() || 'هذا القسم ضمن خارطة خدمات بوابة سورية.',
+        features.length ? 'المعلومات والخيارات المعلنة في البطاقة:\\n' + features.join('\\n') : '',
+        'حالة التنفيذ: عرض تعريفي فقط. لا توجد حالياً معاملة إلكترونية أو أسعار مباشرة أو اتصال بمصدر بيانات لهذا القسم.'
+    ].filter(Boolean);
+    if (body) {
+        body.textContent = details.join('\\n\\n');
+        body.style.whiteSpace = 'pre-line';
+    }
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+    }
+}
+
+// فتح الأقسام بوضوح ودون الادعاء بوجود خدمات خلفية غير مبنية
 function openTargetSection(sectionId, type) {
     if (String(type).startsWith('vip')) {
         openVipModal();
         return;
     }
-    const modal = document.getElementById('section-modal');
-    const title = document.getElementById('section-modal-title');
-    const body = document.getElementById('section-modal-body');
     const card = Array.from(document.querySelectorAll('.section-card')).find(item =>
         item.getAttribute('onclick') && item.getAttribute('onclick').includes(sectionId)
     );
-    const heading = card ? card.querySelector('.card-title') : null;
-    if (title) title.textContent = heading ? heading.textContent : 'قسم من بوابة سورية';
-    if (body) body.textContent = 'هذا القسم ضمن خارطة خدمات بوابة سورية. يجري تجهيز محتواه وروابطه ومصادره الموثوقة؛ لن نعرض معلومات أو أسعاراً غير متحققة على أنها بيانات رسمية أو مباشرة.';
-    if (modal) {
-        modal.style.display = 'flex';
-        modal.setAttribute('aria-hidden', 'false');
-    }
+    showSectionPreview(card);
 }
 function closeSectionModal() {
     const modal = document.getElementById('section-modal');
@@ -757,7 +774,7 @@ function closeSectionModal() {
     }
 }
 
-// دالة الفلترة والتنقل السريع بين تصنيفات الأقسام الـ 60 (تطوير لدالتك القديمة لتدعم الأقسام الجديدة)
+// دالة الفلترة والتنقل السريع بين تصنيفات الأقسام الـ 60 (تطوير لدالة الفلترة والتنقل بين المحاور)
 function switchAxis(axis, selectedButton) {
     var buttons = document.querySelectorAll('.tab-btn');
     buttons.forEach(btn => {
@@ -842,20 +859,17 @@ function getShamiBotResponse(msg) {
     return "المساعد المتصل غير متاح حالياً، وهذه نسخة مساعدة محدودة. جرّب سؤالاً قصيراً، أو أعد المحاولة لاحقاً عند تفعيل الاتصال بالخادم.";
 }
 
-// جعل البطاقات التي لا تملك مساراً بعد قابلة للاستكشاف برسالة واضحة
+// جعل البطاقات التعريفية قابلة للاستخدام بالفأرة ولوحة المفاتيح
 function enablePlaceholderCards() {
     document.querySelectorAll('.section-card:not([onclick])').forEach(card => {
         card.style.cursor = 'pointer';
-        card.addEventListener('click', () => {
-            const title = card.querySelector('.card-title')?.textContent || 'قسم من بوابة سورية';
-            const modal = document.getElementById('section-modal');
-            const titleBox = document.getElementById('section-modal-title');
-            const body = document.getElementById('section-modal-body');
-            if (titleBox) titleBox.textContent = title;
-            if (body) body.textContent = 'هذا القسم ضمن خارطة خدمات بوابة سورية. يجري تجهيز محتواه وروابطه ومصادره الموثوقة؛ لن نعرض معلومات أو أسعاراً غير متحققة على أنها بيانات رسمية أو مباشرة.';
-            if (modal) {
-                modal.style.display = 'flex';
-                modal.setAttribute('aria-hidden', 'false');
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('click', () => showSectionPreview(card));
+        card.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                showSectionPreview(card);
             }
         });
     });
