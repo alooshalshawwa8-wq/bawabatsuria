@@ -131,7 +131,7 @@
       const rows=arr(data.response);
       $("football-clubs").innerHTML=rows.length?'<div class="football-grid">'+rows.map(r=>{
         const t=r.team||{},v=r.venue||{};
-        return '<article class="football-card"><div class="football-row-main">'+logo(t.logo,t.name)+'<div><div class="football-card-title">'+esc(t.name)+'</div><div class="football-muted">'+esc(t.country||"")+'</div></div></div><p class="football-muted">🏟️ '+esc(v.name||"ملعب غير مسجل")+'<br>📍 '+esc(v.city||"")+' · السعة '+esc(v.capacity||"غير متاحة")+'</p>'+button("ملف النادي","team-detail",'data-team="'+esc(t.id)+'"')+'</article>';
+        return '<article class="football-card"><div class="football-row-main">'+logo(t.logo,t.name)+'<div><div class="football-card-title">'+esc(t.name)+'</div><div class="football-muted">'+esc(t.country||"")+' · ID '+esc(t.id)+'</div></div></div><p class="football-muted">🏟️ '+esc(v.name||"ملعب غير مسجل")+'<br>📍 '+esc(v.city||"")+' · السعة '+esc(v.capacity||"غير متاحة")+'</p>'+button("ملف النادي","team-detail",'data-team="'+esc(t.id)+'"')+'</article>';
       }).join("")+'</div>':empty("لا توجد قائمة أندية متاحة.");
     }catch(e){$("football-clubs").innerHTML=errorBox(e.message);}
   }
@@ -178,9 +178,36 @@
       html+='<div class="football-two-col" style="margin-top:12px">'+renderLineups(arr(data.lineups))+'</div>';
       html+='<section class="football-card" style="margin-top:12px"><h3>⭐ تقييمات اللاعبين</h3>'+renderPlayerRatings(arr(data.players))+'</section>';
       if(mode!=="studio") html+='<div style="margin-top:12px">'+button("فتح الاستوديو المتقدم (قد يستخدم طلبات إضافية)","studio-load",'data-fixture="'+esc(fixtureId)+'"')+'</div>';
-      else html+='<p class="football-footnote">عدد الطلبات الفعلية لهذه العملية: '+esc(data.requestsMade??"غير متاح")+' · الأقسام غير المتاحة: '+esc(arr(data.unavailable).join("، ")||"لا يوجد")+'</p>';
+      else html+=renderAdvancedStudio(data)+'<p class="football-footnote">عدد الطلبات الفعلية لهذه العملية: '+esc(data.requestsMade??"غير متاح")+' · الأقسام غير المتاحة: '+esc(arr(data.unavailable).join("، ")||"لا يوجد")+'</p>';
       $("football-match-detail").innerHTML=html;
     }catch(e){$("football-match-detail").innerHTML=errorBox(e.message);}
+  }
+  function renderAdvancedStudio(data) {
+    let out='<section class="football-card" style="margin-top:12px"><h3>📈 تحليل الأداء الموسع</h3><div class="football-two-col">';
+    const summaries=[["الفريق المضيف",arr(data.homeTeamStats)[0]],["الفريق الضيف",arr(data.awayTeamStats)[0]]];
+    out+=summaries.map(([label,row])=>{
+      if(!row)return '<div class="football-card"><strong>'+label+'</strong><p class="football-muted">غير متاح</p></div>';
+      const f=row.fixtures||{},g=row.goals||{};
+      return '<div class="football-card"><strong>'+label+' · '+esc(row.team?.name||"")+'</strong><p class="football-muted">الفورمة: <b class="football-rating">'+esc(row.form||"—")+'</b><br>لعب: '+esc(f.played?.total??"—")+' · فوز: '+esc(f.wins?.total??"—")+' · تعادل: '+esc(f.draws?.total??"—")+' · خسارة: '+esc(f.loses?.total??"—")+'<br>الأهداف المسجلة: '+esc(g.for?.total??"—")+' · المستقبلة: '+esc(g.against?.total??"—")+'</p></div>';
+    }).join("");
+    out+='</div></section>';
+    const home=arr(data.homeTeam)[0]||{},away=arr(data.awayTeam)[0]||{};
+    out+='<section class="football-card" style="margin-top:12px"><h3>🏟️ الملاعب وبيانات الناديين</h3><div class="football-two-col">'+[home,away].map(x=>'<div class="football-card"><strong>'+esc(x.team?.name||"")+'</strong><p class="football-muted">'+esc(x.venue?.name||"ملعب غير متاح")+'<br>'+esc(x.venue?.city||"")+' · السعة: '+esc(x.venue?.capacity||"غير متاحة")+'</p></div>').join("")+'</div></section>';
+    const pred=arr(data.predictions)[0]?.predictions;
+    if(pred) out+='<section class="football-card" style="margin-top:12px"><h3>🧠 مؤشرات PREDICT</h3><p>'+esc(pred.winner?.name||"الفائز غير محدد")+'</p><p class="football-muted">'+esc(pred.advice||"لا توجد نصيحة متاحة.")+'</p><p class="football-footnote">احتمالات إحصائية وليست ضماناً للنتيجة أو نصيحة للمراهنة.</p></section>';
+    const injuries=arr(data.injuries);
+    out+='<details class="football-card" style="margin-top:12px"><summary class="football-card-title">🩺 الإصابات والغيابات ('+injuries.length+')</summary>'+(injuries.length?injuries.map(x=>'<div class="football-player"><span>'+esc(x.player?.name||"")+' · '+esc(x.team?.name||"")+'</span><strong>'+esc(x.type||x.reason||"")+'</strong></div>').join(""): '<p class="football-muted">لا توجد بيانات إصابات متاحة.</p>')+'</details>';
+    const recentHome=arr(data.homeRecent),recentAway=arr(data.awayRecent),h2h=arr(data.headtohead);
+    out+='<details class="football-card" style="margin-top:12px"><summary class="football-card-title">📅 آخر مباريات الفريق المضيف ('+recentHome.length+')</summary><div class="football-grid">'+(recentHome.length?recentHome.map(matchCard).join(""):empty("غير متاح"))+'</div></details>';
+    out+='<details class="football-card" style="margin-top:12px"><summary class="football-card-title">📅 آخر مباريات الفريق الضيف ('+recentAway.length+')</summary><div class="football-grid">'+(recentAway.length?recentAway.map(matchCard).join(""):empty("غير متاح"))+'</div></details>';
+    out+='<details class="football-card" style="margin-top:12px"><summary class="football-card-title">🤝 المواجهات المباشرة ('+h2h.length+')</summary><div class="football-grid">'+(h2h.length?h2h.map(matchCard).join(""):empty("غير متاح"))+'</div></details>';
+    const standingRows=arr(data.standings).flatMap(x=>arr(x.league?.standings)).flat().slice(0,6);
+    if(standingRows.length)out+='<section class="football-card" style="margin-top:12px"><h3>🏆 مقتطف من الترتيب</h3>'+standingRows.map(x=>'<div class="football-player"><span>'+esc(x.rank)+'. '+esc(x.team?.name)+'</span><strong>'+esc(x.points)+' نقطة</strong></div>').join("")+'</section>';
+    const odds=arr(data.odds).flatMap(x=>arr(x.bookmakers)).slice(0,3);
+    if(odds.length)out+='<details class="football-card" style="margin-top:12px"><summary class="football-card-title">📊 أسواق الاحتمالات المتاحة</summary>'+odds.map(book=>'<div class="football-card-title">'+esc(book.name||"")+'</div>'+arr(book.bets).slice(0,4).map(bet=>'<div class="football-player"><span>'+esc(bet.name||"")+'</span><span>'+arr(bet.values).slice(0,4).map(v=>esc(v.value)+': '+esc(v.odd)).join(" · ")+'</span></div>').join("")).join("")+'</details>';
+    const unavailable=arr(data.unavailable);
+    if(unavailable.length)out+='<p class="football-footnote">بيانات لم تتوفر بسبب تغطية البطولة أو الموسم: '+esc(unavailable.join("، "))+'</p>';
+    return out;
   }
   function renderStats(rows) {
     if(!rows.length) return empty("الإحصاءات غير متاحة.");
