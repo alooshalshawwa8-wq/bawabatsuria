@@ -53,3 +53,5 @@ const closed = (markup.match(/<\/div>/gi) || []).length;
 assert.equal(opened, closed, 'div elements must be balanced');
 
 console.log('Portal validation passed.');
+
+assert.ok(footballBackend.includes('api-football-global') && footballBackend.includes('FOOTBALL_PROVIDER_MINUTE_LIMIT'), 'Backend must enforce a shared global provider rate limit below the Free plan cap');
