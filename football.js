@@ -311,7 +311,12 @@
     ].map(x=>'<article class="football-card"><div class="football-card-title">'+esc(x[0])+'</div><p class="football-muted">'+esc(x[1])+'</p></article>').join("")+'</div>');
   }
   function renderFeatures() {
-    content('<div class="football-feature-grid">'+[
+    const art={
+      live:"live",competitions:"competitions",leaders:"leaders",clubs:"clubs",players:"players",
+      match:"match",predict:"predict",tactics:"tactics",dna:"dna",moments:"moments",
+      passport:"passport",academy:"academy",derby:"derby"
+    };
+    content('<div class="football-feature-grid football-feature-hub">'+[
       ["⚡","المباشر والمباريات","نتائج وجدول اليوم وتحديث يدوي","live"],
       ["🏆","الدوريات والكؤوس","بحث البطولة والمواسم والتغطية","competitions"],
       ["🥇","الهدافون والصناعة","أهداف وتمريرات حاسمة وبطاقات","leaders"],
@@ -325,7 +330,7 @@
       ["🎟️","FAN PASSPORT","أنديتك المفضلة على جهازك","passport"],
       ["🎓","الأكاديمية","دروس قراءة المباراة والإحصاءات","academy"],
       ["🔥","الديربيات","تاريخ المواجهات المباشرة","derby"]
-    ].map(x=>'<button class="football-feature" data-view="'+x[3]+'"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>'+x[2]+'</small></button>').join("")+'</div>');
+    ].map(x=>'<button class="football-feature" data-view="'+x[3]+'"><img class="football-feature-art" src="assets/football/'+art[x[3]]+'.svg" alt="'+esc(x[1])+'" loading="lazy" decoding="async"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>'+x[2]+'</small></button>').join("")+'</div>');
   }
   function loadView(view) {
     if(view==="live") return renderHome();
