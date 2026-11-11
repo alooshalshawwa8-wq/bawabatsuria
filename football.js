@@ -162,9 +162,9 @@
     try{const data=await api({action:"catalog",dataset:"players",league:state.league.id,season:state.league.season,page:1});renderPlayers(arr(data.response),$("football-players"));}
     catch(e){$("football-players").innerHTML=errorBox(e.message);}
   }
-  function idForm(title,desc,placeholder,actionLabel,action) {
+  function idForm(title,desc,placeholder,actionLabel,action,pattern) {
     content('<h3>'+esc(title)+'</h3><p>'+esc(desc)+'</p><form id="football-id-form" class="football-form"><input id="football-id-input" inputmode="numeric" pattern="[0-9]+" placeholder="'+esc(placeholder)+'" required><button type="submit">'+esc(actionLabel)+'</button></form><div id="football-id-result"></div>');
-    $("football-id-form").addEventListener("submit",e=>{e.preventDefault();const value=$("football-id-input").value.trim();if(/^\\d+$/.test(value)) action(value);});
+    $("football-id-form").addEventListener("submit",e=>{e.preventDefault();const value=$("football-id-input").value.trim();if(pattern ? pattern.test(value) : /^\d+$/.test(value)) action(value);});
   }
   async function loadMatch(fixtureId,mode) {
     content('<h3>⚽ مركز المباراة · '+esc(fixtureId)+'</h3><div id="football-match-detail">'+empty("جارٍ تحميل التفاصيل…")+'</div>');
@@ -208,7 +208,7 @@
     }catch(e){$("football-dna").innerHTML=errorBox(e.message);}
   }
   async function loadDerby(value) {
-    const ids=value.split("-").map(x=>x.trim());if(ids.length!==2||!ids.every(x=>/^\\d+$/.test(x)))return;
+    const ids=value.split("-").map(x=>x.trim());if(ids.length!==2||!ids.every(x=>/^\d+$/.test(x)))return;
     content('<h3>🔥 سجل المواجهات المباشرة</h3><div id="football-derby">'+empty("جارٍ تحميل سجل المواجهات…")+'</div>');
     try{const data=await api({action:"catalog",dataset:"headtohead",h2h:ids.join("-"),last:10});const rows=arr(data.response);
       $("football-derby").innerHTML=rows.length?'<div class="football-grid">'+rows.map(matchCard).join("")+'</div>':empty("لا توجد مواجهات متاحة.");
@@ -218,7 +218,7 @@
     const key="afaq_football_favorites";
     let favorites=[];try{favorites=JSON.parse(localStorage.getItem(key)||"[]");}catch(_){}
     content('<h3>🎟️ FAN PASSPORT · جواز المشجع</h3><p>احفظ أنديتك المفضلة على هذا الجهاز لمتابعتها بسرعة. هذه قائمة محلية ولا تتطلب حساباً.</p><form id="favorite-form" class="football-form"><input id="favorite-name" placeholder="اسم النادي"><input id="favorite-id" inputmode="numeric" placeholder="معرّف النادي من API-Football"><button>إضافة إلى جوازي</button></form><div id="favorite-list">'+(favorites.length?'<div class="football-list">'+favorites.map((f,i)=>'<div class="football-row"><strong>'+esc(f.name)+'</strong><span>'+button("فتح الملف","favorite-open",'data-team="'+esc(f.id)+'"')+' '+button("حذف","favorite-delete",'data-index="'+i+'"')+'</span></div>').join("")+'</div>':empty("لم تضف أندية بعد."))+'</div>');
-    $("favorite-form").addEventListener("submit",e=>{e.preventDefault();const name=$("favorite-name").value.trim(),id=$("favorite-id").value.trim();if(!name||!/^\\d+$/.test(id))return;favorites.push({name,id});localStorage.setItem(key,JSON.stringify(favorites));showPassport();});
+    $("favorite-form").addEventListener("submit",e=>{e.preventDefault();const name=$("favorite-name").value.trim(),id=$("favorite-id").value.trim();if(!name||!/^\d+$/.test(id))return;favorites.push({name,id});localStorage.setItem(key,JSON.stringify(favorites));showPassport();});
   }
   function showAcademy() {
     content('<h3>🎓 أكاديمية أُفُق لكرة القدم</h3><p>محتوى تعليمي مبسط لقراءة المباراة وفهم الإحصاءات، دون ادعاء أنها بيانات مباشرة.</p><div class="football-grid">'+[
@@ -260,7 +260,7 @@
     if(view==="moments") return idForm("✨ MOMENTS","أدخل رقم المباراة لاستخراج الأهداف والبطاقات والتبديلات وأحداث VAR المتاحة.","رقم المباراة fixture","عرض اللحظات",id=>loadMatch(id));
     if(view==="passport") return showPassport();
     if(view==="academy") return showAcademy();
-    if(view==="derby") return idForm("🔥 الديربيات والمواجهات","أدخل معرّفي الفريقين بهذا الشكل: 33-40 لعرض آخر المواجهات.","homeID-awayID مثل 33-40","عرض المواجهات",loadDerby);
+    if(view==="derby") return idForm("🔥 الديربيات والمواجهات","أدخل معرّفي الفريقين بهذا الشكل: 33-40 لعرض آخر المواجهات.","homeID-awayID مثل 33-40","عرض المواجهات",loadDerby,/^\d+-\d+$/);
     renderFeatures();
   }
   function openFootballWorld() {
