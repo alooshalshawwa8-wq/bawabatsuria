@@ -84,3 +84,11 @@
  .football-team-name{font-size:.8rem}
  .football-score{font-size:1.1rem}
 }
+
+.football-feature-hub .football-feature{padding:0 0 14px;overflow:hidden;display:block;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.football-feature-hub .football-feature:hover{transform:translateY(-4px);box-shadow:0 12px 28px #0005}
+.football-feature-art{display:block;width:100%;aspect-ratio:16/8;object-fit:cover;animation:footballFadeIn .55s ease both;transition:transform .3s ease}
+.football-feature-hub .football-feature:hover .football-feature-art{transform:scale(1.035)}
+.football-feature-hub .football-feature span{display:inline-block;margin:10px 12px 0;font-size:1.15rem}
+.football-feature-hub .football-feature strong,.football-feature-hub .football-feature small{display:block;margin-inline:12px}
+@keyframes footballFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
