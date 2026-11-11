@@ -10,7 +10,7 @@ const worker = await readFile('sw.js', 'utf8');
 const football = await readFile('football.js', 'utf8');
 const footballCss = await readFile('football.css', 'utf8');
 const footballBackend = await readFile('supabase/functions/football-data/index.ts', 'utf8');
-const footballQuotaMigration = await readFile('supabase/migrations/20261111150000_enforce_conservative_football_quota.sql', 'utf8');
+const footballQuotaMigration = await readFile('supabase/migrations/20261111124846_enforce_conservative_football_quota_guardrails.sql', 'utf8');
 
 const inlineScripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
 assert.ok(inlineScripts.length > 0, 'index.html must contain an application script');
