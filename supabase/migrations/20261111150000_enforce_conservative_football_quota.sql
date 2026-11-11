@@ -34,6 +34,7 @@ declare
   v_reserved_bucket integer;
   v_reserved_after_header integer;
   v_bucket_limit integer;
+  v_critical_at integer;
   v_pace_fraction numeric;
   v_paced_total integer;
   v_paced_bucket integer;
@@ -164,6 +165,16 @@ begin
   v_pace_fraction := (v_policy.pacing_buffer_percent / 100.0)
     + ((1 - v_policy.pacing_buffer_percent / 100.0) * (v_elapsed / 86400.0));
   v_paced_total := greatest(1, floor(v_limit * v_pace_fraction)::integer);
+  v_critical_at := ceil(v_limit * coalesce(v_policy.critical_percent, 85) / 100.0)::integer;
+
+  -- Freeze secondary traffic at the critical threshold; preserve core requests until the hard daily cap.
+  if p_bucket in ('live', 'emergency') and v_reserved_total >= v_critical_at then
+    return jsonb_build_object(
+      'allowed', false, 'reason', 'secondary_frozen',
+      'criticalAt', v_critical_at, 'dailyLimit', v_limit,
+      'usedToday', v_reserved_total, 'remaining', v_safe_remaining
+    );
+  end if;
 
   -- Fixed 40:20:10 split at the 70-call cap, scaled down if provider quota is lower.
   v_bucket_limit := case p_bucket
@@ -250,6 +261,8 @@ declare
   v_minute_after_header integer;
   v_minute_remaining integer;
   v_minute_limit integer;
+  v_warning_at integer;
+  v_critical_at integer;
 begin
   select * into v_policy from public.football_api_budget_policy where singleton = true;
 
@@ -300,6 +313,8 @@ begin
   v_pace_fraction := (v_policy.pacing_buffer_percent / 100.0)
     + ((1 - v_policy.pacing_buffer_percent / 100.0) * (v_elapsed / 86400.0));
   v_allowed_so_far := greatest(1, floor(v_limit * v_pace_fraction)::integer);
+  v_warning_at := ceil(v_limit * coalesce(v_policy.warning_percent, 50) / 100.0)::integer;
+  v_critical_at := ceil(v_limit * coalesce(v_policy.critical_percent, 85) / 100.0)::integer;
 
   select
     count(*) filter (where bucket = 'core')::integer,
@@ -314,6 +329,10 @@ begin
     'usedToday', v_used,
     'remaining', v_remaining,
     'allowedSoFar', v_allowed_so_far,
+    'warningAt', v_warning_at,
+    'criticalAt', v_critical_at,
+    'warningReached', v_used >= v_warning_at,
+    'secondaryFrozen', v_used >= v_critical_at,
     'pacingBufferPercent', v_policy.pacing_buffer_percent,
     'minuteLimit', v_minute_limit,
     'minuteRemaining', v_minute_remaining,
