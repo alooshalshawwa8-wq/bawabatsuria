@@ -244,7 +244,7 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
     throw error;
   }
   // One global provider bucket protects the shared Edge Function egress IP.
-  // Conservative fixed-window guard; the database reservation also enforces a rolling 60-second cap of six.
+  // Keep one request/minute of headroom below the Free plan's 10/minute cap.
   const providerRateAllowed = await persistentRateAllowed("api-football-global", 6);
   if (providerRateAllowed === null) {
     const error = new Error("FOOTBALL_PROVIDER_RATE_GUARD_UNAVAILABLE");
@@ -274,11 +274,6 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
     if (stale && typeof stale === "object") {
       tracker.cacheHits++; tracker.staleHits++;
       return { ...stale as Record<string, any>, cached: true, stale: true, budgetLimited: true, budgetReason: budget.reason };
-    }
-    if (budget?.reason === "provider_blocked") {
-      const error = new Error("FOOTBALL_PROVIDER_SUSPENDED");
-      (error as any).status = 503;
-      throw error;
     }
     const error = new Error("FOOTBALL_DAILY_BUDGET_LIMIT");
     (error as any).status = 429;
@@ -419,21 +414,15 @@ Deno.serve(async (request: Request) => {
       let providerStateRows = await providerStateRead.json();
       let providerState = Array.isArray(providerStateRows) ? providerStateRows[0] : null;
       const providerHeaderAt = budgetSnapshot?.providerHeaderAt ? Date.parse(budgetSnapshot.providerHeaderAt) : 0;
-      const statusProbeDue = apiKey && providerState?.provider_blocked === false && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000;
-      let statusProbeAllowed = false;
-      if (statusProbeDue) {
-        const statusRateAllowed = await persistentRateAllowed("api-football-global", 6);
-        if (statusRateAllowed === true) {
-          try {
-            const statusBudget = await reserveFootballBudget("emergency", "status");
-            statusProbeAllowed = statusBudget?.allowed === true;
-          } catch { statusProbeAllowed = false; }
-        }
-      }
-      if (statusProbeAllowed) {
+      if (apiKey && providerState?.provider_blocked !== true && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000) {
         providerStatusCheckAt = Date.now();
         const statusStarted = Date.now();
         try {
+          // Status refreshes are provider requests too: reserve the global minute slot and emergency budget first.
+          const statusRateAllowed = await persistentRateAllowed("api-football-global", 6);
+          if (statusRateAllowed !== true) throw new Error("FOOTBALL_STATUS_RATE_GUARD_BLOCKED");
+          const statusBudget = await reserveFootballBudget("emergency", "status");
+          if (!statusBudget?.allowed) throw new Error("FOOTBALL_STATUS_BUDGET_BLOCKED");
           const statusResponse = await fetch("https://v3.football.api-sports.io/status", {
             headers: { "x-apisports-key": apiKey, "Accept": "application/json" }
           });
