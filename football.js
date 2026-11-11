@@ -4,7 +4,7 @@
   const API_BASE = "https://elzquyehghuxhswogsch.supabase.co/functions/v1/football-data";
   const PUBLIC_KEY = "sb_publishable_dX9q10Gk28xV97-5TTAi_g_irG2G96D";
   const $ = (id) => document.getElementById(id);
-  const state = { view: "live", date: damascusDate(), league: null, fixture: null, lastRequest: null };
+  const state = { view: "live", date: damascusDate(), league: null, fixture: null, currentMatch: null, lastRequest: null };
   const views = [
     ["live","المباشر والمباريات"],["competitions","الدوريات والكؤوس"],["leaders","الهدافون والصناعة"],
     ["clubs","الأندية والملاعب"],["players","اللاعبون والكشاف"],["match","مركز المباراة"],
@@ -171,16 +171,69 @@
     try{
       const data=await api(mode==="studio"?{action:"studio",fixture:fixtureId}:{action:"match",fixture:fixtureId});
       const fixture=data.fixture||{},home=fixture.teams?.home||{},away=fixture.teams?.away||{};
+      state.currentMatch={id:fixtureId,fixture:fixture};
       let html='<article class="football-card"><div class="football-match"><div class="football-team">'+logo(home.logo,home.name)+'<span class="football-team-name">'+esc(home.name)+'</span></div><div class="football-score">'+esc(fixture.goals?.home??"–")+' : '+esc(fixture.goals?.away??"–")+'</div><div class="football-team away"><span class="football-team-name">'+esc(away.name)+'</span>'+logo(away.logo,away.name)+'</div></div><div class="football-match-meta"><span>'+esc(fixture.league?.name||"")+'</span><span>'+esc(fixture.fixture?.status?.long||"")+'</span></div></article>';
       const events=arr(data.events);
       html+='<div class="football-two-col" style="margin-top:12px"><section class="football-card"><h3>⏱️ أحداث المباراة</h3>'+ (events.length?events.map(ev=>'<div class="football-event"><time>'+esc(ev.time?.elapsed??"")+'’</time><div><strong>'+esc(ev.type||"")+' · '+esc(ev.detail||"")+'</strong><div class="football-muted">'+esc(ev.player?.name||"")+' '+(ev.assist?.name?"— "+esc(ev.assist.name):"")+'</div></div></div>').join(""):empty("لا توجد أحداث متاحة أو لم تغطِّ البطولة هذه البيانات."))+'</section>';
       html+='<section class="football-card"><h3>📊 إحصاءات الفريقين</h3>'+renderStats(arr(data.statistics))+'</section></div>';
       html+='<div class="football-two-col" style="margin-top:12px">'+renderLineups(arr(data.lineups))+'</div>';
       html+='<section class="football-card" style="margin-top:12px"><h3>⭐ تقييمات اللاعبين</h3>'+renderPlayerRatings(arr(data.players))+'</section>';
-      if(mode!=="studio") html+='<div style="margin-top:12px">'+button("فتح الاستوديو المتقدم (قد يستخدم طلبات إضافية)","studio-load",'data-fixture="'+esc(fixtureId)+'"')+'</div>';
+      if(mode!=="studio") html+='<section class="football-card" style="margin-top:12px"><h3>📚 بيانات إضافية عند الطلب</h3><p class="football-muted">حمّل كل قسم منفرداً لتوفير الحصة. تُخزّن النتائج بحسب نوع البيانات.</p><div class="football-feature-grid">'+[
+        ["🧠","التوقعات","predictions"],["🩺","الإصابات","injuries"],["🤝","المواجهات","headtohead"],["🏆","الترتيب","standings"],["📊","الاحتمالات","odds"],
+        ["📈","إحصاءات المضيف","home_stats"],["📉","إحصاءات الضيف","away_stats"],["📅","آخر مباريات المضيف","home_recent"],["📅","آخر مباريات الضيف","away_recent"],
+        ["🏟️","ملف المضيف","home_team"],["🏟️","ملف الضيف","away_team"]
+      ].map(x=>'<button class="football-feature" data-action="match-extra" data-extra="'+x[2]+'"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>طلب مستقل عند الاختيار</small></button>').join("")+'</div>'+button("تحميل الاستوديو الشامل دفعة واحدة (قد يستخدم 9–13 طلباً)","studio-load",'data-fixture="'+esc(fixtureId)+'"')+'<div id="football-match-extras" style="margin-top:12px"></div></section>';
       else html+=renderAdvancedStudio(data)+'<p class="football-footnote">عدد الطلبات الفعلية لهذه العملية: '+esc(data.requestsMade??"غير متاح")+' · الأقسام غير المتاحة: '+esc(arr(data.unavailable).join("، ")||"لا يوجد")+'</p>';
       $("football-match-detail").innerHTML=html;
     }catch(e){$("football-match-detail").innerHTML=errorBox(e.message);}
+  }
+  async function loadMatchExtra(extra) {
+    const box=$("football-match-extras");
+    const current=state.currentMatch;
+    if(!current||!box)return;
+    const f=current.fixture,home=String(f.teams?.home?.id||""),away=String(f.teams?.away?.id||""),league=String(f.league?.id||""),season=String(f.league?.season||"");
+    const queries={
+      predictions:{action:"catalog",dataset:"predictions",fixture:current.id},
+      injuries:{action:"catalog",dataset:"injuries",fixture:current.id},
+      headtohead:{action:"catalog",dataset:"headtohead",h2h:home+"-"+away,last:10},
+      standings:{action:"catalog",dataset:"standings",league:league,season:season},
+      odds:{action:"catalog",dataset:"odds",fixture:current.id},
+      home_stats:{action:"catalog",dataset:"team_stats",league:league,season:season,team:home},
+      away_stats:{action:"catalog",dataset:"team_stats",league:league,season:season,team:away},
+      home_recent:{action:"catalog",dataset:"fixture_list",team:home,last:5,timezone:"Asia/Damascus"},
+      away_recent:{action:"catalog",dataset:"fixture_list",team:away,last:5,timezone:"Asia/Damascus"},
+      home_team:{action:"team",id:home},
+      away_team:{action:"team",id:away}
+    };
+    const labels={predictions:"التوقعات",injuries:"الإصابات",headtohead:"المواجهات المباشرة",standings:"الترتيب",odds:"الاحتمالات",home_stats:"إحصاءات المضيف",away_stats:"إحصاءات الضيف",home_recent:"آخر مباريات المضيف",away_recent:"آخر مباريات الضيف",home_team:"ملف المضيف",away_team:"ملف الضيف"};
+    if(!queries[extra])return;
+    box.innerHTML=empty("جارٍ تحميل "+labels[extra]+" بطلب مستقل…");
+    try{
+      const data=await api(queries[extra]),rows=arr(data.response);
+      let html='<div class="football-card"><h3>'+esc(labels[extra])+'</h3>';
+      if(extra==="predictions"){
+        const p=rows[0]?.predictions||{};
+        html+='<strong>'+esc(p.winner?.name||"الفائز غير محدد")+'</strong><p class="football-muted">'+esc(p.advice||"لا توجد نصيحة متاحة.")+'</p><p class="football-footnote">مؤشرات احتمالية وليست ضماناً للنتيجة أو نصيحة للمراهنة.</p>';
+      }else if(extra==="injuries"){
+        html+=rows.length?rows.map(x=>'<div class="football-player"><span>'+esc(x.player?.name||"")+' · '+esc(x.team?.name||"")+'</span><strong>'+esc(x.type||x.reason||"")+'</strong></div>').join(""):empty("لا توجد إصابات مسجلة في بيانات المزود.");
+      }else if(extra==="headtohead"||extra==="home_recent"||extra==="away_recent"){
+        html+=rows.length?'<div class="football-grid">'+rows.map(matchCard).join("")+'</div>':empty("لا توجد مباريات متاحة.");
+      }else if(extra==="standings"){
+        const table=rows.flatMap(x=>arr(x.league?.standings)).flat().slice(0,10);
+        html+=table.length?table.map(x=>'<div class="football-player"><span>'+esc(x.rank)+'. '+esc(x.team?.name)+'</span><strong>'+esc(x.points)+' نقطة</strong></div>').join(""):empty("الترتيب غير متاح لهذا الموسم.");
+      }else if(extra==="odds"){
+        const books=rows.flatMap(x=>arr(x.bookmakers));
+        html+=books.length?books.slice(0,4).map(book=>'<div class="football-card-title">'+esc(book.name||"")+'</div>'+arr(book.bets).slice(0,4).map(bet=>'<div class="football-player"><span>'+esc(bet.name||"")+'</span><span>'+arr(bet.values).slice(0,3).map(v=>esc(v.value)+': '+esc(v.odd)).join(" · ")+'</span></div>').join("")).join(""):empty("أسواق الاحتمالات غير متاحة لهذه المباراة.");
+      }else if(extra==="home_stats"||extra==="away_stats"){
+        const x=rows[0]||{},g=x.goals||{},fx=x.fixtures||{};
+        html+='<p class="football-muted">الفورمة: '+esc(x.form||"—")+'<br>لعب: '+esc(fx.played?.total??"—")+' · فوز: '+esc(fx.wins?.total??"—")+' · تعادل: '+esc(fx.draws?.total??"—")+' · خسارة: '+esc(fx.loses?.total??"—")+'<br>أهداف مسجلة: '+esc(g.for?.total??"—")+' · مستقبلة: '+esc(g.against?.total??"—")+'</p>';
+      }else{
+        const x=rows[0]||{},v=x.venue||{};
+        html+='<strong>'+esc(x.team?.name||"")+'</strong><p class="football-muted">الملعب: '+esc(v.name||"غير متاح")+'<br>المدينة: '+esc(v.city||"")+' · السعة: '+esc(v.capacity||"غير متاحة")+'</p>';
+      }
+      html+='<p class="football-footnote">'+(data.cached?"تمت الاستفادة من التخزين المؤقت.":"تم جلب هذا القسم بطلب مستقل.")+'</p></div>';
+      box.innerHTML=html;
+    }catch(e){box.innerHTML=errorBox(e.message);}
   }
   function renderAdvancedStudio(data) {
     let out='<section class="football-card" style="margin-top:12px"><h3>📈 تحليل الأداء الموسع</h3><div class="football-two-col">';
@@ -301,6 +354,7 @@
     if(a==="load-live")return loadFixtures("live");
     if(a==="load-date"){const d=$("football-date")?.value||state.date;state.date=d;return loadFixtures("date",d);}
     if(a==="match-detail")return loadMatch(b.dataset.fixture);
+    if(a==="match-extra")return loadMatchExtra(b.dataset.extra);
     if(a==="studio-load")return loadMatch(b.dataset.fixture,"studio");
     if(a==="choose-league")return chooseLeague(b);
     if(a==="league-standings")return loadStandings();
