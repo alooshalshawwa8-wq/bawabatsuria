@@ -244,8 +244,8 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
     throw error;
   }
   // One global provider bucket protects the shared Edge Function egress IP.
-  // Keep one request/minute of headroom below the Free plan's 10/minute cap.
-  const providerRateAllowed = await persistentRateAllowed("api-football-global", 9);
+  // Conservative fixed-window guard; the database reservation also enforces a rolling 60-second cap of six.
+  const providerRateAllowed = await persistentRateAllowed("api-football-global", 6);
   if (providerRateAllowed === null) {
     const error = new Error("FOOTBALL_PROVIDER_RATE_GUARD_UNAVAILABLE");
     (error as any).status = 503;
@@ -414,7 +414,7 @@ Deno.serve(async (request: Request) => {
       let providerStateRows = await providerStateRead.json();
       let providerState = Array.isArray(providerStateRows) ? providerStateRows[0] : null;
       const providerHeaderAt = budgetSnapshot?.providerHeaderAt ? Date.parse(budgetSnapshot.providerHeaderAt) : 0;
-      if (apiKey && (providerState?.provider_blocked === true || Date.now() - providerHeaderAt > 30 * 60_000) && Date.now() - providerStatusCheckAt > 30 * 60_000) {
+      if (apiKey && providerState?.provider_blocked !== true && Date.now() - providerHeaderAt > 30 * 60_000 && Date.now() - providerStatusCheckAt > 30 * 60_000) {
         providerStatusCheckAt = Date.now();
         const statusStarted = Date.now();
         try {
