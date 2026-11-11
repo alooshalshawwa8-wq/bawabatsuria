@@ -1,7 +1,7 @@
 name: Validate portal
 on:
   push:
-    branches: [main, stabilize-portal]
+    branches: [main, stabilize-portal, quota-zero-cost-hardening]
   pull_request:
     branches: [main]
 jobs:
