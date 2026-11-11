@@ -10,6 +10,7 @@ const worker = await readFile('sw.js', 'utf8');
 const football = await readFile('football.js', 'utf8');
 const footballCss = await readFile('football.css', 'utf8');
 const footballBackend = await readFile('supabase/functions/football-data/index.ts', 'utf8');
+const footballQuotaMigration = await readFile('supabase/migrations/20261111150000_enforce_conservative_football_quota.sql', 'utf8');
 
 const inlineScripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
 assert.ok(inlineScripts.length > 0, 'index.html must contain an application script');
@@ -64,3 +65,10 @@ for (const name of footballArt) {
 console.log('Portal validation passed.');
 
 assert.ok(footballBackend.includes('api-football-global') && footballBackend.includes('FOOTBALL_PROVIDER_MINUTE_LIMIT'), 'Backend must enforce a shared global provider rate limit below the Free plan cap');
+assert.ok(footballQuotaMigration.includes('daily_limit_override = 70'), 'Quota migration must cap daily provider calls at 70');
+assert.ok(footballQuotaMigration.includes('v_minute_limit := least(6'), 'Quota migration must enforce a six-call rolling minute cap');
+assert.ok(footballQuotaMigration.includes("p_bucket in ('live', 'emergency') and v_reserved_total >= v_critical_at"), 'Secondary traffic must freeze at the critical daily threshold');
+assert.ok(footballQuotaMigration.includes("'secondaryFrozen', v_used >= v_critical_at"), 'Quota status must expose the secondary freeze state');
+assert.ok(footballQuotaMigration.includes("v_policy.provider_blocked = true"), 'Database reservation must fail closed while the provider is blocked');
+assert.ok(footballQuotaMigration.includes("pg_advisory_xact_lock(hashtext('football-api-provider-minute'))"), 'Provider reservations must serialize across concurrent Edge Function instances');
+assert.ok(footballBackend.includes('statusBudget?.allowed === true'), 'Provider status probes must reserve emergency quota before contacting the provider');
