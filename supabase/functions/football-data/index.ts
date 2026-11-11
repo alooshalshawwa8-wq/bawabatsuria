@@ -53,7 +53,7 @@ async function getProviderPolicy(): Promise<Record<string, any> | null> {
 }
 function fixtureCacheTtls(policy: Record<string, any>) {
   return {
-    live: Math.max(15, Number(policy.live_cache_seconds) || 30) * 1000,
+    live: Math.max(60, Number(policy.live_cache_seconds) || 60) * 1000,
     nonLive: Math.max(1, Number(policy.non_live_refresh_minutes) || 10) * 60_000,
     finished: Math.max(1, Number(policy.finished_match_cache_hours) || 24) * 60 * 60_000
   };
@@ -241,6 +241,19 @@ async function providerFetchFresh(path: string, query: Record<string,string>, tt
     }
     const error = new Error("FOOTBALL_PROVIDER_SUSPENDED");
     (error as any).status = 503;
+    throw error;
+  }
+  // One global provider bucket protects the shared Edge Function egress IP.
+  // Keep one request/minute of headroom below the Free plan's 10/minute cap.
+  const providerRateAllowed = await persistentRateAllowed("api-football-global", 9);
+  if (providerRateAllowed === null) {
+    const error = new Error("FOOTBALL_PROVIDER_RATE_GUARD_UNAVAILABLE");
+    (error as any).status = 503;
+    throw error;
+  }
+  if (!providerRateAllowed) {
+    const error = new Error("FOOTBALL_PROVIDER_MINUTE_LIMIT");
+    (error as any).status = 429;
     throw error;
   }
   let budget: Record<string, any>;
