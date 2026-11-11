@@ -30,6 +30,8 @@ assert.ok(html.includes("navigator.serviceWorker.register('sw.js')"), 'Service w
 assert.ok(html.includes('id="football-world"') && html.includes('openFootballWorld()'), 'Football world must be integrated into the portal');
 assert.ok(html.includes('football.css') && html.includes('football.js'), 'Football assets must be linked');
 assert.ok(football.includes('functions/v1/football-data'), 'Football data must use the protected Supabase Edge Function');
+assert.ok(football.includes('loadMatchExtra'), 'Advanced match data must load on demand to conserve quota');
+assert.ok(football.includes('data-action="match-extra"'), 'Match extras must be individually selectable');
 assert.ok(football.includes('sb_publishable_'), 'Only a public publishable key may be present in the browser');
 assert.ok(!football.includes('API_FOOTBALL_KEY') && !football.includes('SUPABASE_SERVICE_ROLE_KEY'), 'Server secrets must not appear in browser JavaScript');
 assert.ok(footballCss.includes('.football-world'), 'Football styles must be present');
