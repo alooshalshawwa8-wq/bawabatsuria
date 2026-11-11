@@ -1,5 +1,6 @@
-const CACHE_NAME = 'syria-portal-v3';
-const APP_SHELL = ['/','/index.html','/manifest.json','/icon.svg','/football.css','/football.js'];
+const CACHE_NAME = 'syria-portal-v4';
+const APP_BASE = new URL('./', self.location.href);
+const APP_SHELL = ['', 'index.html', 'manifest.json', 'icon.svg', 'football.css', 'football.js'].map(path => new URL(path, APP_BASE).toString());
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -31,7 +32,7 @@ self.addEventListener('fetch', event => {
       const cached = await cache.match(request);
       if (cached) return cached;
       if (request.mode === 'navigate') {
-        return (await cache.match('/index.html')) || Response.error();
+        return (await cache.match(new URL('index.html', self.registration.scope).toString())) || Response.error();
       }
       return Response.error();
     }
